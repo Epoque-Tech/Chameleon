@@ -35,35 +35,6 @@ class Router
 
 
     /**
-     * ignored
-     *
-     * Checks the config file to see if the requested route should be ignored.
-     *
-     * @param Route $route a route object (see Route.php)
-     * @return Boolean true  : If the path should be ignored
-     *                 false : If the path should be processed
-     */
- 
-    private function ignored($route) {
-        $responFile = $route->responseFile;
-        $ext = pathinfo($rp)['extension'];
-
-        $ignoredFiles = array();
-        array_push($ignoredFiles, explode(' ', IGNORE_FILES));
-
-        $ignoredExt = array();
-        array_push($ignoredExt, explode(' ', IGNORE_EXT));
-        
-        if (in_array(basename($responseFile), $ignoredFiles)) {
-            return true;
-        } else if (in_array($ext, $ignoredExt)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * validRoute
      *
      * Checks if a given route is considered valid.
@@ -75,11 +46,14 @@ class Router
 
     private function validRoute($route)
     {
-        if (self::isView($route) && ! self::ignored($route)) {
-            return true;
-        } else {
+        if (empty($route->requestPath) || empty($route->responseFile))
             return false;
-        }
+
+        else if (self::isView($route) && ! self::ignored($route))
+            return true;
+
+        else
+            return false;
     }
 
 
@@ -99,6 +73,38 @@ class Router
 
         return True;
     }
+
+
+    /**
+     * ignored
+     *
+     * Checks the config file to see if the requested route should be ignored.
+     *
+     * @param Route $route a route object (see Route.php)
+     * @return Boolean true  : If the path should be ignored
+     *                 false : If the path should be processed
+     */
+ 
+    private function ignored($route) {
+        $responseFile     = $route->responseFile;
+        $ext            = pathinfo($responseFile)['extension'];
+        $ignoredFiles   = [];
+        $ignoredExt     = [];
+
+        $ignoredFiles = array_merge($ignoredFiles, explode(' ', IGNORE_FILES));
+        $ignoredExt   = array_merge($ignoredExt, explode(' ', IGNORE_EXT));
+        
+        if (in_array(basename($responseFile), $ignoredFiles))
+            return true;
+        
+        else if (in_array($ext, $ignoredExt))
+            return true;
+
+        else
+            return false;
+        
+    }
+
 
     public static function toHtml()
     {

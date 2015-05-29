@@ -2,7 +2,6 @@
 use Epoque\Chameleon\Router;
 use Epoque\Chameleon\Route;
 
-$homeRoute = new Route(['/home' => 'default.php']);
 
 print '
 <style>
@@ -14,18 +13,24 @@ border: 1px solid black;
 }
 
 </style>
+    ';
 
-<p>Try to add the following route:</p>
+
+// Test addRoute. //
+print '<p>Try to add the following route:</p>
 <pre>
 print_r($homeRoute);
 
 ';
+$homeRoute = new Route(['/home' => 'home.php']);
 print_r($homeRoute);
 print '</pre>';
 
 Router::addRoute($homeRoute);
 print Router::toHtml();
 
+
+// Test addRoute with array of Routes, some with empty parts. //
 $routeArray = [
     new Route(['' => '']),
     new Route(['/path/no/file' => '']),
@@ -41,6 +46,22 @@ foreach ($routeArray as $route) {
     Router::addRoute($route);
 }
 
+print Router::toHtml();
+
+
+// Test addRoute on IGNORE_EXT. //
+print '<p>Define IGNORE_EXT and then add an ingored file to a route:</p>';
+define('IGNORE_EXT', 'swp ini');
+print 'IGNORE_EXT: ' . IGNORE_EXT;
+$ignoreExtRoute = new Route(['/this/path' => 'file.ini']);
+print '<pre>';
+print_r($ignoreExtRoute);
+print '</pre>';
+Router::addRoute($ignoreExtRoute);
 
 print Router::toHtml();
+
+
+// Test addRoute on IGNORE_FILES. //
+print '<p>Try adding the ignored route:</p>';
 
