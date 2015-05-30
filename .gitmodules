@@ -1,3 +1,0 @@
-[submodule "markup"]
-    path = vendor/epoque/markup 
-    url  = git@github.com:Epoque-Tech/Markup.git

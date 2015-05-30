@@ -4,3 +4,4 @@ composer.lock
 vendor/autoload.php
 vendor/composer
 vendor/monolog/monolog/
+vendor/epoque/markup/
