@@ -2,9 +2,13 @@
 use Epoque\Chameleon\BaseClass;
 
 class BaseClassTest extends BaseClass {
-    public function pWarning()
+    public function pWarning($mesg)
     {
-        return $this->printWarning();
+        return $this->printWarning($mesg);
+    }
+    public function pError($mesg)
+    {
+        return $this->printError($mesg);
     }
 };
 
@@ -18,5 +22,7 @@ print <<<HTML
 HTML;
 
 $bct = new BaseClassTest();
+$bct->pWarning('Warning! Something happened that may cause things to break.');
+$bct->pError('Doh! Something Broke.');
 
-$bct->pWarning();
+print '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>';
