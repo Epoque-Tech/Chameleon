@@ -7,13 +7,17 @@ error_reporting(E_ERROR | E_PARSE | E_WARNING);
 
 
 // Setup some constants.
-define('APP_ROOT', __DIR__);
-define('BOOTSTRAP', '/'.BOOTSTRAP_DIR.'/css/bootstrap.css.min');
-define('CSS_DIR', '/resources/css');
-define('HTML_DIR', 'resources/html');
-define('IMG_DIR', '/resources/img');
-define('JS_DIR', '/resources/js');
-define('JQUERY_UI_DIR', JS_DIR.'/jquery-ui-1.11.4.custom');
+define('APP_ROOT', '/');
+define('BOOTSTRAP_DIR', APP_ROOT.'resources/bootstrap/3.3.1/');
+define('BOOTSTRAP', BOOTSTRAP_DIR.'css/bootstrap.min.css');
+define('BOOTSTRAP_JS', BOOTSTRAP_DIR.'js/bootstrap.min.js');
+define('CSS_DIR', APP_ROOT.'resources/css');
+define('HTML_DIR', 'resources/html/');
+define('IMG_DIR', '/resources/img/');
+define('JS_DIR', APP_ROOT.'resources/js/');
+define('JQUERY_UI_DIR', JS_DIR.'jquery-ui-1.11.4.custom/');
+define('JQUERY', JS_DIR.'jquery-1.11.2.min.js');
+define('JQUERY_UI', JQUERY_UI_DIR.'jquery-ui.min.js');
 define('SITE_TITLE', '|proj_name|');
 
 
