@@ -38,7 +38,7 @@ define('SITE_TITLE', '|proj_name|');
  *      IGNORE_EXTS
  *      Array of file types by extension to ingore from nav_root.
  */
-define('VIEWS_DIR', APP_ROOT.'views');
+define('VIEWS_DIR', 'views/');
 define('DEFAULT_VIEW', 'default.php');
 define('NAV_FILES', 'yes');
 define('NAV_DIRS', 'yes');
