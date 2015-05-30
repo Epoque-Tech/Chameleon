@@ -19,7 +19,7 @@ abstract class BaseClass
      * @return void
      */
 
-    protected function printWarning($error)
+    protected function printWarning($error='')
     {
         $calling_class = debug_backtrace()[1]['class'];
         print 
@@ -42,7 +42,7 @@ abstract class BaseClass
      * @return void
      */
 
-    protected function printError($error)
+    protected function printError($error='')
     {
         $calling_class = debug_backtrace()[1]['class'];
         print 
