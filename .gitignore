@@ -1,4 +1,6 @@
 config.php
 index.php
+composer.lock
 vendor/autoload.php
 vendor/composer
+vendor/monolog/monolog/
