@@ -6,4 +6,3 @@ composer.phar
 vendor/autoload.php
 vendor/composer
 vendor/monolog/monolog/
-vendor/epoque/markup/
