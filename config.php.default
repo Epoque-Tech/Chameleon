@@ -11,7 +11,7 @@ define('APP_ROOT', '/');
 define('BOOTSTRAP_DIR', APP_ROOT.'resources/bootstrap/3.3.1/');
 define('BOOTSTRAP', BOOTSTRAP_DIR.'css/bootstrap.min.css');
 define('BOOTSTRAP_JS', BOOTSTRAP_DIR.'js/bootstrap.min.js');
-define('CSS_DIR', APP_ROOT.'resources/css');
+define('CSS_DIR', APP_ROOT.'resources/css/');
 define('HTML_DIR', 'resources/html/');
 define('IMG_DIR', '/resources/img/');
 define('JS_DIR', APP_ROOT.'resources/js/');
