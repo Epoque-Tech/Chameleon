@@ -1,9 +1,4 @@
 config.php
 index.php
-composer.json
 composer.lock
-composer.phar
-vendor/autoload.php
-vendor/composer
-vendor/monolog/monolog/
-vendor/epoque/markup/
+vendor/
