@@ -30,8 +30,9 @@ class Router
             include VIEWS_DIR.DEFAULT_VIEW;
         }
         else {
-            for ($i = count(self::$routes), $match = false; $match === false && $i > 0; $i--) {
-                if ($requestUri === self::$routes[$i]->requestUri) {
+            // for loop micro-optimization.
+            for ($i = count(self::$routes), $match = false; $match === false && $i > 0;){
+                if ($requestUri === self::$routes[--$i]->requestUri) {
                     $match = true;
                     include self::$routes[$i]->response;
                 }
@@ -132,8 +133,6 @@ class Router
             $tmp = scandir(VIEWS_DIR);
             array_shift($tmp);
             array_shift($tmp);
-
-
         }
 
         return True;
