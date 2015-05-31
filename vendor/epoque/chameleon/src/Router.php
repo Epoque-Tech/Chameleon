@@ -1,7 +1,6 @@
 <?php
 namespace Epoque\Chameleon;
 
-
 /**
  * Router
  *
@@ -11,9 +10,34 @@ namespace Epoque\Chameleon;
 class Router
 {
     /** @var array Contains valid routes. **/
-    private static $routes = [];
+    private static $routes    = [];
 
     private static $htmlId = 'routerTestTable';
+
+
+    private static function requestUri()
+    {
+        return 
+        ltrim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING), '/');
+    }
+
+
+    public static function route()
+    {
+        $requestUri = self::requestUri();
+
+        if (empty($requestUri)) {
+            include VIEWS_DIR.DEFAULT_VIEW;
+        }
+        else {
+            for ($i = count(self::$routes), $match = false; $match === false && $i > 0; $i--) {
+                if ($requestUri === self::$routes[$i]->requestUri) {
+                    $match = true;
+                    include self::$routes[$i]->response;
+                }
+            }
+        }
+    }
 
 
     /**
@@ -46,10 +70,10 @@ class Router
 
     private function validRoute($route)
     {
-        if (empty($route->requestPath) || empty($route->responseFile))
+        if (empty($route->requestUri) || empty($route->response))
             return false;
 
-        else if (self::isView($route) && ! self::ignored($route))
+        else if (is_file(APP_ROOT.$route->response) && !self::ignored($route))
             return true;
 
         else
@@ -110,10 +134,10 @@ class Router
     {
         $string  = '<table id="'.self::$htmlId."\">\n";
         $string .= '<thead><tr><th>Router::routes Table</th></tr></thead>';
-        $string .= '<tr><th>requestPath</th><th>responseFile</th>';
+        $string .= '<tr><th>requestUri</th><th>response</th>';
 
         foreach (self::$routes as $route)
-            $string .= "\t<tr><td>".$route->requestPath.'</td><td>'.$route->responseFile."</td></tr>\n";
+            $string .= "\t<tr><td>".$route->requestUri.'</td><td>'.$route->response."</td></tr>\n";
 
         $string .= '</table>';
 
