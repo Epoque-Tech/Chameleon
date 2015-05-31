@@ -47,7 +47,7 @@ class Router
      *
      * @param  Route   $route The given route.
      * @return Boolean True if given route is valid and added to
-     *                 $this->routes.
+     *                 $this->routes, False otherwise.
      */
 
     public static function addRoute($route=null)
@@ -64,8 +64,7 @@ class Router
      * Checks if a given route is considered valid.
      *
      * @param Route $route The given route.
-     * @return Boolean True  : Given route is valid.
-     *                 False : Given route is not valid.
+     * @return Boolean True if the given route is valid, false otherwise.
      */
 
     private function validRoute($route)
@@ -78,24 +77,6 @@ class Router
 
         else
             return false;
-    }
-
-
-    protected function isView($route)
-    {
-        $view = False;
-        $tmp  = null;
-
-        if (is_file(VIEWS_DIR.'/'.current($route))) {
-            $view = True;
-        }
-        else {
-            $tmp = scandir(VIEWS_DIR);
-            array_shift($tmp);
-            array_shift($tmp);
-        }
-
-        return True;
     }
 
 
@@ -127,6 +108,35 @@ class Router
         else
             return false;
         
+    }
+
+
+    /**
+     * isView
+     *
+     * Checks wheather the given route is to a view.
+     *
+     * @param Route $route The given Route.
+     * @return Boolean True if the route is to a view, false otherwise.
+     */
+
+    protected function isView($route)
+    {
+        $view = False;
+        $tmp  = null;
+
+        if (is_file(APP_ROOT.VIEWS_DIR.$route->response)) {
+            $view = True;
+        }
+        else {
+            $tmp = scandir(VIEWS_DIR);
+            array_shift($tmp);
+            array_shift($tmp);
+
+
+        }
+
+        return True;
     }
 
 
