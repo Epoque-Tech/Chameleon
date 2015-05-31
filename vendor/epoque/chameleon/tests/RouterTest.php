@@ -22,7 +22,7 @@ print '<p>Try to add the following route:</p>
 print_r($homeRoute);
 
 ';
-$homeRoute = new Route(['/home' => 'home.php']);
+$homeRoute = new Route(['/home' => VIEWS_DIR.'default.php']);
 print_r($homeRoute);
 print '</pre>';
 
@@ -53,11 +53,14 @@ print Router::toHtml();
 print '<p>Define IGNORE_EXT and then add an ingored file to a route:</p>';
 define('IGNORE_EXT', 'swp ini');
 print 'IGNORE_EXT: ' . IGNORE_EXT;
-$ignoreExtRoute = new Route(['/this/path' => 'file.ini']);
+$ignoreExtRoute = new Route(['file.ini' => VIEWS_DIR.'file.ini']);
 print '<pre>';
+$tf = fopen(VIEWS_DIR.'file.ini', 'w');
+print "\$tf = fopen(VIEWS_DIR.'file.ini', 'w');\n";
 print_r($ignoreExtRoute);
 print '</pre>';
 Router::addRoute($ignoreExtRoute);
+fclose($tf);
 
 print Router::toHtml();
 

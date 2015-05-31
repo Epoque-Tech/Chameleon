@@ -100,18 +100,13 @@ class Router
      */
  
     private function ignored($route) {
-        $responseFile     = $route->responseFile;
-        $ext            = pathinfo($responseFile)['extension'];
-        $ignoredFiles   = [];
-        $ignoredExt     = [];
-
-        $ignoredFiles = array_merge($ignoredFiles, explode(' ', IGNORE_FILES));
-        $ignoredExt   = array_merge($ignoredExt, explode(' ', IGNORE_EXT));
+        $responseFile = $route->response;
+        $ext          = pathinfo($responseFile)['extension'];
         
-        if (in_array(basename($responseFile), $ignoredFiles))
+        if ( in_array(basename($responseFile), explode(' ', IGNORE_FILES)) )
             return true;
         
-        else if (in_array($ext, $ignoredExt))
+        else if ( in_array($ext, explode(' ', IGNORE_EXT)) )
             return true;
 
         else
