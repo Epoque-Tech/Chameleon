@@ -22,6 +22,14 @@ class Router
     }
 
 
+    /**
+     * route
+     *
+     * Includes a Route->response based upon self::requestUri.
+     *
+     * return void
+     */
+
     public static function route()
     {
         $requestUri = self::requestUri();
