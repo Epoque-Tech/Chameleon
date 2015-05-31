@@ -12,10 +12,10 @@ namespace Epoque\Chameleon;
 class Route
 {
     /** @var string The requested path. **/
-    public $requestPath  = '';
+    public $requestUri  = '';
 
     /** @var string The filesystem resources the request is mapped to. **/
-    public $responseFile = '';
+    public $response    = '';
 
 
     /**
@@ -26,8 +26,8 @@ class Route
     public function __construct($array)
     {
         if (is_array($array) && count($array) === 1) {
-            $this->requestPath = key($array);
-            $this->responseFile = current($array);
+            $this->requestUri = key($array);
+            $this->response   = current($array);
         }
     }
 }
