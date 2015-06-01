@@ -24,10 +24,10 @@ print_r($homeRoute);
 ';
 $homeRoute = new Route(['/home' => VIEWS_DIR.'default.php']);
 print_r($homeRoute);
-print '</pre>';
-
 Router::addRoute($homeRoute);
 print Router::toHtml();
+print '</pre>';
+
 
 
 // Test addRoute with array of Routes, some with empty parts. //
@@ -42,29 +42,38 @@ foreach ($routeArray as $route) {
     print '<p>Add Route:</p>';
     print '<pre>';
     print_r($route);
+    print Router::toHtml();
     print '</pre>';
     Router::addRoute($route);
 }
 
-print Router::toHtml();
 
 
 // Test addRoute on IGNORE_EXT. //
 print '<p>Define IGNORE_EXT and then add an ingored file to a route:</p>';
 define('IGNORE_EXT', 'swp ini');
 print 'IGNORE_EXT: ' . IGNORE_EXT;
-$ignoreExtRoute = new Route(['file.ini' => VIEWS_DIR.'file.ini']);
-print '<pre>';
-$tf = fopen(VIEWS_DIR.'file.ini', 'w');
-print "\$tf = fopen(VIEWS_DIR.'file.ini', 'w');\n";
-print_r($ignoreExtRoute);
-print '</pre>';
-Router::addRoute($ignoreExtRoute);
-fclose($tf);
 
-print Router::toHtml();
+$ignoreExtRoute = new Route(['file.ini' => VIEWS_DIR.'file.ini']);
+
+$fn = VIEWS_DIR.'file.ini';
+$tf = fopen($fn, 'w');
+
+print "<pre>
+fopen($fn, 'w');".
+print_r($ignoreExtRoute).'
+</pre>';
+
+Router::addRoute($ignoreExtRoute);
+print '<pre>
+'.Router::toHtml()."
+fclose($tf);\n
+unlink($fn);\n
+</pre>";
+fclose($tf);
+unlink($fn);
 
 
 // Test addRoute on IGNORE_FILES. //
-print '<p>Try adding the ignored route:</p>';
+//print '<p>Try adding the ignored route:</p>';
 
