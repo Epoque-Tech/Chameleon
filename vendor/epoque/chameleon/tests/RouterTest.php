@@ -19,11 +19,9 @@ border: 1px solid black;
 // Test addRoute. //
 print '<p>Try to add the following route:</p>
 <pre>
-print_r($homeRoute);
-
 ';
-$homeRoute = new Route(['/home' => VIEWS_DIR.'default.php']);
-print_r($homeRoute);
+$homeRoute = new Route(['home' => VIEWS_DIR.'default.php']);
+print $homeRoute;
 Router::addRoute($homeRoute);
 print Router::toHtml();
 print '</pre>';
@@ -41,7 +39,7 @@ $routeArray = [
 foreach ($routeArray as $route) {
     print '<p>Add Route:</p>';
     print '<pre>';
-    print_r($route);
+    print $route;
     print Router::toHtml();
     print '</pre>';
     Router::addRoute($route);
@@ -60,15 +58,14 @@ $fn = VIEWS_DIR.'file.ini';
 $tf = fopen($fn, 'w');
 
 print "<pre>
-fopen($fn, 'w');".
-print_r($ignoreExtRoute).'
-</pre>';
+fopen($fn, 'w');\n".
+"$ignoreExtRoute";
 
 Router::addRoute($ignoreExtRoute);
-print '<pre>
-'.Router::toHtml()."
-fclose($tf);\n
-unlink($fn);\n
+
+print Router::toHtml()."
+fclose($tf);
+unlink($fn);
 </pre>";
 fclose($tf);
 unlink($fn);
