@@ -30,5 +30,13 @@ class Route
             $this->response   = current($array);
         }
     }
+
+
+    public function __toString()
+    {
+        $string  = 'Route(requestUri: "'.$this->requestUri.'", '; 
+        $string .= 'response: "'.$this->response.'")';
+        return $string;
+    }
 }
 

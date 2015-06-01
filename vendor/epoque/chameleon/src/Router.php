@@ -1,6 +1,8 @@
 <?php
 namespace Epoque\Chameleon;
 
+use Epoque\Registry\Registry;
+
 /**
  * Router
  *
@@ -78,14 +80,30 @@ class Router
 
     private function validRoute($route)
     {
-        if (empty($route->requestUri) || empty($route->response))
-            return false;
+        $veracity = false;
+        $message  = '';
 
-        else if (is_file(APP_ROOT.$route->response) && !self::ignored($route))
-            return true;
+        if (empty($route->requestUri))
+            $message = "$route requestUri empty";
 
+        else if (empty($route->response))
+            $message = "$route response empty";
+
+        else if (!is_file(APP_ROOT.$route->response))
+            $message = "$route->response not a file.";
+        
+        else if (self::ignored($route)) {
+            $message = "$route is ignored";
+
+        }
         else
-            return false;
+            $veracity = true;
+
+
+        if ($veracity === false && is_object(Registry::get('Monolog\Logger')))
+            Registry::get('Monolog\Logger')->addError(__CLASS__.' '.$message);
+
+        return $veracity;
     }
 
 
@@ -99,11 +117,11 @@ class Router
      *                 false : If the path should be processed
      */
  
-    private function ignored($route) {
-        $responseFile = $route->response;
-        $ext          = pathinfo($responseFile)['extension'];
+    private static function ignored($route) {
+        $response = $route->response;
+        $ext      = pathinfo($response)['extension'];
         
-        if ( in_array(basename($responseFile), explode(' ', IGNORE_FILES)) )
+        if ( in_array(basename($response), explode(' ', IGNORE_FILES)) )
             return true;
         
         else if ( in_array($ext, explode(' ', IGNORE_EXT)) )
