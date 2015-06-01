@@ -101,7 +101,7 @@ class Router
 
 
         if ($veracity === false && is_object(Registry::get('Monolog\Logger')))
-            Registry::get('Monolog\Logger')->addError(__CLASS__.' '.$message);
+            Registry::get('Monolog\Logger')->addError(__METHOD__.': '.$message);
 
         return $veracity;
     }
