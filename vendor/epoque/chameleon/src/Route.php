@@ -18,11 +18,6 @@ class Route
     public $response    = '';
 
 
-    /**
-     * construct
-     *
-     */
-
     public function __construct($array)
     {
         if (is_array($array) && count($array) === 1) {
