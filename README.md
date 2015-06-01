@@ -9,4 +9,4 @@ Development is happening at [chameleon.lakonacomputers.com](http://chameleon.lak
 
 @author Jason Favrod <lakona808@gmail.com>
 
-@version 0.6
+@version 0.7
