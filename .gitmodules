@@ -1,0 +1,4 @@
+[submodule "Epoque\Registry"]
+    path = vendor/epoque/registry;
+    url  = git@github.com:Epoque-Tech/Registry.git
+
