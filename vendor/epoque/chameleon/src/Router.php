@@ -42,7 +42,7 @@ class Router
         else {
             // for loop micro-optimization.
             for ($i = count(self::$routes), $match = false; $match === false && $i > 0;){
-                if ($requestUri === self::$routes[--$i]->requestUri) {
+                if ($requestUri === self::$routes[--$i]->request) {
                     $match = true;
                     include self::$routes[$i]->response;
                 }
@@ -83,8 +83,8 @@ class Router
         $veracity = false;
         $message  = '';
 
-        if (empty($route->requestUri))
-            $message = "$route requestUri empty";
+        if (empty($route->request))
+            $message = "$route request empty";
 
         else if (empty($route->response))
             $message = "$route response empty";
@@ -167,10 +167,11 @@ class Router
         $string .= '<tr><th>requestUri</th><th>response</th>';
 
         foreach (self::$routes as $route)
-            $string .= "\t<tr><td>".$route->requestUri.'</td><td>'.$route->response."</td></tr>\n";
+            $string .= "\t<tr><td>".$route->request.'</td><td>'.$route->response."</td></tr>\n";
 
         $string .= '</table>';
 
         return $string;
     }
 }
+
