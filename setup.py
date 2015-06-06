@@ -18,6 +18,7 @@ return 0 : success
 return 1 : general fail
 return 5 : insufficent priviledges
 """
+
 def main():
     exit_code = 0
 
@@ -60,6 +61,7 @@ Checks for adminstrator or root priviledges.
 return True  : Sufficent priviledges.
 return False : Insufficent priviledges.
 """
+
 def admin_or_root():
     auth = False
     if (os.geteuid() == 0):
@@ -77,6 +79,7 @@ for config.
 param dict config The configuration in memory.
 return Boolean True if sucessful, False otherwise.
 """
+
 def init(config):
     success = True
     user_response = ''
@@ -126,9 +129,9 @@ for a given purpose (purpose).
 param string
 param purpose
 
-return True  :
-return False :
+return Boolean
 """
+
 def valid(string, purpose):
     response = True
 
@@ -166,6 +169,7 @@ param config {} : Necessary configuration data.
 return True  : Successfully set Apache locations into config.
 return False : Failed to set Apache locations into config.
 """
+
 def set_apache_locations(config):
     response        = True
     tmpfile         = tempfile.TemporaryFile(mode='w')
@@ -213,9 +217,13 @@ development of Chameleon so that this project can be easily updated
 to the latest version if desired. Removes remote 'origin', and asks
 user to specify a new remote.
 
-TODO: the default is Y, but the if statement is counting on having an
+TODO:
+* The default is Y, but the if statement is counting on having an
 indexed string (so a user can not leave the selection blank).
+
+* Currently the script causes .git/packed-refs to become owned by root.
 """
+
 def setup_repo():
     response          = False
     tmpfile           = tempfile.TemporaryFile(mode='w')
@@ -256,6 +264,7 @@ Ask user for MySQL database Setup.
 return dict : Containing necessary database configuration values.
 return dict : Empty, no database is to be configured.
 """
+
 def db_config(config):
 
     db_info = {}
@@ -310,6 +319,7 @@ Create a new configuration file from Chameleon's default configuration.
 param dict config The config stored in memory.
 return Boolean True on success, False otherwise.
 """
+
 def write_config(config):
     tmp_config  = ''
     tmp_file    = file
@@ -358,6 +368,7 @@ def write_config(config):
 """
 set_default_perms
 """
+
 def set_default_perms(file_path):
     default_path  = os.path.abspath('./config.php.default')
     default_perms = {
@@ -371,6 +382,7 @@ def set_default_perms(file_path):
 """
 write_index
 """
+
 def write_index():
     index_path         = os.path.abspath('./index.php');
     index_contents     = '<?php\nrequire_once "config.php";\n'
@@ -398,6 +410,7 @@ create_vhost
 
 Create an Apache virtual host for the project.
 """
+
 def create_vhost(config):
     vhost       = ''
     ip          = '*'
@@ -485,6 +498,7 @@ enable_mod_rewrite
 return True  : mod_rewrite is enabled.
 return False : mod_rewrite not enabled.
 """
+
 def enable_mod_rewrite(config):
     response    = True
     tp          = tempfile.TemporaryFile(mode='w')
@@ -532,6 +546,7 @@ restart_apache
 
 Issues the approprate command to restart Apache.
 """
+
 def restart_apache(config):
     response = True
     tf       = file
