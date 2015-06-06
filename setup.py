@@ -20,26 +20,30 @@ return 5 : insufficent priviledges
 """
 def main():
     exit_code = 0
+
     config = {}
-    config['platform']       = platform.system().lower()
+    config['platform']       = ''
     config['dist']           = ''
-    config['proj_name']      = ask_name('project')
-    config['default_view']   = ask_name('view')
-    config['default_config'] = 'config.php.default'
-    config['db_info']        = {'name':'', 'user':'', 'pass':'', 'host':''}
+    config['default_config'] = ''
+    config['site_title']    = ''
+    config['default_view']   = ''
+    config['db_info']        = {}
+
 
     if (admin_or_root()):
-
-        if (config['platform'] == 'linux'):
-            config['dist'] = platform.linux_distribution()[0].lower()
-
-        if (not set_apache_locations(config)):                  exit_code = 1
-        if (exit_code == 0 and not setup_repo()):               exit_code = 1
-        if (exit_code == 0 and not db_config(config)):          exit_code = 1        
-        if (exit_code == 0 and not write_config_file(config)):  exit_code = 1
-        if (exit_code == 0 and not create_vhost(config)):       exit_code = 1
-        if (exit_code == 0 and not enable_mod_rewrite(config)): exit_code = 1
-        if (exit_code == 0 and not restart_apache(config)):     exit_code = 1
+        if (init(config)):
+            if (not set_apache_locations(config)):                  exit_code = 1
+            if (exit_code == 0 and not setup_repo()):               exit_code = 1
+            if (exit_code == 0 and not db_config(config)):          exit_code = 1        
+            if (exit_code == 0 and not write_config(config)):       exit_code = 1
+            if (exit_code == 0 and not write_index()):              exit_code = 1
+            if (exit_code == 0 and not create_vhost(config)):       exit_code = 1
+            if (exit_code == 0 and not enable_mod_rewrite(config)): exit_code = 1
+            if (exit_code == 0 and not restart_apache(config)):     exit_code = 1
+            if (exit_code == 1): print('Setup script failed.')
+        else:
+            print('Failed to initialize config.')
+            exit_code = 1
     else:
         print('Insufficent Priviledges.')
         print('Please run as root or admin user.')
@@ -65,27 +69,52 @@ def admin_or_root():
 
 
 """
-ask_name
+init
 
-Asks the user for names for different purposes with validation for each
-sort of purpose.
+Set some initial values and ask user for ServerName and DEFAUTL_VIEW
+for config.
 
-return string : A valid string with it's first letter capitalized per
-the given purpose.
+param dict config The configuration in memory.
+return Boolean True if sucessful, False otherwise.
 """
-def ask_name(purpose):
-    ask  = True
-    name = ''
+def init(config):
+    success = True
+    user_response = ''
 
-    while (ask):
-        name = str(raw_input('What is the Name of your '+purpose.capitalize()+'?\n--> '))
+    # User Prompts:
+    ask_site_title  = 'Please enter the site title:\n-> '
+    ask_default_view = 'Please enter the file name of the DEFAULT_VIEW [default.php]:\n-> '
 
-        if (valid(name, 'name')):
-            ask = False
-        else:
-            print('Invalid Project Name.')
 
-    return name
+    try:
+        config['platform'] = platform.system().lower()
+
+        if (config['platform'] == 'linux'):
+            config['dist'] = platform.linux_distribution()[0].lower()
+
+        user_response = raw_input(ask_site_title)
+        while (not valid(user_response, 'name')):
+            print(user_response + ' is an invalid site title.')
+            print('Please try again.')
+            user_response = raw_input(ask_site_title)
+
+        config['site_title'] = user_response;
+        user_response = raw_input(ask_default_view)
+
+        while (not valid(user_response, 'name')):
+            print(user_response + ' is an invalid file name.')
+            print('Please try again.')
+            user_response = raw_input(ask_default_view)
+
+        config['default_view'] = user_response;
+
+        config['default_config'] = 'config.php.default'
+        config['db_info']        = {'configured':False, 'name':'', 'user':'', 'pass':'', 'host':''}
+
+    except:
+        success = False
+
+    return success
 
 
 """
@@ -102,21 +131,25 @@ return False :
 """
 def valid(string, purpose):
     response = True
-    if (purpose == 'name'):
+
+    if (string == ''):
+        response = False
+
+    elif (purpose == 'name'):
         NAME_MAX = 255; 
         response = 1<=len(string)<= NAME_MAX and "/" not in string and "\000" not in string and '*' not in string
 
-    if (purpose == 'ip'):
+    elif (purpose == 'ip'):
         try: 
             socket.inet_aton(string)
         except socket.error:
             response = False
 
-    if (purpose == 'email'):
+    elif (purpose == 'email'):
         if re.match(r"[^@]+@[^@]+\.[^@]+", string) is None:
             response = False
 
-    if (purpose == 'path'):
+    elif (purpose == 'path'):
         NAME_MAX = 255; 
         response = 1<=len(string)<= NAME_MAX and  "\000" not in string
 
@@ -184,32 +217,28 @@ TODO: the default is Y, but the if statement is counting on having an
 indexed string (so a user can not leave the selection blank).
 """
 def setup_repo():
-    response          = True
+    response          = False
     tmpfile           = tempfile.TemporaryFile(mode='w')
-    ask_about_repo    = 'Would you like to setup the git repo? [y|N]\n'
-    ask_about_repo   += '(This should only be done directly after cloning Chameleon)\n--> '
-    ask_about_origin  = 'Would you like to specify an address for origin? [y|N]\n-->'
     tmpstr            = ''
 
-    if (subprocess.call(['git', 'status'], stdout=tmpfile, stderr=tmpfile) != 0):
-        print('! You are not in the git repo!')
-        response = False
-    else:
-        tmpstp = raw_input(ask_about_repo)
-        if (len(tmpstr) > 0 and tmpstr[0].lower() == 'y'):
-            subprocess.call(['git', 'branch', 'chameleon'], stderr=tmpfile);
-            subprocess.call(['git', 'remote', 'remove', 'origin'], stderr=tmpfile);
+    try:
+        if (subprocess.call(['git', 'status'], stdout=tmpfile, stderr=tmpfile) == 0):
 
-            tmpstr = raw_input(ask_about_origin)
-            if (len(tmpstr) > 0 and tmpstr[0].lower() == 'y'):
+            if (subprocess.call(['git', 'checkout', 'chameleon'], stdout=tmpfile, stderr=tmpfile) != 0):
+                subprocess.call(['git', 'remote', 'rename', 'origin', 'upstream'], stderr=tmpfile);
+                subprocess.call(['git', 'branch', 'chameleon'], stderr=tmpfile);
+            else:
+                print('chameleon branch already created, exiting setup_repo.')
 
-                tmpstr = raw_input(ask_for_url)
-                while (subprocess.call(['git', 'set-url', 'origin'],
-                    stdout=tmpfile, stderr=tmpfile) != 0):
-                    tmpstr = raw_input(ask_for_url)
-                    response = False
-            
             response = True
+
+        else:
+            print('You are not in a git repo!')
+            print('Please run the setup script inside of the project repo.')
+                
+    except:
+        print('Failed to setup git repo.')
+        print('Is git installed?.')
 
     tmpfile.close()
     return response
@@ -219,15 +248,15 @@ def setup_repo():
 db_config
 
 Ask user for MySQL database Setup.
+    # Ask user if they want to specify database connection information.
+    # If yes ask for db {name, user, password, host} and store them
+    # in config['db_info'] dict.
+    # If no, nevermind.
 
 return dict : Containing necessary database configuration values.
 return dict : Empty, no database is to be configured.
 """
 def db_config(config):
-    # Ask user if they want to specify database connection information.
-    # If yes ask for db {name, user, password, host} and store them
-    # in config['db_info'] dict.
-    # If no, nevermind.
 
     db_info = {}
     tmpstr  = ''
@@ -267,39 +296,99 @@ def db_config(config):
             print(db_host_err)
             db_info['host'] = raw_input(ask_for_db_host)
 
+        db_info['configured'] = True
         config['db_info'] = db_info.copy()
     
     return True
 
 
 """
-write_config_file
+write_config
 
 Create a new configuration file from Chameleon's default configuration.
+
+param dict config The config stored in memory.
+return Boolean True on success, False otherwise.
 """
-def write_config_file(config):
-    response    = True
-    tmp_file    = file
+def write_config(config):
     tmp_config  = ''
-    config_file = file
+    tmp_file    = file
+    new_config  = file
+    response    = True
+
+    default_config_path = os.path.abspath('./' + config['default_config']);
+    config_path         = os.path.abspath('./config.php');
 
     # Open default config and read it into a string.
     try:
-        tmp_file = open(config['default_config'], 'r')
-        tmp_config = tmp_file.read()
-        tmp_config = tmp_config.replace('|default_view|', config['default_view'])
-        tmp_config = tmp_config.replace('|proj_name|', config['proj_name'])
-        tmp_config = tmp_config.replace('|db_name|', config['db_info']['name'])
-        tmp_config = tmp_config.replace('|db_user|', config['db_info']['user'])
-        tmp_config = tmp_config.replace('|db_pass|', config['db_info']['pass'])
-        tmp_config = tmp_config.replace('|db_host|', config['db_info']['host'])
+        tmp_file     = open(default_config_path, 'r')
+        tmp_config   = tmp_file.read()
+
+        tmp_config   = tmp_config.replace('|default_view|', config['default_view'])
+        tmp_config   = tmp_config.replace('|site_title|', config['site_title'])
+
+        if (config['db_info']['configured']):
+            tmp_config   = tmp_config.replace('|db_name|', config['db_info']['name'])
+            tmp_config   = tmp_config.replace('|db_user|', config['db_info']['user'])
+            tmp_config   = tmp_config.replace('|db_pass|', config['db_info']['pass'])
+            tmp_config   = tmp_config.replace('|db_host|', config['db_info']['host'])
+
         tmp_file.close()
 
-        config = open('config.php', 'w')
-        config.write(tmp_config)
-        config.close()
     except:
+        print('write_config failed handling tmp_file');
         response = False
+
+    if (response != False):
+        try:
+            new_config = open(config_path, 'w')
+            new_config.write(tmp_config)
+            os.chown(config_path, os.stat(default_config_path).st_uid, os.stat(default_config_path).st_gid)
+            new_config.close()
+
+        except:
+            print('write_config failed writing the tmp_config to new_config')
+            response = False
+
+    # Maybe a good place for a loging statement.
+    # print('write_config returning ' + str(response))
+    return response
+
+
+"""
+set_default_perms
+"""
+def set_default_perms(file_path):
+    default_path  = os.path.abspath('./config.php.default')
+    default_perms = {
+            'uid': os.stat(default_path).st_uid,
+            'gid': os.stat(default_path).st_gid
+    }
+
+    os.chown(file_path, default_perms['uid'], default_perms['gid'])
+
+
+"""
+write_index
+"""
+def write_index():
+    index_path         = os.path.abspath('./index.php');
+    index_contents     = '<?php\nrequire_once "config.php";\n'
+    index              = file
+    response           = False
+
+    if (not os.path.isfile('./index.php')):
+        try:
+            index = open(index_path, 'w')
+            index.write(index_contents)
+            set_default_perms(index_path)
+            index.close()
+            response = True
+        except:
+            print('write_index failed.')
+    else:
+        print('index.php already exists')
+        response = True
 
     return response
 
@@ -312,36 +401,30 @@ Create an Apache virtual host for the project.
 def create_vhost(config):
     vhost       = ''
     ip          = '*'
+    server_name = ''
     admin       = 'webmaster@localhost'
-    name        = ''
     locale      = ''
     vhost_file  = file 
     tmpstr      = ''
     response    = True
 
     # Strings we need to use for the UI:
-    ask_about_ip      = 'Project requires specification of IP address? [y|N]\n--> '
+    ask_about_ip      = 'Set IP address of Apache Virtual Host? [y|N]\n--> '
     ask_for_ip        = 'What IP would you like to use?\n--> '
-    ask_about_admin   = 'Would you like to specify a ServerAdmin? [Y|n]\n--> '
+    ask_about_admin   = 'Would you like to specify an Apache ServerAdmin? [Y|n]\n--> '
     ask_for_admin     = 'What email would you like to set as ServerAdmin?\n--> '
-    ask_for_name      = 'What is the ServerName?\n--> '
-    ask_for_locale    = 'In which directory is the project located?\n--> '
+    ask_for_name      = 'What is the Apache ServerName?\n--> '
+    ask_for_locale    = 'What is the DocumentRoot of the project?\n--> '
 
     ip_validation_err = '! IP address given is not valid !'
     name_error        = '! Name given is not valid !'
     filesystem_error  = '! Not a Valid !'
-    vhost_fopen_err   = 'Failed to open virutal host file in '+config['vhost_dir']+'/'+config['proj_name']+'.conf.'
-    vhost_fwrite_err  = 'Failed to write virutal host file in '+config['vhost_dir']+'/'+config['proj_name']+'.conf.'
+    vhost_fopen_err   = 'Failed to open virutal host file in '+config['vhost_dir']+'/'+server_name+'.conf.'
+    vhost_fwrite_err  = 'Failed to write virutal host file in '+config['vhost_dir']+'/'+server_name+'.conf.'
 
 
     try:
         # Ask the things:
-        vhost_file = open(config['vhost_dir']+'/'+config['proj_name']+'.conf', 'w')
-    except:
-        print(vhost_fopen_err)
-
-
-    try:
         tmpstr = raw_input(ask_about_ip)
         if (len(tmpstr) > 0 and tmpstr[0].lower() == 'y'):
             ip = raw_input(ask_for_ip)
@@ -365,6 +448,12 @@ def create_vhost(config):
         while not valid(locale, 'path'):
             print filesystem_error
             name = raw_input(ask_for_name)
+    except:
+        print(vhost_fwrite_err)
+        response = False
+
+    try:
+        vhost_file = open(config['vhost_dir']+'/'+server_name+'.conf', 'w')
 
         # Write the virtual host to memory:
         vhost  = '<VirtualHost '+ip+':80>\n'
@@ -378,12 +467,14 @@ def create_vhost(config):
         vhost += '\t</Directory>\n'
         vhost += '</VirtualHost>\n'
 
-        # Dump vhost to the vhost file:
+        # Dump vhost to the vhost file and close vhost file:
         vhost_file.write(vhost)
         vhost_file.close()
+
     except:
-        print(vhost_fwrite_err)
+        print(vhost_fopen_err)
         response = False
+
 
     return response
 
