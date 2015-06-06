@@ -23,7 +23,7 @@ define('JS_DIR', WEB_ROOT.'resources/js/');
 define('JQUERY_UI_DIR', JS_DIR.'jquery-ui-1.11.4.custom/');
 define('JQUERY', JS_DIR.'jquery-1.11.2.min.js');
 define('JQUERY_UI', JQUERY_UI_DIR.'jquery-ui.min.js');
-define('SITE_TITLE', '|proj_name|');
+define('SITE_TITLE', '|site_title|');
 
 
 /**
