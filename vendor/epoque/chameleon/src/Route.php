@@ -18,7 +18,7 @@ class Route
     public $response = '';
 
 
-    public function __construct($array)
+    public function __construct($array=[])
     {
         if (is_array($array) && count($array) === 1) {
             $this->request  = key($array);
