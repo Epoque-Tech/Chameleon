@@ -43,10 +43,10 @@ def main():
             if (exit_code == 0 and not restart_apache(config)):     exit_code = 1
             if (exit_code == 1): print('Setup script failed.')
         else:
-            print('Failed to initialize config.')
+            print('Error: Failed to initialize config.')
             exit_code = 1
     else:
-        print('Insufficent Priviledges.')
+        print('Error: Insufficent Priviledges.')
         print('Please run as root or admin user.')
         exit_code = 5
     
@@ -102,9 +102,9 @@ def init(config):
             user_response = raw_input(ask_site_title)
 
         config['site_title'] = user_response;
-        user_response = raw_input(ask_default_view)
 
-        while (not valid(user_response, 'name')):
+        user_response = raw_input(ask_default_view)
+        while (not valid(user_response, 'name') and user_response != ''):
             print(user_response + ' is an invalid file name.')
             print('Please try again.')
             user_response = raw_input(ask_default_view)
@@ -177,8 +177,8 @@ def set_apache_locations(config):
     version_pattern = re.compile('Apache/\d.\d')
     
     # Messages
-    version_fail    = 'Failed to discover Apache Version.'
-    freebsd_fail    = 'Failed to set Apache configuration details for FreeBSD,'
+    version_fail    = 'Error: Failed to discover Apache Version.'
+    freebsd_fail    = 'Error: Failed to set Apache configuration details for FreeBSD,'
     linux_fail      = freebsd_fail.replace('FreeBSD', 'Linux.')
 
     try:
@@ -232,20 +232,19 @@ def setup_repo():
     try:
         if (subprocess.call(['git', 'status'], stdout=tmpfile, stderr=tmpfile) == 0):
 
-            if (subprocess.call(['git', 'checkout', 'chameleon'], stdout=tmpfile, stderr=tmpfile) != 0):
+            if (subprocess.call(['git', 'remote', 'show', 'upstream'], stdout=tmpfile, stderr=tmpfile) != 0):
                 subprocess.call(['git', 'remote', 'rename', 'origin', 'upstream'], stderr=tmpfile);
-                subprocess.call(['git', 'branch', 'chameleon'], stderr=tmpfile);
             else:
-                print('chameleon branch already created, exiting setup_repo.')
+                print('Info: \'upstream\' remote already created, exiting setup_repo.')
 
             response = True
 
         else:
-            print('You are not in a git repo!')
-            print('Please run the setup script inside of the project repo.')
+            print('Error: You are not in a git repo!')
+            print('Error: Please run the setup script inside of the project repo.')
                 
     except:
-        print('Failed to setup git repo.')
+        print('Error: Failed to setup git repo.')
         print('Is git installed?.')
 
     tmpfile.close()
@@ -331,10 +330,17 @@ def write_config(config):
 
     # Open default config and read it into a string.
     try:
-        tmp_file     = open(default_config_path, 'r')
-        tmp_config   = tmp_file.read()
+        tmp_file   = open(default_config_path, 'r')
+        tmp_config = tmp_file.read()
 
-        tmp_config   = tmp_config.replace('|default_view|', config['default_view'])
+        if (config['default_view'] == ''):
+            config['default_view'] = 'default.php'
+        
+        tmp_config = tmp_config.replace('|default_view|', config['default_view'])
+
+        if (not os.path.isfile('./'+config['default_view'])):
+            print('Warning: View ' + config['default_view'] + ' does not exist!')
+
         tmp_config   = tmp_config.replace('|site_title|', config['site_title'])
 
         if (config['db_info']['configured']):
@@ -346,18 +352,18 @@ def write_config(config):
         tmp_file.close()
 
     except:
-        print('write_config failed handling tmp_file');
+        print('Error: write_config failed handling tmp_file');
         response = False
 
     if (response != False):
         try:
             new_config = open(config_path, 'w')
             new_config.write(tmp_config)
-            os.chown(config_path, os.stat(default_config_path).st_uid, os.stat(default_config_path).st_gid)
+            set_default_perms(config_path);
             new_config.close()
 
         except:
-            print('write_config failed writing the tmp_config to new_config')
+            print('Error: write_config failed writing the tmp_config to new_config')
             response = False
 
     # Maybe a good place for a loging statement.
@@ -371,12 +377,10 @@ set_default_perms
 
 def set_default_perms(file_path):
     default_path  = os.path.abspath('./config.php.default')
-    default_perms = {
-            'uid': os.stat(default_path).st_uid,
-            'gid': os.stat(default_path).st_gid
-    }
+    uid = os.stat(default_path).st_uid
+    gid = os.stat(default_path).st_gid
 
-    os.chown(file_path, default_perms['uid'], default_perms['gid'])
+    os.chown(file_path, uid, gid)
 
 
 """
@@ -397,9 +401,9 @@ def write_index():
             index.close()
             response = True
         except:
-            print('write_index failed.')
+            print('Error: write_index failed.')
     else:
-        print('index.php already exists')
+        print('Info: index.php already exists')
         response = True
 
     return response
@@ -432,8 +436,8 @@ def create_vhost(config):
     ip_validation_err = '! IP address given is not valid !'
     name_error        = '! Name given is not valid !'
     filesystem_error  = '! Not a Valid !'
-    vhost_fopen_err   = 'Failed to open virutal host file in '+config['vhost_dir']+'/'+server_name+'.conf.'
-    vhost_fwrite_err  = 'Failed to write virutal host file in '+config['vhost_dir']+'/'+server_name+'.conf.'
+    vhost_fopen_err   = 'Error: Failed to open virutal host file in '+config['vhost_dir']+'/'+server_name+'.conf.'
+    vhost_fwrite_err  = 'Error: Failed to write virutal host file in '+config['vhost_dir']+'/'+server_name+'.conf.'
 
 
     try:
@@ -506,9 +510,9 @@ def enable_mod_rewrite(config):
     rewrite_str = re.compile('LoadModule rewrite_module libexec/apache24/mod_rewrite\.so')
 
     # Messages
-    debian_fail     = 'Failed to enable_mod_rewrite for Debian'
-    httpd_read_err  = 'enable_mod_rewrite could not read httpd.conf.'
-    httpd_write_err = 'enable_mod_rewrite could not write httpd.conf.'
+    debian_fail     = 'Error: Failed to enable_mod_rewrite for Debian'
+    httpd_read_err  = 'Error: enable_mod_rewrite could not read httpd.conf.'
+    httpd_write_err = 'Error: enable_mod_rewrite could not write httpd.conf.'
 
 
     if (config['platform'] == 'linux'):
