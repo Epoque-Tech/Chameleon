@@ -2,3 +2,6 @@
     path = vendor/epoque/registry;
     url  = git@github.com:Epoque-Tech/Registry.git
 
+[submodule "vendor/epoque/chameleon"]
+	path = vendor/epoque/chameleon
+	url = git@github.com:Epoque-Tech/Essentials.git
