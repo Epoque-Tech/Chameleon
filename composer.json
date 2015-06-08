@@ -1,6 +1,6 @@
 {
     "require": {
-        "monolog/monolog": "~1.13"
+        "monolog/monolog": "^1.13"
     },
     "autoload" : {
         "psr-4" : {
