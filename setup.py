@@ -452,10 +452,10 @@ def create_vhost(config):
                 print name_error
                 admin = raw_input(ask_for_admin)
         
-        name = raw_input(ask_for_name)
-        while not valid(name, 'name'):
+        server_name = raw_input(ask_for_name)
+        while not valid(server_name, 'name'):
             print name_error
-            name = raw_input(ask_for_name)
+            server_name = raw_input(ask_for_name)
 
         locale = raw_input(ask_for_locale)
         while not valid(locale, 'path'):
@@ -471,7 +471,7 @@ def create_vhost(config):
         # Write the virtual host to memory:
         vhost  = '<VirtualHost '+ip+':80>\n'
         vhost += '\tServerAdmin '+admin+'\n'
-        vhost += '\tServerName '+name+'\n'
+        vhost += '\tServerName '+server_name+'\n'
         vhost += '\tDocumentRoot '+locale+'\n'
         vhost += '\n\t<Directory '+locale+'/>\n'
         vhost += '\tOptions Indexes FollowSymLinks\n'
