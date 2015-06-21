@@ -5,3 +5,6 @@
 [submodule "vendor/epoque/chameleon"]
 	path = vendor/epoque/chameleon
 	url = git@github.com:Epoque-Tech/Essentials.git
+[submodule "vendor/epoque/markup"]
+	path = vendor/epoque/markup
+	url = git@github.com:Epoque-Tech/Markup.git
