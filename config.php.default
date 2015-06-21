@@ -1,6 +1,7 @@
 <?php
 require_once('vendor/autoload.php');
 
+use Epoque\Chameleon\HtmlHead;
 use Epoque\Registry\Registry;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -17,7 +18,9 @@ define('BOOTSTRAP_DIR', WEB_ROOT.'resources/bootstrap/3.3.1/');
 define('BOOTSTRAP', BOOTSTRAP_DIR.'css/bootstrap.min.css');
 define('BOOTSTRAP_JS', BOOTSTRAP_DIR.'js/bootstrap.min.js');
 define('CSS_DIR', WEB_ROOT.'resources/css/');
+define('CSS', '');
 define('HTML_DIR', 'resources/html/');
+define('PHP_DIR', APP_ROOT.'resources/php');
 define('IMG_DIR', '/resources/img/');
 define('JS_DIR', WEB_ROOT.'resources/js/');
 define('JQUERY_UI_DIR', JS_DIR.'jquery-ui-1.11.4.custom/');
@@ -68,6 +71,16 @@ define('DB_HOST', '|db_host|');
 // Dates Formatting
 define('PUBDATE_FORMAT', 'M d, Y');
 date_default_timezone_set('UTC');
+
+
+// Add Items to the HtmlHead Object
+HtmlHead::addCss(BOOTSTRAP);
+
+if (defined(CSS) && CSS != '') {
+
+    foreach (explode(' ', CSS) as $css)
+        HtmlHead::addCss($css);
+}
 
 
 // Add Logger to the Registry 
