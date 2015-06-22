@@ -75,7 +75,6 @@ date_default_timezone_set('UTC');
 // Add Items to the HtmlHead Object
 HtmlHead::addCss(BOOTSTRAP);
 HtmlHead::addJs(BOOTSTRAP_JS);
-HtmlHead::addJs(JQUERY);
 
 // Adds .css files stored in CSS_DIR.
 if (defined('CSS_DIR') && is_dir(__DIR__.CSS_DIR)) {
