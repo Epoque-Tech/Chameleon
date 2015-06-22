@@ -18,7 +18,6 @@ define('BOOTSTRAP_DIR', WEB_ROOT.'resources/bootstrap/3.3.1/');
 define('BOOTSTRAP', BOOTSTRAP_DIR.'css/bootstrap.min.css');
 define('BOOTSTRAP_JS', BOOTSTRAP_DIR.'js/bootstrap.min.js');
 define('CSS_DIR', WEB_ROOT.'resources/css/');
-define('CSS', '');
 define('HTML_DIR', 'resources/html/');
 define('PHP_DIR', APP_ROOT.'resources/php');
 define('IMG_DIR', '/resources/img/');
@@ -75,15 +74,29 @@ date_default_timezone_set('UTC');
 
 // Add Items to the HtmlHead Object
 HtmlHead::addCss(BOOTSTRAP);
+HtmlHead::addJs(BOOTSTRAP_JS);
+HtmlHead::addJs(JQUERY);
 
-if (defined(CSS) && CSS != '') {
+// Adds .css files stored in CSS_DIR.
+if (defined('CSS_DIR') && is_dir(__DIR__.CSS_DIR)) {
+    
+    foreach(scandir(__DIR__.CSS_DIR) as $dirItem) {
+        if (strtolower(pathinfo($dirItem)['extension']) === 'css')
+            HtmlHead::addCss(CSS_DIR.$dirItem);
+    }
+}
 
-    foreach (explode(' ', CSS) as $css)
-        HtmlHead::addCss($css);
+// Adds .js files stored in JS_DIR.
+if (defined('JS_DIR') && is_dir(__DIR__.JS_DIR)) {
+    
+    foreach(scandir(__DIR__.JS_DIR) as $dirItem) {
+        if (strtolower(pathinfo($dirItem)['extension']) === 'js')
+            HtmlHead::addjs(JS_DIR.$dirItem);
+    }
 }
 
 
-// Add Logger to the Registry 
+// Add Items to the Registry
 Registry::set(new Logger('chameleon.log'));
 Registry::get('Monolog\Logger')->pushHandler(new StreamHandler(APP_ROOT.'log/chameleon.log', Logger::WARNING));
 Registry::get('Monolog\Logger')->pushHandler(new StreamHandler(APP_ROOT.'log/chameleon.log', Logger::ERROR));
