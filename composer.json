@@ -5,6 +5,7 @@
     "autoload" : {
         "psr-4" : {
             "Epoque\\Chameleon\\" : "vendor/epoque/chameleon/src",
+            "Epoque\\Markup\\" : "vendor/epoque/markup/src",
             "Epoque\\Registry\\" : "vendor/epoque/registry/src"
         }
     }
