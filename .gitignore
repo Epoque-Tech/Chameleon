@@ -1,0 +1,10 @@
+log/
+vendor/
+views/
+/config.php
+/composer.json
+/composer.lock
+/README.md
+/favicon*
+resources/
+
