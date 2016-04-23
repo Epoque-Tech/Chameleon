@@ -165,6 +165,10 @@ class HtmlHead
         $html .= '<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>'."\n";
         $html .= '<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>'."\n";
 
+        if (file_exists(APP_ROOT.JS_DIR.'config.js')) {
+            $html .= '<script src="'.JS_DIR.'config.js"></script>'."\n";
+        }
+
         // Backslashes were put there on purpose.
         
         if (!empty(self::$css)) {
@@ -177,10 +181,6 @@ class HtmlHead
             foreach (self::$js as $url) {
                 $html .= "<script src=\"$url\"></script>\n";
             }
-        }
-        
-        if (file_exists(APP_ROOT.JS_DIR.'config.js')) {
-            $html .= '<script src="'.JS_DIR.'config.js"></script>'."\n";
         }
 
         return "<head>\n$html</head>\n";
