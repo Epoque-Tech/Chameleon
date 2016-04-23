@@ -533,7 +533,8 @@ function confirm($answer)
 // Run if executing from command line.
 if (php_sapi_name() === "cli") {
     if (posix_geteuid() !== 0) {
-        exit("Please run with root permissions.");
+        print("Please run with root permissions.\n\n");
+        usage();
     }
     else {
         main(count($argv), $argv);
