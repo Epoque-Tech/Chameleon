@@ -5,7 +5,7 @@
     DocumentRoot doc_root
 
        <Directory doc_root/>
-           Options Indexes FollowSymLinks
+           Options FollowSymLinks
            RewriteEngine On
            RewriteCond %{SCRIPT_FILENAME} !-d
            RewriteCond %{SCRIPT_FILENAME} !-f
@@ -13,6 +13,21 @@
        </Directory>
 
        <Directory doc_root/log>
+           Order deny,allow
+           Deny from all
+       </Directory>
+
+       <Directory doc_root/conf>
+           Order deny,allow
+           Deny from all
+       </Directory>
+
+       <Directory doc_root/resources>
+           Order deny,allow
+           Deny from all
+       </Directory>
+
+       <Directory doc_root/vendor>
            Order deny,allow
            Deny from all
        </Directory>
