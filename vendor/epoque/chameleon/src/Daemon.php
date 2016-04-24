@@ -24,8 +24,8 @@ class Daemon
             include_once $view;
         }
 
-        else if (is_file(VIEWS_DIR.'homepage.php')) {
-            include_once VIEWS_DIR.'homepage.php';
+        else if (is_file(DEFAULT_VIEW)) {
+            include_once DEFAULT_VIEW;
         }
     }
     
