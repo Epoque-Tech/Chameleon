@@ -26,6 +26,7 @@ define('IMG_DIR', RESOURCES_DIR.'img/');
 define('JS_DIR', RESOURCES_DIR.'js/');
 define('PHP_DIR', rtrim(APP_ROOT, '/').RESOURCES_DIR.'php/');
 define('VIEWS_DIR', APP_ROOT.'views/');
+define('ERROR_404_FILE', VIEWS_DIR.'404.php');
 define('CUSTOM_CSS_FILE', CSS_DIR.'custom.css');
 define('DEFAULT_VIEW', VIEWS_DIR.'homepage.php');
 define('JS_CONFIG_FILE', JS_DIR.'config.js');

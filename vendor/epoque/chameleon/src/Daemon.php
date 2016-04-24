@@ -18,14 +18,14 @@ class Daemon
     public static function fetchView() {
         $view = VIEWS_DIR . self::URI() . '.php';
         
-        //include_once VIEW_DIR.'homepage.php';
-        
         if (is_file($view)) {
             include_once $view;
         }
-
         else if (is_file(DEFAULT_VIEW)) {
             include_once DEFAULT_VIEW;
+        }
+        else if (is_file(ERROR_404_FILE)) {
+            include_once(ERROR_404_FILE);
         }
     }
     
