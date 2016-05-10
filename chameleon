@@ -48,6 +48,13 @@ define('UBUNTU_VHOST_DIR', '/etc/apache2/sites-enabled/');
 // Comma separated list of log files used in Chameleon.
 define('LOG_FILES', 'error.log,access.log,chameleon.log');
 
+// CSV of supported operating systems.
+define('OSES', 'debian,ubuntu');
+
+// CSV of Chameleon Directories
+define('DIRS', LOG_DIR.','.VIEWS_DIR.','.RESOURCES_DIR.','.CSS_DIR.','.
+        JS_DIR.','.IMG_DIR.','.PHP_DIR);
+
 
 function main(&$argc, &$argv)
 {
@@ -135,6 +142,12 @@ function init()
     $_SERVER['OS'] = strtolower(posix_uname()['version']);
     $_SERVER['PROJECT_USER'] = $user =
             posix_getpwuid(fileowner(getcwd()))['name'];
+
+    foreach (explode(',', OSES) as $os) {
+        if (preg_match("/$os/", $_SERVER['OS'])) {
+            $_SERVER['OS'] = $os;
+        }
+    }
 }
 
 
@@ -147,13 +160,14 @@ function init()
 
 function createLogs()
 {
-    print "\nCreating Logs...\n\n";
+    if ($_SERVER['SCRIPT_NAME'] === 'chameleon')
+        print "\nCreating Logs...\n\n";
 
     if (!is_dir(rtrim(LOG_DIR, '/'))) {
         mkdir(rtrim(LOG_DIR, '/'));
     }
     
-    foreach (explode(LOG_FILES, ',') as $log) {
+    foreach (explode(',', LOG_FILES) as $log) {
         if (!is_file(LOG_DIR."$log")) {
             file_put_contents(LOG_DIR."$log", '');
         }
@@ -169,17 +183,10 @@ function createLogs()
 
 function createDirs()
 {
-    print "\nCreating View Directory...\n\n";
+    if ($_SERVER['SCRIPT_NAME'] === 'chameleon')
+        print "\nCreating View Directory...\n\n";
     
-    $DIRS = [
-        LOG_DIR,
-        VIEWS_DIR,
-        RESOURCES_DIR,
-        CSS_DIR,
-        JS_DIR,
-        IMG_DIR,
-        PHP_DIR,
-    ];
+    $DIRS = explode(',', DIRS);
     
     foreach ($DIRS as $dir) {
         $dir = rtrim($dir, '/');
@@ -531,7 +538,7 @@ function confirm($answer)
 
 
 // Run if executing from command line.
-if (php_sapi_name() === "cli") {
+if (php_sapi_name() === "cli" && $_SERVER['SCRIPT_NAME'] === 'chameleon') {
     if (posix_geteuid() !== 0) {
         print("Please run with root permissions.\n\n");
         usage();
