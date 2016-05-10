@@ -164,6 +164,7 @@ class HtmlHead
         
         $html .= '<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>'."\n";
         $html .= '<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>'."\n";
+        $html .= '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>'."\n";
 
         if (file_exists(APP_ROOT.JS_DIR.'config.js')) {
             $html .= '<script src="'.JS_DIR.'config.js"></script>'."\n";
