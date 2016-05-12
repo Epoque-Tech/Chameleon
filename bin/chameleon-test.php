@@ -1,3 +1,4 @@
+#!/usr/bin/php5
 <?php
 
 namespace test;
@@ -10,6 +11,7 @@ function main(&$argc, &$argv)
         testInit();
         testCreateLogs();
         testCreateDirs();
+        testCreateIndex();
     }
 }
 
@@ -93,6 +95,14 @@ function testCreateDirs()
     }
 
     print $r;
+}
+
+
+function testCreateIndex()
+{
+    if (is_file()) {
+    
+    }
 }
 
 
