@@ -22,11 +22,6 @@
            Deny from all
        </Directory>
 
-       <Directory doc_root/resources>
-           Order deny,allow
-           Deny from all
-       </Directory>
-
        <Directory doc_root/vendor>
            Order deny,allow
            Deny from all
