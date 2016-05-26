@@ -151,7 +151,7 @@ class HtmlHead
         $html .= '<meta name="keywords" content="'.self::$keywords[$requestUri].'">'."\n";
         $html .= "<meta name=\"author\" content=\"\">\n";
 
-        $html .= '<link rel="alternate" href="http://'.$_SERVER['HTTP_HOST'].'" hreflang="en-us" /> '."\n";
+        $html .= '<link rel="alternate" href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" hreflang="en-us" /> '."\n";
 
         if (array_key_exists($requestUri, self::$title)) {
             $html .= '<title>' . self::$title[$requestUri] . "</title>\n";
