@@ -27,10 +27,10 @@ class HtmlHead
     private static $title       = [];
 
     /** @var array Contains URL linking to CSS. **/
-    private static $css         = [];
+    private static $globalCss   = [];
 
     /** @var array Contains URL link to JavaScripts. **/
-    private static $js          = [];
+    private static $globalJs    = [];
 
     
     public function __construct()
@@ -128,28 +128,34 @@ class HtmlHead
 
 
     /**
-     * Adds a URL to the $css array.
+     * addGlobalCss
+     * 
+     * Adds a URL to the $globalCss array that will be in the HTML head of
+     * every view.
      *
      * @param  string $css A given URL.
      * @return Boolean True if $css was added to self::$css.
      */
 
-    public static function addCss($css='')
+    public static function addGlobalCss($css='')
     {
-        return array_push(self::$css, $css);
+        return array_push(self::$globalCss, $css);
     }
 
 
     /**
-     * addJs
+     * addGlobalJs
+     * 
+     * Adds a URL to the globalJs array that will be in the HTML head
+     * of every view.
      *
      * @param string $js A given URL.
      * @return Boolean True if $js was added to self::js.
      */
 
-     public static function addJs($js='')
+     public static function addGlobalJs($js='')
      {
-        return array_push(self::$js, $js);
+        return array_push(self::$globalJs, $js);
      }
 
 
@@ -191,14 +197,14 @@ class HtmlHead
 
         // Backslashes were put there on purpose.
         
-        if (!empty(self::$css)) {
-            foreach (self::$css as $url) {
+        if (!empty(self::$globalCss)) {
+            foreach (self::$globalCss as $url) {
                 $html .= "<link href=\"$url\" rel=\"stylesheet\">\n";
             }
         }
 
-        if (!empty(self::$js)) {
-            foreach (self::$js as $url) {
+        if (!empty(self::$globalJs)) {
+            foreach (self::$globalJs as $url) {
                 $html .= "<script src=\"$url\"></script>\n";
             }
         }
