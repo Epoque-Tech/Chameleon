@@ -14,6 +14,9 @@ namespace Epoque\Chameleon;
 
 class HtmlHead
 {
+    /** @var boolean Tells whether or not Bootstrap CSS is disabled. **/
+    private static $bootstrapDisabled = FALSE;
+
     /** @var array Contains HTML document meta description arrays. **/
     private static $description = [];
 
@@ -33,6 +36,18 @@ class HtmlHead
     public function __construct()
     {
         print self::__toString();
+    }
+
+
+    /**
+     * disableBootstrap
+     */
+
+    public static function disableBootstrap()
+    {
+        if (!self::$bootstrapDisabled) {
+            self::$bootstrapDisabled = TRUE;
+        }
     }
 
 
@@ -159,10 +174,12 @@ class HtmlHead
             $html .= $title;
         }
         
-        $html .= '<link rel="stylesheet" '
+        if (!self::$bootstrapDisabled) {
+            $html .= '<link rel="stylesheet" '
                 . 'href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" '
                 . 'integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" '
                 . 'crossorigin="anonymous">'."\n";
+        }
         
         $html .= '<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>'."\n";
         $html .= '<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>'."\n";
