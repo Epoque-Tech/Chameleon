@@ -9,7 +9,7 @@ use Monolog\Handler\StreamHandler;
 /**
  * Description of WarningLog
  *
- * @author jason favrod <jason@epoquecorportation.com>
+ * @author jason favrod <jason@lakonacomputers.com>
  */
 
 class Log

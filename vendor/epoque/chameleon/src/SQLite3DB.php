@@ -11,7 +11,7 @@ namespace Epoque\Chameleon;
 /**
  * Description of SQLite3DB
  *
- * @author jason favrod <jason@epoquecorportation.com>
+ * @author Jason Favrod jason@lakonacomputers.com
  */
 class SQLite3DB
 {

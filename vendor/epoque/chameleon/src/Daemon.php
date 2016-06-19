@@ -8,7 +8,7 @@ namespace Epoque\Chameleon;
  *
  * Used to control Chameleon projects.
  * 
- * @author jason favrod <jason@epoquecorportation.com>
+ * @author jason favrod <jason@lakonacomputers.com>
  */
 
 class Daemon

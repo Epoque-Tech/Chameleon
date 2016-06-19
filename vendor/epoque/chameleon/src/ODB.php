@@ -8,6 +8,8 @@
  * When used in static context, must have DB_USER, DB_PASS, DB_CONN,
  * and DB_CHARSET as defined constants; otherwise call the constructor
  * with these elements in an associative array.
+ * 
+ * @author Jason Favrod jason@lakonacomputers.com
  */
 
 namespace Epoque\ODB;
