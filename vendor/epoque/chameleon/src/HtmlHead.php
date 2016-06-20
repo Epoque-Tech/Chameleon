@@ -45,13 +45,18 @@ class HtmlHead
 
 
     /**
-     * disableBootstrap
+     * disable
+     *
+     * Disables the given $element.
+     *
+     * @param string $element The element of the self::$disabled array
+     * to disable. Possible values 'bootstrap', 'jquery', 'jquery-ui'.
      */
 
-    public static function disableBootstrap()
+    public static function disable($element)
     {
-        if (!self::$bootstrapDisabled) {
-            self::$bootstrapDisabled = TRUE;
+        if (!self::$disabled[$element]) {
+            self::$disabled['element'] = TRUE;
         }
     }
 
