@@ -14,9 +14,6 @@ namespace Epoque\Chameleon;
 
 class HtmlHead
 {
-    /** @var boolean Tells whether or not Bootstrap CSS is disabled. **/
-    private static $bootstrapDisabled = FALSE;
-
     /** @var array Contains HTML document meta description arrays. **/
     private static $description = [];
 
@@ -26,10 +23,10 @@ class HtmlHead
     /** @var array Contains HTML document title arrays. **/
     private static $title       = [];
 
-    /** @var array Contains URL linking to CSS. **/
+    /** @var array Contains URL linking to CSS for all views. **/
     private static $globalCss   = [];
 
-    /** @var array Contains URL link to JavaScripts. **/
+    /** @var array Contains URL link to JavaScript for views. **/
     private static $globalJs    = [];
     
     /** @var array List of elements that can be set to TRUE to disable **/
@@ -135,7 +132,7 @@ class HtmlHead
 
         return $result;
     }
-
+    
 
     /**
      * addGlobalCss
@@ -169,11 +166,13 @@ class HtmlHead
      }
 
 
+     
     public function __toString()
     {
-        $title      = '<title>'.SITE_TITLE."</title>\n";
-        $requestUri =
-            ltrim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL), '/');
+        $requestUri = ltrim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL), '/');
+
+
+        // MetaData
 
         $html  = "<meta charset=\"utf-8\">\n";
         $html .= "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
@@ -181,31 +180,36 @@ class HtmlHead
         $html .= '<meta name="description" content="'.self::$description[$requestUri].'">'."\n";
         $html .= '<meta name="keywords" content="'.self::$keywords[$requestUri].'">'."\n";
         $html .= "<meta name=\"author\" content=\"\">\n";
-
         $html .= '<link rel="alternate" href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" hreflang="en-us" /> '."\n";
 
-        if (array_key_exists($requestUri, self::$title)) {
+        
+        // Site/View Title
+
+        if (array_key_exists($requestUri, self::$title))
             $html .= '<title>' . self::$title[$requestUri] . "</title>\n";
-        } else {
-            $html .= $title;
-        }
+        else
+            $html .= '<title>'.SITE_TITLE."</title>\n";
+
         
+        // Global CSS and JavaScript
+
         if (!self::$disabled['bootstrap']) {
-            $html .= '<link rel="stylesheet" '
-                . 'href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" '
-                . 'integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" '
-                . 'crossorigin="anonymous">'."\n";
+            // Merge Bootstrap into $globalCss array so bootstrap is first CSS.
+            self::$globalCss = array_merge(['https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                    BOOTSTRAP_VER . '/css/bootstrap.min.css'], self::$globalCss);
+
+            self::addGlobalJs('https://maxcdn.bootstrapcdn.com/bootstrap/' . 
+                   BOOTSTRAP_VER . '/js/bootstrap.min.js');
         }
         
-        $html .= '<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>'."\n";
-        $html .= '<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>'."\n";
-        $html .= '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>'."\n";
-
-        if (file_exists(APP_ROOT.JS_DIR.'config.js')) {
-            $html .= '<script src="'.JS_DIR.'config.js"></script>'."\n";
-        }
-
-        // Backslashes were put there on purpose.
+        if (!self::$disabled['jquery'])
+            self::addGlobalJs('https://code.jquery.com/jquery-'.JQUERY_VER.'.min.js');
+        
+        if (!self::$disabled['jquery-ui'])
+            self::addGlobalJs('https://code.jquery.com/ui/'.JQUERYUI_VER.'/jquery-ui.min.js');
+        
+        if (file_exists(APP_ROOT.JS_DIR.'config.js'))
+            self::addGlobalJs(JS_DIR.'config.js');
         
         if (!empty(self::$globalCss)) {
             foreach (self::$globalCss as $url) {
@@ -215,7 +219,7 @@ class HtmlHead
 
         if (!empty(self::$globalJs)) {
             foreach (self::$globalJs as $url) {
-                $html .= "<script src=\"$url\"></script>\n";
+                $html .= "<script src=\"$url\" async></script>\n";
             }
         }
 
