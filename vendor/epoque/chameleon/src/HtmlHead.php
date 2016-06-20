@@ -53,7 +53,7 @@ class HtmlHead
     public static function disable($element)
     {
         if (!self::$disabled[$element]) {
-            self::$disabled['element'] = TRUE;
+            self::$disabled[$element] = TRUE;
         }
     }
 
