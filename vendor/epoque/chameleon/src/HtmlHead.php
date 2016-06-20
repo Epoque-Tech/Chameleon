@@ -23,6 +23,12 @@ class HtmlHead
     /** @var array Contains HTML document title arrays. **/
     private static $title       = [];
 
+    /** @var array Contains key/value pairs for view specific css. **/
+    private static $css         = [];
+    
+    /** @var array Contains key/value pairs for view specific js. **/
+    private static $js          = [];
+
     /** @var array Contains URL linking to CSS for all views. **/
     private static $globalCss   = [];
 
@@ -53,7 +59,7 @@ class HtmlHead
     public static function disable($element)
     {
         if (!self::$disabled[$element]) {
-            self::$disabled['element'] = TRUE;
+            self::$disabled[$element] = TRUE;
         }
     }
 
@@ -132,7 +138,31 @@ class HtmlHead
 
         return $result;
     }
-    
+
+
+    /**
+     * addCss
+     *
+     * Add a key/value pair where the key is a request URI and the
+     * value is the CSS to load.
+     * 
+     * Key (request URI) Must be in the VIEWS_DIR (without '.php'),
+     * or it can be an empty string (for the homepage).
+     * 
+     * @param array $css An associative array mapping a request URI
+     * key to a URL of a CSS to load for that request.
+     */
+
+    public static function addCss($css=[])
+    {
+        if (is_array($css) && (is_file(VIEWS_DIR.key($css).'.php') || key($css) === '')&&
+                is_string(current($css))) {
+            self::$css = array_merge(self::$css, $css);
+        }
+    }
+
+
+        
 
     /**
      * addGlobalCss
@@ -221,6 +251,13 @@ class HtmlHead
             foreach (self::$globalJs as $url) {
                 $html .= "<script src=\"$url\" async></script>\n";
             }
+        }
+        
+        
+        // View Specific CSS
+        
+        if (array_key_exists($requestUri, self::$css)) {
+            $html .= '<link href="'.self::$css[$requestUri].'" rel="stylesheet">'."\n";
         }
 
         return "<head>\n$html</head>\n";
