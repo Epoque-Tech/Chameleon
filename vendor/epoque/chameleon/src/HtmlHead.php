@@ -31,6 +31,11 @@ class HtmlHead
 
     /** @var array Contains URL link to JavaScripts. **/
     private static $globalJs    = [];
+    
+    /** @var array List of elements that can be set to TRUE to disable **/
+    private static $disabled    = [ 'bootstrap' => FALSE,
+                                    'jquery'    => FALSE,
+                                    'jquery-ui' => FALSE ];
 
     
     public function __construct()
@@ -180,7 +185,7 @@ class HtmlHead
             $html .= $title;
         }
         
-        if (!self::$bootstrapDisabled) {
+        if (!self::$disabled['bootstrap']) {
             $html .= '<link rel="stylesheet" '
                 . 'href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" '
                 . 'integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" '
