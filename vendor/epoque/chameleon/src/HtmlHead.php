@@ -155,9 +155,15 @@ class HtmlHead
 
     public static function addCss($css=[])
     {
-        if (is_array($css) && (is_file(VIEWS_DIR.key($css).'.php') || key($css) === '')&&
+        if (is_array($css) && (is_file(VIEWS_DIR.key($css).'.php') || key($css) === '') &&
                 is_string(current($css))) {
-            self::$css = array_merge(self::$css, $css);
+            
+            if (empty(self::$css[key($css)])) {
+                self::$css[key($css)] = [current($css)];
+            }
+            else {
+                array_push(self::$css[key($css)], current($css));
+            }
         }
     }
 
@@ -257,7 +263,9 @@ class HtmlHead
         // View Specific CSS
         
         if (array_key_exists($requestUri, self::$css)) {
-            $html .= '<link href="'.self::$css[$requestUri].'" rel="stylesheet">'."\n";
+            foreach (self::$css[$requestUri] as $css) {
+                $html .= '<link href="'.$css.'" rel="stylesheet">'."\n";
+            }
         }
 
         return "<head>\n$html</head>\n";
