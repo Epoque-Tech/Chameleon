@@ -95,7 +95,8 @@ function usage()
 
     print "setup:\t\t run this command to initialize a chameleon project.\n";
     print "index:\t\t restore/create the default index.php file.\n";
-    print "index:\t\t restore/create the default custom.css file.\n";
+    print "css:\t\t restore/create the default custom.css file.\n";
+    print "perms:\t\t fix directory and file permissions.\n";
     print "config-php:\t (re)configure project\'s PHP (".PHP_CONFIG_FILE.")\n";
     print "config-js:\t (re)configure project\'s JavaScript (".JS_CONFIG_FILE.")\n";
     print "config-apache:\t (re)configure project's Apache configuration.\n";
