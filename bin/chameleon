@@ -51,6 +51,9 @@ function main(&$argc, &$argv)
 
         else if ($mode === 'index')
             createIndex();
+        
+        else if ($mode === 'perms')
+            True;
 
         else if ($mode === 'config-php')
             setupPHPConfigFile();
@@ -345,32 +348,22 @@ function fixFilePermissions()
 {
     print "\nFixing file permissions...\n\n";
     
-    $dirs  = [
-        $_SERVER['PROJECT_DIR'].'vendor',
-        $_SERVER['PROJECT_DIR'].LOG_DIR,
-        $_SERVER['PROJECT_DIR'].VIEWS_DIR,
-        $_SERVER['PROJECT_DIR'].RESOURCES_DIR
-    ];
+    foreach (explode(',', DIRS) as $dir) {
+        $dir = $_SERVER['PROJECT_DIR'].$dir;
 
-    $files = [
-        $_SERVER['PROJECT_DIR'].'composer.json',
-        $_SERVER['PROJECT_DIR'].'composer.lock',
-        $_SERVER['PROJECT_DIR'].'composer.phar',
-        $_SERVER['PROJECT_DIR'].'config.php',
-        $_SERVER['PROJECT_DIR'].'index.php',
-        $_SERVER['PROJECT_DIR'].DEFAULT_REQUEST_HANDLER
-    ];
-
-    foreach ($dirs as $dir) {
         if (is_dir($dir)) {
             exec('chown '.$_SERVER['PROJECT_USER'].':'.$_SERVER['PROJECT_USER']." -R $dir");
+            exec("chmod -R 775 $dir");
         }
     }
 
-    foreach ($files as $file) {
+    foreach (explode(',', FILES) as $file) {
+        $file = $_SERVER['PROJECT_DIR'].$file;
+
         if (is_file($file)) {
             chown($file, $_SERVER['PROJECT_USER']);
             chgrp($file, $_SERVER['PROJECT_USER']);
+            chmod($file, 0775);
         }
     }
 }
