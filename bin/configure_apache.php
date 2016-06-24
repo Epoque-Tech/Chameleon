@@ -35,7 +35,7 @@ function createVHost()
     $serverAdmin = ask('server admin');
     $docRoot     = ask('doc root');
     $serverName  = ask('server name');
-    $vhostTemp   = file_get_contents(VHOST_TEMPLATE);
+    $vhostTemp   = file_get_contents($_SERVER['PROJECT_DIR'].VHOST_TEMPLATE);
     $vhostFile   = UBUNTU_VHOST_DIR."$serverName.conf";
 
     $vhostTemp = str_replace('ip', $ip, $vhostTemp);
