@@ -59,12 +59,7 @@ function restartApache()
     $output = null;
     $return = null;
 
-    if (config::$platform === 'freebsd') {
-        exec('apachectl reload', $output, $return);
-    }
-    else {
-        exec('apachectl restart', $output, $return);
-    }
+    exec('apachectl restart', $output, $return);
 
     if ($return != 0) {
         "Restarting Apache failed.\n";
