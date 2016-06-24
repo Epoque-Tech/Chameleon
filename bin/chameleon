@@ -343,9 +343,21 @@ function fixFilePermissions()
 {
     print "\nFixing file permissions...\n\n";
     
-    $dirs  = ['vendor', LOG_DIR, VIEWS_DIR, RESOURCES_DIR];
-    $files = [ 'composer.json', 'composer.lock', 'composer.phar', 'config.php',
-               'index.php', DEFAULT_REQUEST_HANDLER];
+    $dirs  = [
+        $_SERVER['PROJECT_DIR'].'vendor',
+        $_SERVER['PROJECT_DIR'].LOG_DIR,
+        $_SERVER['PROJECT_DIR'].VIEWS_DIR,
+        $_SERVER['PROJECT_DIR'].RESOURCES_DIR
+    ];
+
+    $files = [
+        $_SERVER['PROJECT_DIR'].'composer.json',
+        $_SERVER['PROJECT_DIR'].'composer.lock',
+        $_SERVER['PROJECT_DIR'].'composer.phar',
+        $_SERVER['PROJECT_DIR'].'config.php',
+        $_SERVER['PROJECT_DIR'].'index.php',
+        $_SERVER['PROJECT_DIR'].DEFAULT_REQUEST_HANDLER
+    ];
 
     foreach ($dirs as $dir) {
         if (is_dir($dir)) {
