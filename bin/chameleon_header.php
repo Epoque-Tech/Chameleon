@@ -35,5 +35,6 @@ define('DIRS', LOG_DIR.','.VIEWS_DIR.','.RESOURCES_DIR.','.CSS_DIR.','.
         JS_DIR.','.IMG_DIR.','.PHP_DIR);
 
 
+require 'ask.php';
 require 'configure_apache.php';
 
