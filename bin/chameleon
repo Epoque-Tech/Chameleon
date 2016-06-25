@@ -22,38 +22,7 @@
  * @author Jason Favrod <jason@lakonacomputers.com>
  */
 
-$_SERVER['OS'] = null;
-$_SERVER['PROJECT_USER'] = null;
-
-
-define('COMPOSER_JSON_TEMPLATE', 'conf/composer.json');
-define('VHOST_TEMPLATE', 'conf/apacheVirtualHost.txt');
-define('PHP_CONFIG_TEMPLATE', 'conf/config.php');
-define('REQUEST_HANDLER_TEMPLATE', 'conf/RequestHandler.php');
-define('JS_CONFIG_TEMPLATE', 'conf/config.js');
-define('INDEX_TEMPLATE', 'conf/index.php');
-define('PHP_CONFIG_FILE', 'config.php');
-define('JS_CONFIG_FILE', 'resources/js/config.js');
-define('CUSTOM_CSS_FILE', 'resources/css/custom.css');
-define('DEFAULT_REQUEST_HANDLER', 'RequestHandler.php');
-define('LOG_DIR', 'log/');
-define('RESOURCES_DIR', 'resources/');
-define('CSS_DIR', RESOURCES_DIR.'css/');
-define('JS_DIR', RESOURCES_DIR.'js/');
-define('IMG_DIR', RESOURCES_DIR.'img/');
-define('PHP_DIR', RESOURCES_DIR.'php/');
-define('VIEWS_DIR', 'views/');
-define('UBUNTU_VHOST_DIR', '/etc/apache2/sites-enabled/');
-
-// Comma separated list of log files used in Chameleon.
-define('LOG_FILES', 'error.log,access.log,chameleon.log');
-
-// CSV of supported operating systems.
-define('OSES', 'debian,ubuntu');
-
-// CSV of Chameleon Directories
-define('DIRS', LOG_DIR.','.VIEWS_DIR.','.RESOURCES_DIR.','.CSS_DIR.','.
-        JS_DIR.','.IMG_DIR.','.PHP_DIR);
+require 'chameleon_header.php';
 
 
 function main(&$argc, &$argv)
@@ -66,7 +35,6 @@ function main(&$argc, &$argv)
         init();
         
         if ($mode === 'setup') {
-            enableApacheModules();
             createLogs();
             createDirs();
             createIndex();
@@ -75,34 +43,42 @@ function main(&$argc, &$argv)
             javascriptConfig();
             setupComposer();
             setupPHPConfigFile();
-            createVHost();
+            configureApache();
         }
-        else if ($mode === 'composer') {
+
+        else if ($mode === 'composer')
             setupComposer();
-        }
-        else if ($mode === 'index') {
+
+        else if ($mode === 'index')
             createIndex();
-        }
-        else if ($mode === 'config-php') {
+        
+        else if ($mode === 'perms')
+            True;
+
+        else if ($mode === 'config-php')
             setupPHPConfigFile();
-        }
-        else if ($mode === 'config-js') {
+
+        else if ($mode === 'config-js')
             javascriptConfig();
-        }
-        else if ($mode === 'config-apache') {
+
+        else if ($mode === 'config-apache')
             createVHost();
-        }
-        else if ($mode === 'logs') {
+
+        else if ($mode === 'logs')
             createLogs();
-        }
-        else {
+        
+        else if ($mode === 'dirs')
+            createDirs();
+
+        else
             usage();
-        }
+
         fixFilePermissions();
     }
-    else {
+
+    else
         usage();
-    }
+
 }
 
 
@@ -119,7 +95,8 @@ function usage()
 
     print "setup:\t\t run this command to initialize a chameleon project.\n";
     print "index:\t\t restore/create the default index.php file.\n";
-    print "index:\t\t restore/create the default custom.css file.\n";
+    print "css:\t\t restore/create the default custom.css file.\n";
+    print "perms:\t\t fix directory and file permissions.\n";
     print "config-php:\t (re)configure project\'s PHP (".PHP_CONFIG_FILE.")\n";
     print "config-js:\t (re)configure project\'s JavaScript (".JS_CONFIG_FILE.")\n";
     print "config-apache:\t (re)configure project's Apache configuration.\n";
@@ -142,12 +119,15 @@ function init()
     $_SERVER['OS'] = strtolower(posix_uname()['version']);
     $_SERVER['PROJECT_USER'] = $user =
             posix_getpwuid(fileowner(getcwd()))['name'];
+    $_SERVER['PROJECT_DIR'] = rtrim(pathinfo(__FILE__)['dirname'], '/bin').'/';
 
     foreach (explode(',', OSES) as $os) {
         if (preg_match("/$os/", $_SERVER['OS'])) {
             $_SERVER['OS'] = $os;
         }
     }
+
+    fixFilePermissions();
 }
 
 
@@ -163,13 +143,13 @@ function createLogs()
     if ($_SERVER['SCRIPT_NAME'] === 'chameleon')
         print "\nCreating Logs...\n\n";
 
-    if (!is_dir(rtrim(LOG_DIR, '/'))) {
-        mkdir(rtrim(LOG_DIR, '/'));
+    if (!is_dir(rtrim($_SERVER['PROJECT_DIR'].LOG_DIR, '/'))) {
+        mkdir(rtrim($_SERVER['PROJECT_DIR'].LOG_DIR, '/'));
     }
     
     foreach (explode(',', LOG_FILES) as $log) {
-        if (!is_file(LOG_DIR."$log")) {
-            file_put_contents(LOG_DIR."$log", '');
+        if (!is_file($_SERVER['PROJECT_DIR'].LOG_DIR."$log")) {
+            file_put_contents($_SERVER['PROJECT_DIR'].LOG_DIR."$log", '');
         }
     }
 }
@@ -189,7 +169,7 @@ function createDirs()
     $DIRS = explode(',', DIRS);
     
     foreach ($DIRS as $dir) {
-        $dir = rtrim($dir, '/');
+        $dir = rtrim($_SERVER['PROJECT_DIR'].$dir, '/');
 
         if (!is_dir($dir)) {
             mkdir($dir);
@@ -209,8 +189,11 @@ function createIndex()
 {
     print "\nCreating index file...\n\n";
 
+    global $mode;
+
     if (!is_file('index.php') || $mode === 'index') {
-        file_put_contents('index.php', file_get_contents(INDEX_TEMPLATE));
+        file_put_contents($_SERVER['PROJECT_DIR'].'index.php',
+            file_get_contents($_SERVER['PROJECT_DIR'].INDEX_TEMPLATE));
     }
 }
 
@@ -224,8 +207,8 @@ function createCustomCSS()
 {
     print "\nCreating custom css file...\n\n";
     
-    if (!is_file(CUSTOM_CSS_FILE)) {
-        file_put_contents(CUSTOM_CSS_FILE, '');
+    if (!is_file($_SERVER['PROJECT_DIR'].CUSTOM_CSS_FILE)) {
+        file_put_contents($_SERVER['PROJECT_DIR'].CUSTOM_CSS_FILE, '');
     }
 }
 
@@ -243,47 +226,11 @@ function requestHandler()
             DEFAULT_REQUEST_HANDLER . "[Y/n]\n-->");
     
     if ($useDefault && strtolower($useDefault)[0] != 'n') {
-        if (!file_exists(DEFAULT_REQUEST_HANDLER)) {
-            file_put_contents(DEFAULT_REQUEST_HANDLER, file_get_contents(REQUEST_HANDLER_TEMPLATE));
+        if (!file_exists($_SERVER['PROJECT_DIR'].DEFAULT_REQUEST_HANDLER)) {
+            file_put_contents($_SERVER['PROJECT_DIR'].DEFAULT_REQUEST_HANDLER,
+            file_get_contents($_SERVER['PROJECT_DIR'].REQUEST_HANDLER_TEMPLATE));
         }
     }
-}
-
-
-/**
- * setupComposer
- * 
- * Sets up default composer installation from COMPOSER_JSON_TEMPLATE.
- * Requires composer to be installed.
- */
-
-function setupComposer()
-{
-    print "\nSetting up Composer...\n\n";
-    
-    $composerFile = '';
-    
-    if (file_exists('composer.phar')) {
-        $composerFile = 'composer.phar';
-    }
-    else if (file_exists('composer')) {
-        $composerFile = 'composer';
-    }
-    else {
-        exit("Composer not installed\n");
-    }
-    
-    if (file_exists('composer.json')) {
-        unlink('composer.json');
-    }
-    if (file_exists('composer.lock')) {
-        unlink('composer.lock');
-    }
-    
-    file_put_contents('composer.json', file_get_contents(COMPOSER_JSON_TEMPLATE));
-    
-    exec('su '.$_SERVER['PROJECT_USER'].' -c "./composer.phar self-update"');
-    exec('su '.$_SERVER['PROJECT_USER'].' -c "./composer.phar update"');
 }
 
 
@@ -300,7 +247,7 @@ function setupPHPConfigFile()
 
     $siteTitle = ask('title');
     $dbConfig  = configureDatabase();
-    $config = file_get_contents(PHP_CONFIG_TEMPLATE);
+    $config = file_get_contents($_SERVER['PROJECT_DIR'].PHP_CONFIG_TEMPLATE);
 
     $config = str_replace('|site_title|', $siteTitle, $config);
 
@@ -311,7 +258,7 @@ function setupPHPConfigFile()
         $config = str_replace('|db_host|', $dbConfig['host'], $config);
     }
 
-    file_put_contents(PHP_CONFIG_FILE, $config);
+    file_put_contents($_SERVER['PROJECT_DIR'].PHP_CONFIG_FILE, $config);
 }
 
 
@@ -351,9 +298,9 @@ function javascriptConfig()
 {
     print("\nConfiguring Chameleon's JavaScript ...\n");
     
-    $jsConf = file_get_contents(JS_CONFIG_TEMPLATE);
+    $jsConf = file_get_contents($_SERVER['PROJECT_DIR'].JS_CONFIG_TEMPLATE);
     $jsConf = str_replace('|REQUEST_URL|', DEFAULT_REQUEST_HANDLER, $jsConf);
-    file_put_contents(JS_CONFIG_FILE, $jsConf);
+    file_put_contents($_SERVER['PROJECT_DIR'].JS_CONFIG_FILE, $jsConf);
 }
 
 
@@ -366,180 +313,37 @@ function fixFilePermissions()
 {
     print "\nFixing file permissions...\n\n";
     
-    $dirs  = ['vendor', LOG_DIR, VIEWS_DIR, RESOURCES_DIR];
-    $files = [ 'composer.json', 'composer.lock', 'composer.phar', 'config.php',
-               'index.php', DEFAULT_REQUEST_HANDLER];
 
-    foreach ($dirs as $dir) {
+    foreach (explode(',', DIRS) as $dir) {
+        $dir = $_SERVER['PROJECT_DIR'].$dir;
+
         if (is_dir($dir)) {
             exec('chown '.$_SERVER['PROJECT_USER'].':'.$_SERVER['PROJECT_USER']." -R $dir");
+            exec("chmod -R 775 $dir");
         }
     }
 
-    foreach ($files as $file) {
+    foreach (explode(',', FILES) as $file) {
+        $file = $_SERVER['PROJECT_DIR'].$file;
+
         if (is_file($file)) {
             chown($file, $_SERVER['PROJECT_USER']);
             chgrp($file, $_SERVER['PROJECT_USER']);
+            chmod($file, 0775);
         }
     }
-}
 
-
-/**
- * enableApacheModules
- * 
- */
-
-function enableApacheModules()
-{
-    if (preg_match('/ubuntu/', $_SERVER['OS'])) {
-        $_SERVER['OS'] = 'ubuntu';
-        exec('a2enmod rewrite');
-    }
-}
-
-
-/**
- * createVHost
- * 
- */
-
-function createVHost()
-{
-    print "\nCreating Apache VirtualHost...\n\n";
-
-    $ip          = ask('for ip');
-    $serverAdmin = ask('server admin');
-    $docRoot     = ask('doc root');
-    $serverName  = ask('server name');
-    $vhostTemp   = file_get_contents(VHOST_TEMPLATE);
-    $vhostFile   = UBUNTU_VHOST_DIR."$serverName.conf";
-
-    $vhostTemp = str_replace('ip', $ip, $vhostTemp);
-    $vhostTemp = str_replace('server_admin', $serverAdmin, $vhostTemp);
-    $vhostTemp = str_replace('doc_root', $docRoot, $vhostTemp);
-    $vhostTemp = str_replace('server_name', $serverName, $vhostTemp);
-
-    file_put_contents($vhostFile, $vhostTemp);
-    exec('apachectl restart');
-}
-
-
-/**
- * restartApache
- *
- * Restarts the Apache server. Prints an error message if it fails.
- */
-
-function restartApache()
-{
-    $output = null;
-    $return = null;
-
-    if (config::$platform === 'freebsd') {
-        exec('apachectl reload', $output, $return);
-    }
-    else {
-        exec('apachectl restart', $output, $return);
-    }
-
-    if ($return != 0) {
-        "Restarting Apache failed.\n";
-    }
-}
-
-
-/**
- * ask (subroutine)
- * 
- * A routine for asking the user for configuration info and
- * returning that info.
- * 
- * @param string $question
- * @return string The answer to the given question.
- */
-
-function ask($question)
-{
-    $answer = $confirm = '';
-    list($prompt, $default, $goahead) = [0, 1, 2];
-    
-    $optional = [
-        'for ip' => [
-            "Please provide the IP address of the server\n--> ",
-            '*',
-            "an IP address for the VirtualHost? [y|N]\n--> "
-        ],
-        'server admin' => [
-            "Please provide the ServerAdmin email\n--> ",
-            'webmaster@localhost',
-            "a ServerAdmin? [y|N]\n--> "
-        ]
-    ];
-    
-    $required = [
-        'title' => ["What is the site's title?\n--> "],
-        'db name' => ["Please enter db name\n--> "],
-        'db user' => ["Please enter db user\n--> "],
-        'db pass' => ["Please enter db password\n--> "],
-        'db host' => ["Please enter db hostname\n--> "],
-        'doc root' => ["Please provide the DocumentRoot of the VirtualHost\n--> "],
-        'server name' => ["What is the ServerName of the VirtualHost?\n--> "]
-    ];
-
-    
-    if (array_key_exists($question, $optional)) {
-        print 'Would you like to specify ';
-        $answer = readline($optional[$question][$goahead]);
-        
-        if (!$answer || strtolower($answer)[0] !== 'y') {
-            $answer = $optional[$question][$default];
-        }
-        else {
-            do {
-                $answer = readline($optional[$question][$prompt]);
-            }
-            while (confirm($answer) === false);
-        }
-    }
-    else {
-        do {
-            $answer = readline($required[$question][$prompt]);
-        }
-        while (confirm($answer) === false);
-    }
-    
-    print "\n";
-    return $answer;
-}
-
-
-/**
- * confirm
- * 
- * Asks the user if the given answer is correct.
- * 
- * @param string $answer Comes from the ask function.
- * @return boolean True if the user confirms their answer,
- * false otherwise.
- */
-
-function confirm($answer)
-{
-    $confirmation = readline("Is $answer correct? [y|N]\n--> ");
-    
-    if (!$confirmation || strtolower($confirmation)[0] !== 'y') {
-        return false;
-    }
-    else {
-        return true;
-    }
+    chmod($_SERVER['PROJECT_DIR'], 0775);
 }
 
 
 // Run if executing from command line.
-if (php_sapi_name() === "cli" && ($_SERVER['SCRIPT_NAME'] === 'chameleon' ||
-    $_SERVER['SCRIPT_NAME'] === './bin/chameleon')) {
+if (php_sapi_name() === "cli" &&
+    (   $_SERVER['SCRIPT_NAME'] === 'chameleon' ||
+        $_SERVER['SCRIPT_NAME'] === './bin/chameleon' ||
+        $_SERVER['SCRIPT_NAME'] === 'bin/chameleon'
+    )
+) {
     if (posix_geteuid() !== 0) {
         print("Please run with root permissions.\n\n");
         usage();

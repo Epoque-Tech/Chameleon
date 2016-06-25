@@ -255,7 +255,7 @@ class HtmlHead
 
         if (!empty(self::$globalJs)) {
             foreach (self::$globalJs as $url) {
-                $html .= "<script src=\"$url\" async></script>\n";
+                $html .= "<script src=\"$url\"></script>\n";
             }
         }
         
