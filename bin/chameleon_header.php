@@ -39,5 +39,6 @@ define('FILES', 'composer.json,composer.phar,composer.lock,config.php,'.
     DEFAULT_REQUEST_HANDLER.',index.php,LICENSE');
 
 require 'ask.php';
+require 'setup_composer.php';
 require 'configure_apache.php';
 
