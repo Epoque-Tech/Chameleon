@@ -32,7 +32,7 @@ define('OSES', 'debian,ubuntu');
 
 // CSV of Chameleon Directories
 define('DIRS', LOG_DIR.','.VIEWS_DIR.','.RESOURCES_DIR.','.CSS_DIR.','.
-        JS_DIR.','.IMG_DIR.','.PHP_DIR.',bin/');
+        JS_DIR.','.IMG_DIR.','.PHP_DIR.',bin/,conf/,vendor/');
 
 // CSV of Chameleon Files Found in the Project Root Directory.
 define('FILES', 'composer.json,composer.phar,composer.lock,config.php,'.

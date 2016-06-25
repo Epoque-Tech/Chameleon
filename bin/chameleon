@@ -311,6 +311,7 @@ function fixFilePermissions()
 {
     print "\nFixing file permissions...\n\n";
     
+
     foreach (explode(',', DIRS) as $dir) {
         $dir = $_SERVER['PROJECT_DIR'].$dir;
 
@@ -329,6 +330,8 @@ function fixFilePermissions()
             chmod($file, 0775);
         }
     }
+
+    chmod($_SERVER['PROJECT_DIR'], 0775);
 }
 
 
