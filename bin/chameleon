@@ -126,6 +126,8 @@ function init()
             $_SERVER['OS'] = $os;
         }
     }
+
+    fixFilePermissions();
 }
 
 
