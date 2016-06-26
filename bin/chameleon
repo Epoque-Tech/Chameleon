@@ -54,6 +54,9 @@ function main(&$argc, &$argv)
         
         else if ($mode === 'perms')
             True;
+        
+        else if ($mode === 'request')
+            requestHandler();
 
         else if ($mode === 'config-php')
             setupPHPConfigFile();
@@ -225,7 +228,7 @@ function requestHandler()
     $useDefault = readline('Would you like to use the default request handler '.
             DEFAULT_REQUEST_HANDLER . "[Y/n]\n-->");
     
-    if ($useDefault && strtolower($useDefault)[0] != 'n') {
+    if (!$useDefault || strtolower($useDefault)[0] != 'n') {
         if (!file_exists($_SERVER['PROJECT_DIR'].DEFAULT_REQUEST_HANDLER)) {
             file_put_contents($_SERVER['PROJECT_DIR'].DEFAULT_REQUEST_HANDLER,
             file_get_contents($_SERVER['PROJECT_DIR'].REQUEST_HANDLER_TEMPLATE));
