@@ -1,0 +1,11 @@
+#news-tabs {
+    min-height: 575px;
+}
+
+#news-tabs h4 {
+    margin-bottom: 4%;
+}
+
+#news-tabs a {
+    color: #013236;
+}
