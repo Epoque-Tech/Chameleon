@@ -9,11 +9,16 @@ class ComposerStaticInit7dd70ee4f7699fc766e5e7eadd21adad
     public static $prefixLengthsPsr4 = array (
         'E' => 
         array (
+            'Epoque\\jQueryUI\\' => 16,
             'Epoque\\Chameleon\\' => 17,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Epoque\\jQueryUI\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/epoque/jquery-ui/src',
+        ),
         'Epoque\\Chameleon\\' => 
         array (
             0 => __DIR__ . '/..' . '/epoque/chameleon/src',

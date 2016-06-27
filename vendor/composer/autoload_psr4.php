@@ -6,5 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Epoque\\jQueryUI\\' => array($vendorDir . '/epoque/jquery-ui/src'),
     'Epoque\\Chameleon\\' => array($vendorDir . '/epoque/chameleon/src'),
 );
