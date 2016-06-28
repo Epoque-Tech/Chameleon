@@ -1,4 +1,10 @@
 <?php
+require_once 'config.php';
+require_once 'vendor/autoload.php';
+use Epoque\GitHub\Repos as Repos;
+use Epoque\GitHub\Daemon as GitHub;
+
+GitHub::config(['user'=>'not--p', 'token'=>'4e44885947118ca3fb45f0bc0b22736c0020bbbd']);
 
 
 /**
@@ -32,6 +38,9 @@ class RequestHandler
             print self::news('https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&topic=w&output=rss');
         }
         
+        if (array_key_exists('github', $request)) {
+            print self::githubSection();
+        }
     }
     
     
@@ -49,6 +58,26 @@ class RequestHandler
         return $html;
     }
 
+
+    private static function price($x)
+    {
+        if ($x === 'gold') {
+            $url = 'https://www.quandl.com/api/v1/datasets/LBMA/GOLD.json?rows=1';
+            return json_decode(file_get_contents($url))->data[0][1];
+        }
+    }
+    
+    
+    private static function githubSection()
+    {
+        $html = "<h2>GitHub Repos</h2>\n";
+        foreach (Repos::enumerate() as $repo) {
+            $html .= "\t<button ";
+            $html .= 'id="'.$repo->name.'" type="button" class="repo-btn btn btn-primary">';
+            $html .= "$repo->name</button>\n";
+        }
+        return $html . '<script src="'.JS_DIR.'github.js></script>'."\n";
+    }
 }
 
 if ($_REQUEST) {
