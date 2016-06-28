@@ -4,7 +4,8 @@ require_once 'vendor/autoload.php';
 use Epoque\GitHub\Repos as Repos;
 use Epoque\GitHub\Daemon as GitHub;
 
-GitHub::config(['user'=>'not--p', 'token'=>'4e44885947118ca3fb45f0bc0b22736c0020bbbd']);
+$token = trim(file_get_contents('github.token'));
+GitHub::config(['user'=>'not--p', 'token'=> $token]);
 
 
 /**
