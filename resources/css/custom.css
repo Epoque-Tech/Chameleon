@@ -9,3 +9,8 @@
 .tabs a {
     color: #013236;
 }
+
+#github button {
+    width: 125px;
+    margin-bottom: 5px;
+}
