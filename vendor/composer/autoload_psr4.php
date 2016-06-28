@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Epoque\\jQueryUI\\' => array($vendorDir . '/epoque/jquery-ui/src'),
+    'Epoque\\GitHub\\' => array($vendorDir . '/epoque/github/src'),
     'Epoque\\Chameleon\\' => array($vendorDir . '/epoque/chameleon/src'),
 );

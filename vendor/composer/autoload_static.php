@@ -10,6 +10,7 @@ class ComposerStaticInit7dd70ee4f7699fc766e5e7eadd21adad
         'E' => 
         array (
             'Epoque\\jQueryUI\\' => 16,
+            'Epoque\\GitHub\\' => 14,
             'Epoque\\Chameleon\\' => 17,
         ),
     );
@@ -18,6 +19,10 @@ class ComposerStaticInit7dd70ee4f7699fc766e5e7eadd21adad
         'Epoque\\jQueryUI\\' => 
         array (
             0 => __DIR__ . '/..' . '/epoque/jquery-ui/src',
+        ),
+        'Epoque\\GitHub\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/epoque/github/src',
         ),
         'Epoque\\Chameleon\\' => 
         array (
