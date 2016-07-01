@@ -168,6 +168,32 @@ class HtmlHead
     }
 
 
+    /**
+     * addJs
+     *
+     * Add a key/value pair where the key is a request URI and the
+     * value is the JavaScript to load.
+     * 
+     * Key (request URI) Must be in the VIEWS_DIR (without '.php'),
+     * or it can be an empty string (for the homepage).
+     * 
+     * @param array $js An associative array mapping a request URI
+     * key to a URL of a JavaScript to load for that request.
+     */
+
+    public static function addJs($js=[])
+    {
+        if (is_array($js) && (is_file(VIEWS_DIR.key($js).'.php') || key($js) === '') &&
+                is_string(current($js))) {
+            
+            if (empty(self::$js[key($js)])) {
+                self::$js[key($js)] = [current($js)];
+            }
+            else {
+                array_push(self::$js[key($js)], current($js));
+            }
+        }
+    }
         
 
     /**
