@@ -232,7 +232,7 @@ class HtmlHead
     public function __toString()
     {
         $requestUri = ltrim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL), '/');
-
+        $requiredJS = ['config.js', 'chameleon.js'];
 
         // MetaData
 
@@ -266,8 +266,10 @@ class HtmlHead
                    BOOTSTRAP_VER . '/js/bootstrap.min.js');
         }
         
-        if (file_exists(APP_ROOT.JS_DIR.'config.js'))
-            self::addGlobalJs(JS_DIR.'config.js');
+        foreach ($requiredJS as $reqJS) {
+            if (file_exists(APP_ROOT.JS_DIR.$reqJS))
+                self::addGlobalJs(JS_DIR.$reqJS);
+        }
 
         if (!self::$disabled['bootstrap']) {
             // Merge Bootstrap into $globalCss array so bootstrap is first CSS.
