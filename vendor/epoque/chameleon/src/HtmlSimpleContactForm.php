@@ -42,6 +42,8 @@ class HtmlSimpleContactForm
             $html .= "<legend id=\"$this->id-legend\">$this->legend</legend>";
         }
 
+        $html .= "<div id=\"$this->id-error\"></div>\n";
+        
         $html .= "\t<input type=\"text\" id=\"$this->id-nameField\"";
         $html .= " placeholder=\"name\"><br>\n";
         $html .= "\t<input type=\"text\" id=\"$this->id-contactInfo\"";
@@ -51,8 +53,6 @@ class HtmlSimpleContactForm
         $html .= '<input id="'.$this->id."-submit\" type=\"button\" value=\"Send\">";
         $html .= "</fieldset>\n";
         $html .= "</form>\n";
-        
-        $html .= "<div id=\"$this->id-error\"></div>\n";
         
         if ($this->script) {
             $html .= "<script src=\"$this->script\"></script>\n";
