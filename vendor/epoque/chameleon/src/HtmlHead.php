@@ -256,13 +256,13 @@ class HtmlHead
         // Global CSS and JavaScript
         
         if (!self::$disabled['jquery'])
-            self::addGlobalJs('https://code.jquery.com/jquery-'.JQUERY_VER.'.min.js');
+            self::addGlobalJs('http://code.jquery.com/jquery-'.JQUERY_VER.'.min.js');
         
         if (!self::$disabled['jquery-ui'])
-            self::addGlobalJs('https://code.jquery.com/ui/'.JQUERYUI_VER.'/jquery-ui.min.js');
+            self::addGlobalJs('http://code.jquery.com/ui/'.JQUERYUI_VER.'/jquery-ui.min.js');
 
         if (!self::$disabled['bootstrap']) {
-            self::addGlobalJs('https://maxcdn.bootstrapcdn.com/bootstrap/' . 
+            self::addGlobalJs('http://maxcdn.bootstrapcdn.com/bootstrap/' . 
                    BOOTSTRAP_VER . '/js/bootstrap.min.js');
         }
         
@@ -273,7 +273,7 @@ class HtmlHead
 
         if (!self::$disabled['bootstrap']) {
             // Merge Bootstrap into $globalCss array so bootstrap is first CSS.
-            self::$globalCss = array_merge(['https://maxcdn.bootstrapcdn.com/bootstrap/' .
+            self::$globalCss = array_merge(['http://maxcdn.bootstrapcdn.com/bootstrap/' .
                     BOOTSTRAP_VER . '/css/bootstrap.min.css'], self::$globalCss);
         }
  
@@ -297,7 +297,12 @@ class HtmlHead
                 $html .= '<link href="'.$css.'" rel="stylesheet">'."\n";
             }
         }
-
+        
+        if (array_key_exists($requestUri, self::$js)) {
+            foreach (self::$js[$requestUri] as $js) {
+                $html .= '<script src="'.$js.'">'."</script>\n";
+            }
+        }
         return "<head>\n$html</head>\n";
     }
 }
