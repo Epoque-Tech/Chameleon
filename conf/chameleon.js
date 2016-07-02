@@ -21,17 +21,23 @@ APP.processHtmlSimpleContactForm = function(id) {
     if (form.name === "") {
         valid = false;
         console.log("no name error");
-        errorDiv.innerHTML += "Please provide a name.<br>";
+        errorDiv.innerHTML += '<div class="alert alert-danger" role="alert">\
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>\
+        <span class="sr-only">Error:</span>Enter a name.</div>';
     }
     if (form.contactInfo === "") {
         valid = false;
         console.log("no contact info error");
-        errorDiv.innerHTML += "Please provide a phone number or valid email address.<br>";
+        errorDiv.innerHTML += '<div class="alert alert-danger" role="alert">\
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>\
+        <span class="sr-only">Error:</span>Enter a valid email address or phone number.</div>';
     }
-    if (form.contactInfo === "") {
+    if (form.message === "") {
         valid = false;
         console.log("no message error");
-        errorDiv.innerHTML += "Please write a message.<br>";
+        errorDiv.innerHTML += '<div class="alert alert-danger" role="alert">\
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>\
+        <span class="sr-only">Error:</span>A message is required.</div>';
     }
     
     if (valid) {
