@@ -11,18 +11,33 @@ $parser = new Parser(); ?>
 print $parser->parse("
 # Chameleon Framework Documentation
 
-## Git Repo
+## Table of Contents
 
-    https://github.com/not--p/Chameleon
+* I. [Getting Started](#gettingStarted)
+    * [Cloning](#cloning)
+    * [Chameleon Setup](#setup)
+* II. [Conventions](#conventions)
 
-## Conventions
+<h2 id=\"gettingStarted\">Getting Started</h2>
+The Chameleon framework is used to quickly setup new WWW applications. It
+currently only supports applications using Apache (2.6) webserver on Ubuntu.
+Begin by cloning chameleon into a directory (making sure the desired ower and
+group are set). Then run `sudo ./bin/chameleon setup`. This will require user
+interaction to setup the WWW application project. It's helpful to know how to
+setup Apache webserver.
 
-### DIR Constants
-All PHP constants defined in Chameleon that represent directories and
-are named 'such-and-such' `DIR` (i.e. `CSS_DIR`, `JS_DIR`, etc) end
-with a trailing slash.
+### Cloning <span id=\"cloning\"></span>
 
-## Directory Structure
+    git clone https://github.com/not--p/Chameleon [project-dir]
+    
+### Running the Chameleon script <span id=\"setup\"></span>
+
+    sudo ./bin/chameleon setup
+    
+
+## Conventions <span id=\"conventions\"></span>
+
+### Directory Structure
 
 **conf** → contains configuration templates.
 
@@ -33,6 +48,15 @@ with a trailing slash.
 **vendor** → contains composer components.
 
 **views** → contains pages/scripts that are shown to the user.
+
+#### Notes on Directory Structure
+
+-- The chameleon (bin/chameleon) script 
+
+### DIR Constants
+All PHP constants defined in Chameleon that represent directories and
+are named 'such-and-such' `DIR` (i.e. `CSS_DIR`, `JS_DIR`, etc) end
+with a trailing slash.
 
 ## Chameleon Script
 
