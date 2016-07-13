@@ -1,4 +1,5 @@
 # Chameleon Framework Documentation
+[Live Documentation](http://chameleon.lakonacomputers.com)
 
 ## Table of Contents
 
