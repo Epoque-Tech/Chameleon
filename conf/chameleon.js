@@ -46,7 +46,7 @@ APP.validatePhoneNumber = function (phone) {
  * @returns {undefined}
  */
 
-APP.processHtmlSimpleContactForm = function(id) {
+APP.processHtmlSimpleContactForm = function(id, callback) {
     var valid = true;
     
     var form = {
@@ -90,7 +90,10 @@ APP.processHtmlSimpleContactForm = function(id) {
             method: 'GET',
             data : { 'HtmlSimpleContactForm' : form },
             success: function (data, textStatus, jqXHR) {
-                console.log(data);
+                callback(data);
+                document.getElementById(id + "-nameField").value = '';
+                document.getElementById(id + "-contactInfo").value = '';
+                document.getElementById(id + "-message").value = '';
             }
         });
     }
