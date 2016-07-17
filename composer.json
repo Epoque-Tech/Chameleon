@@ -5,7 +5,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Epoque\\Chameleon\\" : "vendor/epoque/chameleon/src"
+            "Epoque\\Chameleon\\" : "vendor/epoque/chameleon/src",
+            "Epoque\\ChameleonTesting\\" : "vendor/epoque/chameleon/tests"
         }
     }
 }

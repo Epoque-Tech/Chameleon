@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
     'Epoque\\Chameleon\\' => array($vendorDir . '/epoque/chameleon/src'),
+    'Epoque\\ChameleonTesting\\' => array($vendorDir . '/epoque/chameleon/tests'),
 );

@@ -14,6 +14,7 @@ class ComposerStaticInit4fafccc3cf6feb77e14e5cc084b3e304
         'E' => 
         array (
             'Epoque\\Chameleon\\' => 17,
+            'Epoque\\ChameleonTesting\\' => 24,
         ),
     );
 
@@ -25,6 +26,10 @@ class ComposerStaticInit4fafccc3cf6feb77e14e5cc084b3e304
         'Epoque\\Chameleon\\' => 
         array (
             0 => __DIR__ . '/..' . '/epoque/chameleon/src',
+        ),
+        'Epoque\\ChameleonTesting\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/epoque/chameleon/tests',
         ),
     );
 
