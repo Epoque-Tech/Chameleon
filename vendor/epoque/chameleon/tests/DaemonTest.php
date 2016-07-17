@@ -1,4 +1,6 @@
 <?php
+namespace Epoque\Chameleon;
+
 
 /**
  * Description of DaemonTest
@@ -6,26 +8,17 @@
  * @author jason favrod <jason@epoquecorportation.com>
  */
 
-use Epoque\Chameleon\Daemon;
-
-
-class DaemonTest
+class DaemonTest extends Daemon
 {
-    public static function all()
+    public static function printRoutes()
     {
-        print 'Testing addRoute... ';
-        if (self::testAddRoute()) {
-            print 'pass<br>' . PHP_EOL;
-        } else {
-            print 'fail<br>' . PHP_EOL;
+        foreach (parent::$routes as $req => $dest) {
+            print "$req: $dest\n";
         }
     }
 
-
-    private static function testAddRoute()
+    public static function testAddRoute($testRoute)
     {
-        $testRoute = ['/testRoute' => 'test-route.php'];
-
         if (!Daemon::isRoute($testRoute)) {
             Daemon::addRoute($testRoute);
         }
@@ -41,6 +34,36 @@ class DaemonTest
         }
     }
 }
+?>
 
-DaemonTest::all();
+<div class="col-md-8 col-md-offset-1">
+    <h2>Daemon Tests</h2>
+    
+    <section>
+        <h3>Testing addRoute</h3>
+        
+<?php $testRoute = ['/testRoute' => 'test-route.php']; ?>
+<pre>
+Routes array before:
+<?php DaemonTest::printRoutes(); ?>
 
+Add Test Route
+<?php print key($testRoute).': '.current($testRoute)."\n"; ?>
+<?php $result = DaemonTest::testAddRoute($testRoute); ?>
+
+Routes array after:
+<?php DaemonTest::printRoutes(); ?>
+</pre>
+
+        <b>Result: </b>
+        <?php
+        if ($result) {
+            print '<span class="label label-success">Pass</span>'."\n";
+        }
+        else {
+            print '<span class="label label-danger">Fail</span>'."\n";
+        }
+        ?>
+
+    </section>
+</div>

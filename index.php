@@ -18,7 +18,7 @@ foreach ($docs as $doc) {
 
 // Tests
 $tests = [
-    ['/daemon-test' => 'vendor/epoque/chameleon/tests/DaemonTest.php'],
+    ['/DaemonTest' => 'vendor/epoque/chameleon/tests/DaemonTest.php'],
     ['/CommonTest' => 'vendor/epoque/chameleon/tests/CommonTest.php']
 ];
 
