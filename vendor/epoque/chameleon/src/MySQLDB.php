@@ -1,4 +1,7 @@
 <?php
+namespace Epoque\Chameleon;
+use Epoque\Chameleon\Common;
+
 
 /**
  * MySQLDB
@@ -8,10 +11,7 @@
  * @author Jason Favrod jason@lakonacomputers.com
  */
 
-namespace Epoque\Chameleon;
-
-
-class MySQLDB
+class MySQLDB extends Common
 {
     protected static $db_host = DB_HOST;
     protected static $db_name = DB_NAME;
@@ -135,9 +135,15 @@ class MySQLDB
 
     public static function insert($query) {
         $conn = self::conn();
-        $result = $conn->query($query);
-
-        $conn->close();
+        
+        if (!$conn->connect_error) {
+            $result = $conn->query($query);
+            $conn->close();
+        }
+        else {
+            parent::logError('MySQLDB: mysqli Connection Error (' .$conn->connect_errno. ') '.$conn->connect_error);
+        }
+        
         return $result;
     }
 }
