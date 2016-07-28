@@ -253,8 +253,29 @@ class HtmlHead
             $html .= '<title>'.SITE_TITLE."</title>\n";
 
         
-        // Global CSS and JavaScript
+        // CSS
         
+        if (!self::$disabled['bootstrap']) {
+            // Merge Bootstrap into $globalCss array so bootstrap is first CSS.
+            self::$globalCss = array_merge(['http://maxcdn.bootstrapcdn.com/bootstrap/' .
+                    BOOTSTRAP_VER . '/css/bootstrap.min.css'], self::$globalCss);
+        }
+
+        if (!empty(self::$globalCss)) {
+            foreach (self::$globalCss as $url) {
+                $html .= "<link href=\"$url\" rel=\"stylesheet\">\n";
+            }
+        }
+
+        if (array_key_exists($requestUri, self::$css)) {
+            foreach (self::$css[$requestUri] as $css) {
+                $html .= '<link href="'.$css.'" rel="stylesheet">'."\n";
+            }
+        }
+
+
+        // JavaScript
+
         if (!self::$disabled['jquery'])
             self::addGlobalJs('http://code.jquery.com/jquery-'.JQUERY_VER.'.min.js');
         
@@ -265,22 +286,10 @@ class HtmlHead
             self::addGlobalJs('http://maxcdn.bootstrapcdn.com/bootstrap/' . 
                    BOOTSTRAP_VER . '/js/bootstrap.min.js');
         }
-        
+
         foreach ($requiredJS as $reqJS) {
             if (file_exists(APP_ROOT.JS_DIR.$reqJS))
-                self::addGlobalJs(JS_DIR.$reqJS);
-        }
-
-        if (!self::$disabled['bootstrap']) {
-            // Merge Bootstrap into $globalCss array so bootstrap is first CSS.
-            self::$globalCss = array_merge(['http://maxcdn.bootstrapcdn.com/bootstrap/' .
-                    BOOTSTRAP_VER . '/css/bootstrap.min.css'], self::$globalCss);
-        }
- 
-        if (!empty(self::$globalCss)) {
-            foreach (self::$globalCss as $url) {
-                $html .= "<link href=\"$url\" rel=\"stylesheet\">\n";
-            }
+                $html .= '<script src="'.JS_DIR.$reqJS."\"></script>\n";
         }
 
         if (!empty(self::$globalJs)) {
@@ -289,20 +298,12 @@ class HtmlHead
             }
         }
         
-        
-        // View Specific CSS
-        
-        if (array_key_exists($requestUri, self::$css)) {
-            foreach (self::$css[$requestUri] as $css) {
-                $html .= '<link href="'.$css.'" rel="stylesheet">'."\n";
-            }
-        }
-        
         if (array_key_exists($requestUri, self::$js)) {
             foreach (self::$js[$requestUri] as $js) {
                 $html .= '<script src="'.$js.'">'."</script>\n";
             }
         }
+
         return "<head>\n$html</head>\n";
     }
 }
