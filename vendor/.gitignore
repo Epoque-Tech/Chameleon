@@ -1,4 +1,5 @@
 autoload.php
+bin/
 composer/
 monolog/
 
