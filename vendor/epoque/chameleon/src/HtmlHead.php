@@ -289,18 +289,18 @@ class HtmlHead
 
         foreach ($requiredJS as $reqJS) {
             if (file_exists(APP_ROOT.JS_DIR.$reqJS))
-                $html .= '<script src="'.JS_DIR.$reqJS."\" async></script>\n";
+                $html .= '<script src="'.JS_DIR.$reqJS."\"></script>\n";
         }
 
         if (!empty(self::$globalJs)) {
             foreach (self::$globalJs as $url) {
-                $html .= "<script src=\"$url\" async></script>\n";
+                $html .= "<script src=\"$url\"></script>\n";
             }
         }
         
         if (array_key_exists($requestUri, self::$js)) {
             foreach (self::$js[$requestUri] as $js) {
-                $html .= '<script src="'.$js.'" async>'."</script>\n";
+                $html .= '<script src="'.$js.'">'."</script>\n";
             }
         }
 
