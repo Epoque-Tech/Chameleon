@@ -3,13 +3,13 @@
 <div class="row mainRow">
     <section class="col-md-8 col-md-offset-1 col-lg-offset-2">
         <header>
-            <h1>Jason's HUD</h1>
+            <h2>Math Functions</h2>
         </header>
         
-        <br>
+        <?php Daemon::contents(PHP_DIR.'mainMenuDropdown.php'); ?>
         
         <ul class="nav nav-pills nav-stacked">
-            <?php Daemon::contents(PHP_DIR.'mainMenu.php'); ?>
+          <li><a href="/lineDraw">Draw a Line</a></li>
         </ul>
     </section>
 </div>
