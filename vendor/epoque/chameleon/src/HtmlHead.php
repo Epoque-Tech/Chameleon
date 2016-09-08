@@ -26,14 +26,8 @@ class HtmlHead
     /** @var array Contains key/value pairs for view specific css. **/
     private static $css         = [];
     
-    /** @var array Contains key/value pairs for view specific js. **/
-    private static $js          = [];
-
     /** @var array Contains URL linking to CSS for all views. **/
     private static $globalCss   = [];
-
-    /** @var array Contains URL link to JavaScript for views. **/
-    private static $globalJs    = [];
     
     /** @var array List of elements that can be set to TRUE to disable **/
     private static $disabled    = [ 'bootstrap' => FALSE,
@@ -169,34 +163,6 @@ class HtmlHead
 
 
     /**
-     * addJs
-     *
-     * Add a key/value pair where the key is a request URI and the
-     * value is the JavaScript to load.
-     * 
-     * Key (request URI) Must be in the VIEWS_DIR (without '.php'),
-     * or it can be an empty string (for the homepage).
-     * 
-     * @param array $js An associative array mapping a request URI
-     * key to a URL of a JavaScript to load for that request.
-     */
-
-    public static function addJs($js=[])
-    {
-        if (is_array($js) && (is_file(VIEWS_DIR.key($js).'.php') || key($js) === '') &&
-                is_string(current($js))) {
-            
-            if (empty(self::$js[key($js)])) {
-                self::$js[key($js)] = [current($js)];
-            }
-            else {
-                array_push(self::$js[key($js)], current($js));
-            }
-        }
-    }
-        
-
-    /**
      * addGlobalCss
      * 
      * Adds a URL to the $globalCss array that will be in the HTML head of
@@ -210,23 +176,6 @@ class HtmlHead
     {
         return array_push(self::$globalCss, $css);
     }
-
-
-    /**
-     * addGlobalJs
-     * 
-     * Adds a URL to the globalJs array that will be in the HTML head
-     * of every view.
-     *
-     * @param string $js A given URL.
-     * @return Boolean True if $js was added to self::js.
-     */
-
-     public static function addGlobalJs($js='')
-     {
-        return array_push(self::$globalJs, $js);
-     }
-
 
      
     public function __toString()
@@ -256,9 +205,10 @@ class HtmlHead
         // CSS
         
         if (!self::$disabled['bootstrap']) {
-            // Merge Bootstrap into $globalCss array so bootstrap is first CSS.
-            self::$globalCss = array_merge(['http://maxcdn.bootstrapcdn.com/bootstrap/' .
-                    BOOTSTRAP_VER . '/css/bootstrap.min.css'], self::$globalCss);
+            $html .= '<link rel="stylesheet" '.
+                     'href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" '.
+                     'integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" '.
+                     'crossorigin="anonymous">'."\n";
         }
 
         if (!empty(self::$globalCss)) {
@@ -266,41 +216,10 @@ class HtmlHead
                 $html .= "<link href=\"$url\" rel=\"stylesheet\">\n";
             }
         }
-
+        
         if (array_key_exists($requestUri, self::$css)) {
             foreach (self::$css[$requestUri] as $css) {
                 $html .= '<link href="'.$css.'" rel="stylesheet">'."\n";
-            }
-        }
-
-
-        // JavaScript
-
-        if (!self::$disabled['jquery'])
-            self::addGlobalJs('http://code.jquery.com/jquery-'.JQUERY_VER.'.min.js');
-        
-        if (!self::$disabled['jquery-ui'])
-            self::addGlobalJs('http://code.jquery.com/ui/'.JQUERYUI_VER.'/jquery-ui.min.js');
-
-        if (!self::$disabled['bootstrap']) {
-            self::addGlobalJs('http://maxcdn.bootstrapcdn.com/bootstrap/' . 
-                   BOOTSTRAP_VER . '/js/bootstrap.min.js');
-        }
-
-        foreach ($requiredJS as $reqJS) {
-            if (file_exists(APP_ROOT.JS_DIR.$reqJS))
-                $html .= '<script src="'.JS_DIR.$reqJS."\"></script>\n";
-        }
-
-        if (!empty(self::$globalJs)) {
-            foreach (self::$globalJs as $url) {
-                $html .= "<script src=\"$url\"></script>\n";
-            }
-        }
-        
-        if (array_key_exists($requestUri, self::$js)) {
-            foreach (self::$js[$requestUri] as $js) {
-                $html .= '<script src="'.$js.'">'."</script>\n";
             }
         }
 
