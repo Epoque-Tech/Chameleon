@@ -1,5 +1,11 @@
 /* global APP */
 
+// Golbal APP
+var APP = {};
+
+// The PHP Script that handles AJAX requests.
+APP.requestURL = 'RequestHandler.php';
+
 
 /**
  * validateEmail
@@ -42,7 +48,9 @@ APP.validatePhoneNumber = function (phone) {
 
 /**
  * processHtmlSimpleContactForm
+ *
  * @param {type} id
+ * @param {function} 
  * @returns {undefined}
  */
 
@@ -94,6 +102,7 @@ APP.processHtmlSimpleContactForm = function(id, callback) {
                 document.getElementById(id + "-nameField").value = '';
                 document.getElementById(id + "-contactInfo").value = '';
                 document.getElementById(id + "-message").value = '';
+                console.log(data);
             }
         });
     }
@@ -124,3 +133,4 @@ APP.sqlSelectQuery = function (spec) {
 };
 
 console.log('chameleon.js loaded');
+
