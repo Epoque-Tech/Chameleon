@@ -1,6 +1,0 @@
-[submodule "vendor/epoque/jquery-ui"]
-	path = vendor/epoque/jquery-ui
-	url = git@github.com:not--p/jquery-ui.git
-[submodule "vendor/epoque/github"]
-	path = vendor/epoque/github
-	url = git@github.com:not--p/github.git
