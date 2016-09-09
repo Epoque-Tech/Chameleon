@@ -2,19 +2,15 @@
 namespace Epoque\Chameleon;
 
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of JS
+ * JS
+ * 
+ * Handles adding script tags based upon REQUEST_URI.
  *
- * @author jason
+ * @author jason favrod <jason@lakonacomputers.com>
  */
 
-class JS
+class JS extends Router
 {
     static $BOOTSTRAP = '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>';
     static $jQuery    = '<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>';
@@ -48,32 +44,52 @@ class JS
         $html = '';
 
         if (is_string($src)) {
-            $html = '<script src="';
-
-            if (is_file(APP_ROOT.JS_DIR . $src)) {
-                $html .= JS_DIR . $src;
+            
+            if ($src === 'trio') {
+                self::trio();
             }
-            else if (is_file($src)) {
-                $html .= $src;
-            }
+            else {
+                $html = '<script src="';
 
-            $html .= '"></script>'."\n";
-        }
-        else if (is_array($src)) {
-            foreach ($src as $source) {
-                $html .= '<script src="';
-
-                if (is_file(APP_ROOT.JS_DIR . $source)) {
-                    $html .= JS_DIR . $source;
+                if (is_file(APP_ROOT.JS_DIR . $src)) {
+                    $html .= JS_DIR . $src;
                 }
-                else if (is_file($source)) {
-                    $html .= $source;
+                else if (is_file($src)) {
+                    $html .= $src;
                 }
 
                 $html .= '"></script>'."\n";
             }
         }
+        else if (is_array($src)) {
+            foreach ($src as $source) {
+                if ($source === 'trio') {
+                    self::trio();
+                }
+                else {
+                    $html .= '<script src="';
+
+                    if (is_file(APP_ROOT.JS_DIR . $source)) {
+                        $html .= JS_DIR . $source;
+                    }
+                    else if (is_file($source)) {
+                        $html .= $source;
+                    }
+
+                    $html .= '"></script>'."\n";
+                }
+            }
+        }
 
         print $html;
+    }
+
+    
+    public static function fetchJavaScript() {
+        if (array_key_exists(self::URI(), self::$routes)) {
+            $js = str_replace(' ', '', self::$routes[self::URI()]);
+            self::tags(explode(',', $js));
+        }
+        print_r(self::$routes[self::URI()]);
     }
 }
