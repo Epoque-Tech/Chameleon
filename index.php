@@ -19,7 +19,8 @@ foreach ($docs as $doc) {
 // Tests
 $tests = [
     ['/DaemonTest' => VIEWS_DIR.'tests/daemonTest.php'],
-    ['/CommonTest' => VIEWS_DIR.'tests/commonTest.php']
+    ['/CommonTest' => VIEWS_DIR.'tests/commonTest.php'],
+    ['/SpeedInsights' => VIEWS_DIR.'tests/speedInsights.php']
 ];
 
 foreach ($tests as $test) {
@@ -74,8 +75,10 @@ foreach ($tests as $test) {
         <br>
         
         <div class="row">
-            <?php Daemon::fetchRequested(); ?>
+            <?php Daemon::fetchView(); ?>
         </div>
     </div>
+    
+    <?php Epoque\Chameleon\JS::trio(); ?>
 </body>
 </html>
