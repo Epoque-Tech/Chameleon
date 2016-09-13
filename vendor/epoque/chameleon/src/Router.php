@@ -79,7 +79,7 @@ abstract class Router extends Common
     {
         $request = self::URI();
 
-        if (array_key_exists($request, $this->$routes)) {
+        if (array_key_exists($request, self::$routes)) {
             return self::$routes[$request];
         }
     }
