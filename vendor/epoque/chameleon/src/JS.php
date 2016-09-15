@@ -51,16 +51,15 @@ class JS extends Common implements RouterInterface
                 self::trio();
             }
             else {
-                $html = '<script src="';
-
                 if (is_file(APP_ROOT.JS_DIR . $src)) {
-                    $html .= JS_DIR . $src;
+                    $html .= '<script src="' . JS_DIR . $src . '"></script>'."\n";
                 }
                 else if (is_file($src)) {
-                    $html .= $src;
+                    $html .= '<script src="' . $src . '"></script>'."\n";
                 }
-
-                $html .= '"></script>'."\n";
+                else {
+                    self::logWarning('The source (' . $src . ') for JS is not valid.');
+                }
             }
         }
         else if (is_array($src)) {
@@ -69,16 +68,15 @@ class JS extends Common implements RouterInterface
                     self::trio();
                 }
                 else {
-                    $html .= '<script src="';
-
                     if (is_file(APP_ROOT.JS_DIR . $source)) {
-                        $html .= JS_DIR . $source;
+                        $html .= '<script src="' . JS_DIR . $source . '"></script>'."\n";
                     }
                     else if (is_file($source)) {
-                        $html .= $source;
+                        $html .= '<script src="' . $source . '"></script>'."\n";
                     }
-
-                    $html .= '"></script>'."\n";
+                    else {
+                        self::logWarning('The source (' . $source . ') for JS is not valid.');
+                    }
                 }
             }
         }
