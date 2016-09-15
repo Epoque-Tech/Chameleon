@@ -13,7 +13,13 @@ use Monolog\Handler\StreamHandler;
 abstract class Common
 {
     protected static $log = NULL;
-    
+
+
+    public static function URI() {
+        return filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL);
+    }
+
+
     private static function initLog()
     {
         if (self::$log === NULL) {
@@ -28,8 +34,8 @@ abstract class Common
         self::initLog();
         self::$log->warn($message);
     }
-    
-    
+
+
     public static function logError($message='')
     {
         self::initLog();
