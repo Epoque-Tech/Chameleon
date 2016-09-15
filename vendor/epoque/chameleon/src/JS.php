@@ -10,11 +10,13 @@ namespace Epoque\Chameleon;
  * @author jason favrod <jason@lakonacomputers.com>
  */
 
-class JS extends Router
+class JS extends Common implements RouterInterface
 {
     static $BOOTSTRAP = '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>';
     static $jQuery    = '<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>';
     static $jQueryUI  = '<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>';
+    
+    private static $routes = [];
 
 
     /**
@@ -85,11 +87,23 @@ class JS extends Router
     }
 
     
-    public static function fetchJavaScript() {
+    public static function addRoute($route=[]) {
+        if ( is_array($route) && !empty($route) && is_string(key($route)) &&
+               is_string(current($route)) && is_string(current($route)) )
+        {
+                self::$routes[key($route)] = current($route);
+                return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+        
+    public static function fetchRoute() {
         if (array_key_exists(self::URI(), self::$routes)) {
             $js = str_replace(' ', '', self::$routes[self::URI()]);
             self::tags(explode(',', $js));
         }
-        print_r(self::$routes[self::URI()]);
     }
 }
