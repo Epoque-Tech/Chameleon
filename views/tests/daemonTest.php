@@ -33,7 +33,7 @@
     
     foreach (\Epoque\Chameleon\Daemon::dirscan(VIEWS_DIR) as $dirItem) {
         if (preg_match('/.php/', $dirItem)) {
-            $x = 'http://chameleon.lakonacomputers.com';
+            $x = 'http://' . $_SERVER['SERVER_NAME'];
             $y = str_replace('.php', '', $dirItem);
             $v = $x . '/' . $y;
             $z = file_get_contents($v);
