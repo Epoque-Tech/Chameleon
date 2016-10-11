@@ -39,19 +39,20 @@ class Presenter extends Common implements RouterInterface
             else if (is_file(VIEWS_DIR . self::URI() . '.php')) {
                 include VIEWS_DIR . self::URI() . '.php';
             }
-            else if (is_file(DEFAULT_VIEW)) {
-                include_once DEFAULT_VIEW;
-            }
-            else if (is_file(ERROR_404_FILE)) {
-                include_once(ERROR_404_FILE);
-            }
             else {
                 self::logWarning('Presenter could not fetch requested (' +
                         self::URI() + ') route.');
             }
         }
+        else if (is_file(DEFAULT_VIEW)) {
+            include_once DEFAULT_VIEW;
+        }
+        else if (is_file(ERROR_404_FILE)) {
+            include_once(ERROR_404_FILE);
+        }
         else {
-            self::logWarning('Presenter, URI: ' . self::URI() . ', not a route.');
+            print '<p>DEFAULT_VIEW: ' . DEFAULT_VIEW . "</p>\n";
+            self::logError('Presenter, URI: ' . self::URI() . ', not a route.');
         }
     }
 
