@@ -546,7 +546,7 @@ function setup_composer
 
 function setup_js
 {
-    $sg $www_group -c "$cp $project_dir/conf/chameleon.js $project_dir/resources/js/chemeleon.js"
+    $sg $www_group -c "$cp $project_dir/conf/chameleon.js $project_dir/resources/js/chameleon.js"
 
     if [ $? -gt 0 ]; then
         echo "Failed to setup_js."
