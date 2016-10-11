@@ -10,13 +10,15 @@ $parser = new Parser(); ?>
 print $parser->parse("
 ## What is Chameleon Framework?
 
-Chameleon is an PHP framework for building Web applications. It requires Ubuntu
-Linux and Apache Web server. It also (somewhat) supports interactions with MySQL,
-Oracle DB, and SQLite. The framework is currently in the pre-release
-development and should not be used in a production applications. To find out
+Chameleon is an PHP framework for building Web applications. It runs on [Ubuntu
+16.04 (GNU/Linux)](//www.ubuntu.com) and uses the [Apache](//httpd.apache.org)
+Web server. It is designed to support interactions with [MySQL](//www.mysql.com),
+[Oracle](//www.oracle.com/database/index.html), and [SQLite](//www.sqlite.org)
+database management systems (DBMS). The framework is currently in pre-release
+development and should not be used for a production application. To find out
 how to use the framework checkout the [manual](/manual). To help with the
 development, report issues, or get in touch with the developer, see the github
-[repo](https://github.com/not--p/Chameleon).
+[repo](//github.com/not--p/Chameleon).
 
 ## Getting Started ##
 
@@ -38,10 +40,9 @@ Run the installer:
 
     ./chameleon-install.bash
 
-Answer the prompts. They will ask for the project directory. Chameleon
-assumes the default Apache2 directory usage, and the project directory will be
-created in the /var/www directory -- virtual host configuration files are
-stored in /etc/apache2/site-enabled.
+Answer the prompts. You will be asked for the project directory. Chameleon
+assumes usage of the default Apache2 directory (`/var/www`) -- virtual host
+configuration files are stored in `/etc/apache2/site-enabled`.
 ");
 ?>
     </div>
