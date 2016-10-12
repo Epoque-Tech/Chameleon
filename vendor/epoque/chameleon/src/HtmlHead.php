@@ -35,9 +35,14 @@ class HtmlHead
                                     'jquery-ui' => FALSE ];
 
     
-    public function __construct()
+    public function __construct($test=FALSE)
     {
-        print self::__toString();
+        if ($test==FALSE) {
+            print self::__toString();
+        }
+        else {
+            return self::__toString();
+        }
     }
 
 
