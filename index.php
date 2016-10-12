@@ -18,10 +18,9 @@ foreach ($docs as $doc) {
 
 // Tests
 $tests = [
-    ['/DaemonTest' => VIEWS_DIR.'tests/daemonTest.php'],
     ['/CommonTest' => VIEWS_DIR.'tests/commonTest.php'],
-    ['/HtmlHeadTest' => VIEWS_DIR.'tests/htmlHeadTest.php'],
-    ['/SpeedInsights' => VIEWS_DIR.'tests/speedInsights.php']
+    ['/DaemonTest' => VIEWS_DIR.'tests/daemonTest.php'],
+    ['/HtmlHeadTest' => VIEWS_DIR.'tests/htmlHeadTest.php']
 ];
 
 foreach ($tests as $test) {
