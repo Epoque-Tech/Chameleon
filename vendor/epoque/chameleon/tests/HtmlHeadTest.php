@@ -15,14 +15,15 @@ use Epoque\Chameleon\HtmlHead;
  *
  * @author jason favrod <jason@epoquecorportation.com>
  */
-class HtmlHeadTest
+
+class HtmlHeadTest implements Test
 {
     private static $htmlHead = null;
     
     private static $tests = [
             'Empty HtmlHead' => emptyTest,
             'Print HtmlHead' => printHtmlHead
-    ];
+        ];
 
 
     public static function run()
@@ -30,14 +31,22 @@ class HtmlHeadTest
         self::$htmlHead = trim(new HtmlHead(TRUE));
       
         foreach (self::$tests as $header => $test) {
-            print '<section class="col-md-8 col-md-offset-1">' . "\n";
+            print '<section class="col-md-8 col-md-offset-1 testSection">' . "\n";
             print "<h3>$header</h3>\n";
-            self::$test();
+            $r = self::$test();
+            
+            if ($r) {
+                print '<span class="label label-success">Pass</span>' . "\n";
+            }
+            else {
+                print '<span class="label label-danger">Fail</span>' . "\n";
+            }
+            
             print '</section>' . "\n";
         }
     }
 
-
+    
     private static function headToArray()
     {
         self::$htmlHead = trim(new HtmlHead(TRUE));
@@ -45,7 +54,6 @@ class HtmlHeadTest
     }
 
 
-    
     private static function emptyTest()
     {
         $r = 0;
@@ -80,12 +88,8 @@ class HtmlHeadTest
         
         print "</pre>\n";
         
-        if ($r != 0) {
-            print '<span class="label label-danger">Fail</span>' . "\n";
-        }
-        else {
-            print '<span class="label label-success">Pass</span>' . "\n";
-        }
+        $r > 0 ? $r = False : $r = True;
+        return $r;
     }
 
     
@@ -95,12 +99,10 @@ class HtmlHeadTest
         $z = print '<pre>' . htmlentities(self::$htmlHead) . '</pre>';
                 
         if ($z === 1) {
-            print '<span class="label label-success">Pass</span>' . "\n";
+            return True;
         }
         else {
-            print '<span class="label label-danger">Fail</span>' . "\n";
+            return False;
         }
-        
-        print "<br><br>\n";
     }
 }
