@@ -68,9 +68,15 @@ class HtmlHead extends Common
         if (is_array($title) && count($title) === 1) {
 
             if ((is_string(key($title)) || key($title) === '') && is_string(current($title))) {
-                self::$title = array_merge(self::$title, $title);
+                self::$title = array_merge(self::$title, [trim(key($title), '/') => current($title)]);
                 $result = true;
             }
+            else {
+                self::logError(__METHOD__ . ': addTitle argument does not contain a valid mapping.');
+            }
+        }
+        else {
+            self::logWarning(__METHOD__ . ': addTitle argument invalid.');
         }
 
         return $result;
@@ -94,7 +100,7 @@ class HtmlHead extends Common
         if (is_array($keywords) && count($keywords) === 1) {
 
             if ((is_string(key($keywords)) || key($keywords) === '') && is_string(current($keywords))) {
-                $keywords = [ltrim(key($keywords), '/') => current($keywords)];
+                $keywords = [trim(key($keywords), '/') => current($keywords)];
                 self::$keywords = array_merge(self::$keywords, $keywords);
                 $result = true;
             }
@@ -198,8 +204,8 @@ class HtmlHead extends Common
      
     public function __toString()
     {
-        $requestUri = ltrim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL), '/');
-        $requiredJS = ['config.js', 'chameleon.js'];
+        $requestUri = trim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL), '/');
+        $httpHost   = filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_URL);
 
         // MetaData
 
@@ -209,7 +215,7 @@ class HtmlHead extends Common
         $html .= '<meta name="description" content="'.self::$description[$requestUri].'">'."\n";
         $html .= '<meta name="keywords" content="'.self::$keywords[$requestUri].'">'."\n";
         $html .= "<meta name=\"author\" content=\"\">\n";
-        $html .= '<link rel="alternate" href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" hreflang="en-us" /> '."\n";
+        $html .= '<link rel="alternate" href="http://'.$httpHost.'/'.$requestUri.'" hreflang="en-us" /> '."\n";
 
         
         // Site/View Title
