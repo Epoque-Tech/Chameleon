@@ -1,4 +1,6 @@
 <?php
+namespace Epoque\Chameleon;
+
 
 /**
  * HtmlHead
@@ -9,49 +11,42 @@
  * @author Jason Favrod jason@lakonacomputers.com
  */
 
-namespace Epoque\Chameleon;
-
-
 class HtmlHead extends Common
 {
-    /** @var array Contains HTML document meta description arrays. **/
-    private static $description = [];
-
-    /** @var array Contains HTML document meta keywords arrays. **/
-    private static $keywords    = [];
-    
     /** @var array Contains HTML document title arrays. **/
     private static $title       = [];
 
-    /** @var array Contains key/value pairs for view specific css. **/
-    private static $css         = [];
+    /** @var array Contains HTML document meta keywords arrays. **/
+    private static $keywords    = [];
+
+    /** @var array Contains HTML document meta description arrays. **/
+    private static $description = [];
+
+    /** @var boolean Set to TRUE to use bootstrap CSS globally, FALSE to not. **/
+    private static $bootstrap   = TRUE;
     
     /** @var array Contains URL linking to CSS for all views. **/
     private static $globalCss   = [];
-    
-    /** @var array List of elements that can be set to TRUE to disable **/
-    private static $bootstrap   = TRUE;
 
-    
-    public function __construct()
-    {
-        print self::__toString();
-    }
+    /** @var array Contains key/value pairs for view specific css. **/
+    private static $css         = [];
 
 
     /**
-     * toggleBootstrap
-     *
-     * Disables/enables the bootstrap CSS.
+     * constructor
+     * 
+     * @param boolean $test Set to FALSE when not testing.
+     * @return prints __toString() when not testing,
+     * returns the string from __toString() when testing.
      */
 
-    public static function toggleBootstrap()
+    public function __construct($test=FALSE)
     {
-        if (self::$bootstrap) {
-            self::$bootstrap = FALSE;
+        if ($test==FALSE) {
+            print self::__toString();
         }
         else {
-            self::$bootstrap = TRUE;
+            return self::__toString();
         }
     }
 
@@ -137,6 +132,23 @@ class HtmlHead extends Common
         }
 
         return $result;
+    }
+
+
+    /**
+     * toggleBootstrap
+     *
+     * Disables/enables the bootstrap CSS.
+     */
+
+    public static function toggleBootstrap()
+    {
+        if (self::$bootstrap) {
+            self::$bootstrap = FALSE;
+        }
+        else {
+            self::$bootstrap = TRUE;
+        }
     }
 
 
