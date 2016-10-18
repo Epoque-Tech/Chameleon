@@ -11,29 +11,33 @@ print $parser->parse("
 
 ## Table of Contents
 
-* I. [Getting Started](#gettingStarted)
-    * [Cloning](#cloning)
-    * [Chameleon Setup](#setup)
-* II. [Conventions](#conventions)
+<ol type=\"I\">
+    <li><a href=\"#gettingStarted\">Getting Started</a></li>
+    <ol type=\"i\">
+        <li><a href=\"#install\">Installation</a></li>
+        <li><a href=\"#setup\">Chameleon Setup</a></li>
+    </ol>
+    <li><a href=\"#conventions\">Conventions</a></li>
+    <li><a href=\"#objects\">Chameleon Objects</a></li>
+</ol>
+
 
 <h2 id=\"gettingStarted\">Getting Started</h2>
 
 The Chameleon framework is used to quickly setup new Web applications. It
-currently only supports applications using Apache (2.6) webserver on Ubuntu.
-Begin by cloning chameleon into a directory (making sure the desired ower and
-group are set). Then run `sudo ./bin/chameleon setup`. This will require user
-interaction to setup the Web application project. It's helpful to know how to
-setup Apache webserver.
+currently only supports applications using Apache (2.6) webserver on Ubuntu
+16.04.
 
-### Cloning <span id=\"cloning\"></span>
 
-    git clone https://github.com/not--p/Chameleon [project-dir]
-    
+
+### <span id=\"install\">Installation</span>
+
+[https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K](//owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K)
+
 ### Running the Chameleon script <span id=\"setup\"></span>
 
-    sudo ./bin/chameleon setup
+    sudo ./chameleon-install.bash
     
-
 ## Conventions <span id=\"conventions\"></span>
 
 ### Directory Structure
