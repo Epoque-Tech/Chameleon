@@ -12,7 +12,7 @@
 namespace Epoque\Chameleon;
 
 
-class HtmlHead
+class HtmlHead extends Common
 {
     /** @var array Contains HTML document meta description arrays. **/
     private static $description = [];
@@ -62,7 +62,8 @@ class HtmlHead
      * addKeywords
      * 
      * Add an array representing mapping of request => keywords to
-     * the keywords array.
+     * the keywords array. If $request part of $keywords has a trailing
+     * slash, it is removed.
      * 
      * @param type $keywords
      * @return boolean
@@ -74,9 +75,16 @@ class HtmlHead
         if (is_array($keywords) && count($keywords) === 1) {
 
             if ((is_string(key($keywords)) || key($keywords) === '') && is_string(current($keywords))) {
+                $keywords = [ltrim(key($keywords), '/') => current($keywords)];
                 self::$keywords = array_merge(self::$keywords, $keywords);
                 $result = true;
             }
+            else {
+                self::logError(__METHOD__ . ': keywords parameter $keywords ([<request> => <keywords>]) malformed.');
+            }
+        }
+        else {
+            self::logError(__METHOD__ . ': parameter not an array or array of larger than 1.');
         }
 
         return $result;
