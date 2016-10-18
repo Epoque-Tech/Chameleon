@@ -12,7 +12,7 @@ use Epoque\Chameleon\HtmlHead;
 class HtmlHeadTest implements Test
 {
     private static $htmlHead = null;
-    
+
     private static $tests = [
         'Empty HtmlHead' => emptyTest,
         'Print HtmlHead' => printHtmlHead,
@@ -24,24 +24,24 @@ class HtmlHeadTest implements Test
     public static function run()
     {
         self::$htmlHead = trim(new HtmlHead(TRUE));
-      
+
         foreach (self::$tests as $header => $test) {
             print '<section class="col-md-8 col-md-offset-1 testSection">' . "\n";
             print "<h3>$header</h3>\n";
             $r = self::$test();
-            
+
             if ($r) {
                 print '<span class="label label-success">Pass</span>' . "\n";
             }
             else {
                 print '<span class="label label-danger">Fail</span>' . "\n";
             }
-            
+
             print '</section>' . "\n";
         }
     }
 
-    
+
     private static function headToArray()
     {
         self::$htmlHead = trim(new HtmlHead(TRUE));
@@ -52,7 +52,7 @@ class HtmlHeadTest implements Test
     private static function emptyTest()
     {
         $r = 0;
-        
+
         $expected = [
             '<head>',
             '<meta charset="utf-8">',
@@ -67,9 +67,9 @@ class HtmlHeadTest implements Test
             '<link href="/resources/css/custom.css" rel="stylesheet">',
             '</head>'
         ];
-        
+
         print "<pre>\n";
-        
+
         foreach (self::headToArray() as $i => $actual) {
             if ($expected[$i] !== $actual) {
                 print "emptyTest error: \n";
@@ -78,21 +78,21 @@ class HtmlHeadTest implements Test
                 $r++;
             }
         }
-        
+
         $r != 0 ? : print "OK!\n";
-        
+
         print "</pre>\n";
-        
+
         $r > 0 ? $r = False : $r = True;
         return $r;
     }
 
-    
+
     private static function printHtmlHead()
     {
         $z = 0;
         $z = print '<pre>' . htmlentities(self::$htmlHead) . '</pre>';
-                
+
         if ($z === 1) {
             return True;
         }
@@ -100,22 +100,22 @@ class HtmlHeadTest implements Test
             return False;
         }
     }
-    
-    
+
+
     private static function testAddKeywords()
     {
         $head = self::headToArray();
         $keywordsLine = -1;
-        
+
         print "<pre>\n";
-        
+
         foreach ($head as $i => $line) {
             if (preg_match('|<meta name="keywords"|', $line)) {
                 $keywordsLine = $i;
                 print 'keywords line before: ' . htmlspecialchars($line) . "\n";
             }
         }
-        
+
         if ($i == -1) {
             print "Could not find keywords line in the HtmlHead!\n";
             print "</pre>\n";
@@ -129,8 +129,8 @@ class HtmlHeadTest implements Test
             return preg_match('|KEYWORD|', $head[$keywordsLine]);
         }
     }
-    
-    
+
+
     private static function testAddKeywordsBadArgs()
     {
         $err = 0;
@@ -144,12 +144,12 @@ class HtmlHeadTest implements Test
             ['keywords' => 0],
             ['request' => 'key,words', '/' => 'more,key,words']
         ];
-        
+
         print "<pre>\n";
-        
+
         foreach ($args as $arg) {
             print 'Trying: ';
-            
+
             if ($arg == null) {
                 print 'null';
             }
@@ -162,20 +162,20 @@ class HtmlHeadTest implements Test
             else {
                 print "$arg";
             }
-            
+
             print "\n";
-            
+
             HtmlHead::addKeywords($arg);
             exec('tail -1 ' . LOG_FILE, $logline);
-            
+
             if (!preg_match('|parameter not an array or array of larger than 1|', $logline[0]) &&
                     !preg_match('|keywords parameter ([<request> => <keywords>]) malformed|', $logline[0])) {
                 $err++;
             }
         }
-        
+
         print "</pre>\n";
-        
+
         return !$err;
     }
 }
