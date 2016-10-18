@@ -150,14 +150,14 @@ class HtmlHeadTest implements Test
         foreach ($args as $arg) {
             print 'Trying: ';
 
-            if ($arg == null) {
+            if ($arg === null) {
                 print 'null';
+            }
+            else if ($arg === []) {
+                print '[]';
             }
             else if (is_array($arg) && !empty($arg)) {
                 print_r($arg);
-            }
-            else if (is_array($arg) && !empty($arg)) {
-                print '[]';
             }
             else {
                 print "$arg";
