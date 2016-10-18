@@ -13,8 +13,9 @@ use \Epoque\Chameleon\Router;
 class HtmlHeadTest implements Test
 {
     private static $htmlHead = null;
-
-    private static $tests = [
+    private static $httpHost = null;
+    
+        private static $tests = [
         'Empty HtmlHead' => emptyTest,
         'Print HtmlHead' => printHtmlHead,
         'Test Adding a Title' => testAddTitle,
@@ -27,6 +28,7 @@ class HtmlHeadTest implements Test
     public static function run()
     {
         self::$htmlHead = trim(new HtmlHead(TRUE));
+        self::$httpHost = filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_URL);
 
         foreach (self::$tests as $header => $test) {
             print '<section class="col-md-8 col-md-offset-1 testSection">' . "\n";
@@ -64,7 +66,7 @@ class HtmlHeadTest implements Test
             '<meta name="description" content="">',
             '<meta name="keywords" content="">',
             '<meta name="author" content="">',
-            '<link rel="alternate" href="http://camdev.lakonacomputers.com/HtmlHeadTest" hreflang="en-us" /> ',
+            '<link rel="alternate" href="http://'.self::$httpHost.'/HtmlHeadTest" hreflang="en-us" /> ',
             '<title>' . SITE_TITLE . '</title>',
             '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">',
             '<link href="/resources/css/custom.css" rel="stylesheet">',
