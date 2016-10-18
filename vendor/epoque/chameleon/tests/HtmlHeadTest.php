@@ -1,17 +1,10 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Epoque\ChameleonTesting;
 use Epoque\Chameleon\HtmlHead;
 
 
 /**
- * Description of HtmlHeadTest
+ * HtmlHeadTest
  *
  * @author jason favrod <jason@epoquecorportation.com>
  */
@@ -21,9 +14,11 @@ class HtmlHeadTest implements Test
     private static $htmlHead = null;
     
     private static $tests = [
-            'Empty HtmlHead' => emptyTest,
-            'Print HtmlHead' => printHtmlHead
-        ];
+        'Empty HtmlHead' => emptyTest,
+        'Print HtmlHead' => printHtmlHead,
+        'Add Keywords Test' => testAddKeywords,
+        'Add Keywords Bad Args' => testAddKeywordsBadArgs
+    ];
 
 
     public static function run()
@@ -104,5 +99,83 @@ class HtmlHeadTest implements Test
         else {
             return False;
         }
+    }
+    
+    
+    private static function testAddKeywords()
+    {
+        $head = self::headToArray();
+        $keywordsLine = -1;
+        
+        print "<pre>\n";
+        
+        foreach ($head as $i => $line) {
+            if (preg_match('|<meta name="keywords"|', $line)) {
+                $keywordsLine = $i;
+                print 'keywords line before: ' . htmlspecialchars($line) . "\n";
+            }
+        }
+        
+        if ($i == -1) {
+            print "Could not find keywords line in the HtmlHead!\n";
+            print "</pre>\n";
+            return FALSE;
+        }
+        else {
+            HtmlHead::addKeywords([\Epoque\Chameleon\Router::URI() => 'KEYWORD']);
+            $head = self::headToArray();
+            print 'keywords line after: ' . htmlspecialchars($head[$keywordsLine]) . "\n";
+            print "</pre>\n";
+            return preg_match('|KEYWORD|', $head[$keywordsLine]);
+        }
+    }
+    
+    
+    private static function testAddKeywordsBadArgs()
+    {
+        $err = 0;
+        $args = [
+            null,
+            [],
+            0,
+            7,
+            'keywords',
+            ['keywords'],
+            ['keywords' => 0],
+            ['request' => 'key,words', '/' => 'more,key,words']
+        ];
+        
+        print "<pre>\n";
+        
+        foreach ($args as $arg) {
+            print 'Trying: ';
+            
+            if ($arg == null) {
+                print 'null';
+            }
+            else if (is_array($arg) && !empty($arg)) {
+                print_r($arg);
+            }
+            else if (is_array($arg) && !empty($arg)) {
+                print '[]';
+            }
+            else {
+                print "$arg";
+            }
+            
+            print "\n";
+            
+            HtmlHead::addKeywords($arg);
+            exec('tail -1 ' . LOG_FILE, $logline);
+            
+            if (!preg_match('|parameter not an array or array of larger than 1|', $logline[0]) &&
+                    !preg_match('|keywords parameter ([<request> => <keywords>]) malformed|', $logline[0])) {
+                $err++;
+            }
+        }
+        
+        print "</pre>\n";
+        
+        return !$err;
     }
 }
