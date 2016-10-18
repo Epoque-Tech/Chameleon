@@ -1,6 +1,7 @@
 <?php
 namespace Epoque\ChameleonTesting;
 use Epoque\Chameleon\HtmlHead;
+use \Epoque\Chameleon\Router;
 
 
 /**
@@ -16,6 +17,7 @@ class HtmlHeadTest implements Test
     private static $tests = [
         'Empty HtmlHead' => emptyTest,
         'Print HtmlHead' => printHtmlHead,
+        'Test Adding a Title' => testAddTitle,
         'Add Keywords Test' => testAddKeywords,
         'Add Keywords Bad Args' => testAddKeywordsBadArgs,
         'Toggle Bootstrap' => removeBootstrapTest
@@ -126,6 +128,29 @@ class HtmlHeadTest implements Test
     }
 
 
+
+    private static function testAddTitle()
+    {
+        $title = "TITLE";
+        $err   = 0;
+        
+        print "<pre>\n";
+        print "Head Before:\n" . htmlspecialchars(self::$htmlHead);
+        
+        $err = $err + preg_match('|MY_TITLE|', self::$htmlHead);
+        
+        HtmlHead::addTitle([Router::URI() => 'MY_TITLE']);
+        $newHtmlHead = trim(new HtmlHead(TRUE));
+        
+        print "\n\nHead After:\n" . htmlspecialchars($newHtmlHead);
+        print "</pre>\n";
+        
+        $err = $err + !preg_match('|MY_TITLE|', $newHtmlHead);
+        
+        return !$err;
+    }
+
+
     private static function testAddKeywords()
     {
         $head = self::headToArray();
@@ -146,7 +171,7 @@ class HtmlHeadTest implements Test
             return FALSE;
         }
         else {
-            HtmlHead::addKeywords([\Epoque\Chameleon\Router::URI() => 'KEYWORD']);
+            HtmlHead::addKeywords([Router::URI() => 'KEYWORD']);
             $head = self::headToArray();
             print 'keywords line after: ' . htmlspecialchars($head[$keywordsLine]) . "\n";
             print "</pre>\n";
