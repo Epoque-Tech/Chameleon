@@ -32,7 +32,7 @@ currently only supports applications using Apache (2.6) webserver on Ubuntu
 
 ### <span id=\"install\">Installation</span>
 
-[https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K](//owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K)
+[https://owncloud.lakonacomputers.com/index.php/s/o0qEsigcjQIzXwU](https://owncloud.lakonacomputers.com/index.php/s/o0qEsigcjQIzXwU)
 
 ### Running the Chameleon script <span id=\"setup\"></span>
 

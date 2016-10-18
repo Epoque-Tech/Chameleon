@@ -32,7 +32,7 @@ Note prerequisites:
 
 Download the installer:
 
-[https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K](https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K)
+[https://owncloud.lakonacomputers.com/index.php/s/o0qEsigcjQIzXwU](https://owncloud.lakonacomputers.com/index.php/s/o0qEsigcjQIzXwU)
 
 ### Installation ###
 
