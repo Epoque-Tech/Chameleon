@@ -17,7 +17,8 @@ class HtmlHeadTest implements Test
         'Empty HtmlHead' => emptyTest,
         'Print HtmlHead' => printHtmlHead,
         'Add Keywords Test' => testAddKeywords,
-        'Add Keywords Bad Args' => testAddKeywordsBadArgs
+        'Add Keywords Bad Args' => testAddKeywordsBadArgs,
+        'Toggle Bootstrap' => removeBootstrapTest
     ];
 
 
@@ -99,6 +100,29 @@ class HtmlHeadTest implements Test
         else {
             return False;
         }
+    }
+
+
+    private static function removeBootstrapTest()
+    {
+        $err = 0;
+
+        self::$htmlHead = trim(new HtmlHead(TRUE));
+        print "<pre>\n";
+
+        HtmlHead::toggleBootstrap();
+        self::$htmlHead = trim(new HtmlHead(TRUE));
+        print "Turn off Bootstrap:\n" . htmlentities(self::$htmlHead);
+
+        $err = !preg_match('|maxcdn.bootstrapcdn.com/bootstrap|', self::$htmlHead);
+
+        HtmlHead::toggleBootstrap();
+        self::$htmlHead = trim(new HtmlHead(TRUE));
+        print "\n\nTurn On:\n" . htmlentities(self::$htmlHead) . "</pre>\n";
+
+        $err = preg_match('|maxcdn.bootstrapcdn.com/bootstrap|', self::$htmlHead);
+
+        return $err;
     }
 
 

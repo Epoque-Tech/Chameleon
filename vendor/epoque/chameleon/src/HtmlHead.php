@@ -30,9 +30,7 @@ class HtmlHead extends Common
     private static $globalCss   = [];
     
     /** @var array List of elements that can be set to TRUE to disable **/
-    private static $disabled    = [ 'bootstrap' => FALSE,
-                                    'jquery'    => FALSE,
-                                    'jquery-ui' => FALSE ];
+    private static $bootstrap   = TRUE;
 
     
     public function __construct()
@@ -42,19 +40,45 @@ class HtmlHead extends Common
 
 
     /**
-     * disable
+     * toggleBootstrap
      *
-     * Disables the given $element.
-     *
-     * @param string $element The element of the self::$disabled array
-     * to disable. Possible values 'bootstrap', 'jquery', 'jquery-ui'.
+     * Disables/enables the bootstrap CSS.
      */
 
-    public static function disable($element)
+    public static function toggleBootstrap()
     {
-        if (!self::$disabled[$element]) {
-            self::$disabled[$element] = TRUE;
+        if (self::$bootstrap) {
+            self::$bootstrap = FALSE;
         }
+        else {
+            self::$bootstrap = TRUE;
+        }
+    }
+
+
+    /**
+     * addTitle
+     *
+     * Adds valid title arrays to the class' title array.
+     *
+     * @param  array $title A [(string) requestUri => (string) title]
+     * mapping.
+     * @return Boolean True if title was added, false otherwise.
+     */
+
+    public static function addTitle($title=[])
+    {
+        $result = false;
+
+        if (is_array($title) && count($title) === 1) {
+
+            if ((is_string(key($title)) || key($title) === '') && is_string(current($title))) {
+                self::$title = array_merge(self::$title, $title);
+                $result = true;
+            }
+        }
+
+        return $result;
     }
 
 
@@ -117,28 +141,18 @@ class HtmlHead extends Common
 
 
     /**
-     * addTitle
+     * addGlobalCss
+     * 
+     * Adds a URL to the $globalCss array that will be in the HTML head of
+     * every view.
      *
-     * Adds valid title arrays to the class' title array.
-     *
-     * @param  array $title A [(string) requestUri => (string) title]
-     * mapping.
-     * @return Boolean True if title was added, false otherwise.
+     * @param  string $css A given URL.
+     * @return Boolean True if $css was added to self::$css.
      */
 
-    public static function addTitle($title=[])
+    public static function addGlobalCss($css='')
     {
-        $result = false;
-
-        if (is_array($title) && count($title) === 1) {
-
-            if ((is_string(key($title)) || key($title) === '') && is_string(current($title))) {
-                self::$title = array_merge(self::$title, $title);
-                $result = true;
-            }
-        }
-
-        return $result;
+        return array_push(self::$globalCss, $css);
     }
 
 
@@ -169,22 +183,6 @@ class HtmlHead extends Common
         }
     }
 
-
-    /**
-     * addGlobalCss
-     * 
-     * Adds a URL to the $globalCss array that will be in the HTML head of
-     * every view.
-     *
-     * @param  string $css A given URL.
-     * @return Boolean True if $css was added to self::$css.
-     */
-
-    public static function addGlobalCss($css='')
-    {
-        return array_push(self::$globalCss, $css);
-    }
-
      
     public function __toString()
     {
@@ -212,7 +210,7 @@ class HtmlHead extends Common
         
         // CSS
         
-        if (!self::$disabled['bootstrap']) {
+        if (self::$bootstrap) {
             $html .= '<link rel="stylesheet" '.
                      'href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" '.
                      'integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" '.
