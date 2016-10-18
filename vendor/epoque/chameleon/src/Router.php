@@ -13,7 +13,7 @@ abstract class Router extends Common
     
     
     public static function URI() {
-        return filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL);
+        return rtrim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL), '/');
     }
 
 
