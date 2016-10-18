@@ -4,14 +4,14 @@ use cebe\markdown\GithubMarkdown as Parser;
 $parser = new Parser(); ?>
 
 
-<div class="col-md-8 col-md-offset-1">
+<div class="col-md-offset-1">
     <div class="jumbotron">
 <?php
 print $parser->parse("
 ## What is Chameleon Framework?
 
 Chameleon is an PHP framework for building Web applications. It runs on [Ubuntu
-16.04 (GNU/Linux)](//www.ubuntu.com) and uses the [Apache](//httpd.apache.org)
+16.04](//www.ubuntu.com) (GNU/Linux) and uses the [Apache](//httpd.apache.org)
 Web server. It is designed to support interactions with [MySQL](//www.mysql.com),
 [Oracle](//www.oracle.com/database/index.html), and [SQLite](//www.sqlite.org)
 database management systems (DBMS). The framework is currently in pre-release
