@@ -1,6 +1,7 @@
 <?php
 namespace Epoque\ChameleonTesting;
 use Epoque\Chameleon\HtmlHead;
+use Epoque\Chameleon\Router;
 
 
 /**
