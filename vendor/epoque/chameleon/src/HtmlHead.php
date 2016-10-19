@@ -1,4 +1,6 @@
 <?php
+namespace Epoque\Chameleon;
+
 
 /**
  * HtmlHead
@@ -9,32 +11,35 @@
  * @author Jason Favrod jason@lakonacomputers.com
  */
 
-namespace Epoque\Chameleon;
-
-
-class HtmlHead
+class HtmlHead extends Common
 {
-    /** @var array Contains HTML document meta description arrays. **/
-    private static $description = [];
-
-    /** @var array Contains HTML document meta keywords arrays. **/
-    private static $keywords    = [];
-    
     /** @var array Contains HTML document title arrays. **/
     private static $title       = [];
 
-    /** @var array Contains key/value pairs for view specific css. **/
-    private static $css         = [];
+    /** @var array Contains HTML document meta keywords arrays. **/
+    private static $keywords    = [];
+
+    /** @var array Contains HTML document meta description arrays. **/
+    private static $description = [];
+
+    /** @var boolean Set to TRUE to use bootstrap CSS globally, FALSE to not. **/
+    private static $bootstrap   = TRUE;
     
     /** @var array Contains URL linking to CSS for all views. **/
     private static $globalCss   = [];
-    
-    /** @var array List of elements that can be set to TRUE to disable **/
-    private static $disabled    = [ 'bootstrap' => FALSE,
-                                    'jquery'    => FALSE,
-                                    'jquery-ui' => FALSE ];
 
-    
+    /** @var array Contains key/value pairs for view specific css. **/
+    private static $css         = [];
+
+
+    /**
+     * constructor
+     * 
+     * @param boolean $test Set to FALSE when not testing.
+     * @return prints __toString() when not testing,
+     * returns the string from __toString() when testing.
+     */
+
     public function __construct($test=FALSE)
     {
         if ($test==FALSE) {
@@ -47,19 +52,34 @@ class HtmlHead
 
 
     /**
-     * disable
+     * addTitle
      *
-     * Disables the given $element.
+     * Adds valid title arrays to the class' title array.
      *
-     * @param string $element The element of the self::$disabled array
-     * to disable. Possible values 'bootstrap', 'jquery', 'jquery-ui'.
+     * @param  array $title A [(string) requestUri => (string) title]
+     * mapping.
+     * @return Boolean True if title was added, false otherwise.
      */
 
-    public static function disable($element)
+    public static function addTitle($title=[])
     {
-        if (!self::$disabled[$element]) {
-            self::$disabled[$element] = TRUE;
+        $result = false;
+
+        if (is_array($title) && count($title) === 1) {
+
+            if ((is_string(key($title)) || key($title) === '') && is_string(current($title))) {
+                self::$title = array_merge(self::$title, [trim(key($title), '/') => current($title)]);
+                $result = true;
+            }
+            else {
+                self::logError(__METHOD__ . ': addTitle argument does not contain a valid mapping.');
+            }
         }
+        else {
+            self::logWarning(__METHOD__ . ': addTitle argument invalid.');
+        }
+
+        return $result;
     }
 
 
@@ -67,7 +87,8 @@ class HtmlHead
      * addKeywords
      * 
      * Add an array representing mapping of request => keywords to
-     * the keywords array.
+     * the keywords array. If $request part of $keywords has a trailing
+     * slash, it is removed.
      * 
      * @param type $keywords
      * @return boolean
@@ -79,9 +100,16 @@ class HtmlHead
         if (is_array($keywords) && count($keywords) === 1) {
 
             if ((is_string(key($keywords)) || key($keywords) === '') && is_string(current($keywords))) {
+                $keywords = [trim(key($keywords), '/') => current($keywords)];
                 self::$keywords = array_merge(self::$keywords, $keywords);
                 $result = true;
             }
+            else {
+                self::logError(__METHOD__ . ': keywords parameter $keywords ([<request> => <keywords>]) malformed.');
+            }
+        }
+        else {
+            self::logError(__METHOD__ . ': parameter not an array or array of larger than 1.');
         }
 
         return $result;
@@ -114,28 +142,35 @@ class HtmlHead
 
 
     /**
-     * addTitle
+     * toggleBootstrap
      *
-     * Adds valid title arrays to the class' title array.
-     *
-     * @param  array $title A [(string) requestUri => (string) title]
-     * mapping.
-     * @return Boolean True if title was added, false otherwise.
+     * Disables/enables the bootstrap CSS.
      */
 
-    public static function addTitle($title=[])
+    public static function toggleBootstrap()
     {
-        $result = false;
-
-        if (is_array($title) && count($title) === 1) {
-
-            if ((is_string(key($title)) || key($title) === '') && is_string(current($title))) {
-                self::$title = array_merge(self::$title, $title);
-                $result = true;
-            }
+        if (self::$bootstrap) {
+            self::$bootstrap = FALSE;
         }
+        else {
+            self::$bootstrap = TRUE;
+        }
+    }
 
-        return $result;
+
+    /**
+     * addGlobalCss
+     * 
+     * Adds a URL to the $globalCss array that will be in the HTML head of
+     * every view.
+     *
+     * @param  string $css A given URL.
+     * @return Boolean True if $css was added to self::$css.
+     */
+
+    public static function addGlobalCss($css='')
+    {
+        return array_push(self::$globalCss, $css);
     }
 
 
@@ -166,27 +201,11 @@ class HtmlHead
         }
     }
 
-
-    /**
-     * addGlobalCss
-     * 
-     * Adds a URL to the $globalCss array that will be in the HTML head of
-     * every view.
-     *
-     * @param  string $css A given URL.
-     * @return Boolean True if $css was added to self::$css.
-     */
-
-    public static function addGlobalCss($css='')
-    {
-        return array_push(self::$globalCss, $css);
-    }
-
      
     public function __toString()
     {
-        $requestUri = ltrim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL), '/');
-        $requiredJS = ['config.js', 'chameleon.js'];
+        $requestUri = trim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL), '/');
+        $httpHost   = filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_URL);
 
         // MetaData
 
@@ -196,7 +215,7 @@ class HtmlHead
         $html .= '<meta name="description" content="'.self::$description[$requestUri].'">'."\n";
         $html .= '<meta name="keywords" content="'.self::$keywords[$requestUri].'">'."\n";
         $html .= "<meta name=\"author\" content=\"\">\n";
-        $html .= '<link rel="alternate" href="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" hreflang="en-us" /> '."\n";
+        $html .= '<link rel="alternate" href="http://'.$httpHost.'/'.$requestUri.'" hreflang="en-us" /> '."\n";
 
         
         // Site/View Title
@@ -209,7 +228,7 @@ class HtmlHead
         
         // CSS
         
-        if (!self::$disabled['bootstrap']) {
+        if (self::$bootstrap) {
             $html .= '<link rel="stylesheet" '.
                      'href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" '.
                      'integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" '.
