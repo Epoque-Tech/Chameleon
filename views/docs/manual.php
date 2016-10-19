@@ -25,7 +25,9 @@ print $parser->parse("
 
 The Chameleon framework is used to quickly setup new Web applications. It
 currently only supports applications using Apache (2.6) webserver on Ubuntu
-16.04.
+16.04. Chameleon provides a prototyping (non-performance-optimized) environment.
+It uses [git](//git-scm.com) and [composer](//getcomposer.org) and tries to follow
+[PHP FIG](//www.php-fig.org) standards.
 
 ### <span id=\"install\">Installation</span>
 
@@ -35,7 +37,8 @@ Download the Chameleon installation script:
 
 Run the installation script:
 
-    sudo ./chameleon-install.bash
+    if [ ! -x chameleon-install.bash ]; then sudo chmod ug+x chameleon-install.bash; fi
+    ./chameleon-install.bash
 
 The script will prompt for the user the information needed to setup the new
 Chameleon project.
