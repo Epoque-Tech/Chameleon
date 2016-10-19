@@ -16,11 +16,11 @@ abstract class Common
 
 
     public static function URI() {
-        return filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL);
+        return trim(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL), '/');
     }
 
 
-    private static function initLog()
+    protected static function initLog()
     {
         if (self::$log === NULL) {
             self::$log = new Logger('chameleon.log');
@@ -29,14 +29,14 @@ abstract class Common
     }
 
 
-    public static function logWarning($message='')
+    protected static function logWarning($message='')
     {
         self::initLog();
         self::$log->warn($message);
     }
 
 
-    public static function logError($message='')
+    protected static function logError($message='')
     {
         self::initLog();
         self::$log->err($message);

@@ -106,8 +106,8 @@ class DaemonTest extends Daemon implements Test
         
         foreach(self::$routes as $request => $response) {
 
-            if (trim($request) !== '/DaemonTest') {
-                $requestURL = 'http://' . $_SERVER['SERVER_NAME'] . $request;
+            if (trim($request) !== 'DaemonTest') {
+                $requestURL = 'http://' . $_SERVER['SERVER_NAME'] . "/$request";
                 
                 print "<pre>Testing: $requestURL</pre>".PHP_EOL;
                 $renderedHtml = file_get_contents($requestURL);
