@@ -1,7 +1,7 @@
 <?php
 namespace Epoque\ChameleonTesting;
 use Epoque\Chameleon\HtmlHead;
-use \Epoque\Chameleon\Router;
+use Epoque\Chameleon\Router;
 
 
 /**
@@ -34,18 +34,15 @@ class HtmlHeadTest implements Test
             print '<section class="col-md-8 col-md-offset-1 testSection">' . "\n";
             print "<h3>$header</h3>\n";
             $r = self::$test();
-
             if ($r) {
                 print '<span class="label label-success">Pass</span>' . "\n";
             }
             else {
                 print '<span class="label label-danger">Fail</span>' . "\n";
             }
-
             print '</section>' . "\n";
         }
     }
-
 
     private static function headToArray()
     {
@@ -57,7 +54,6 @@ class HtmlHeadTest implements Test
     private static function emptyTest()
     {
         $r = 0;
-
         $expected = [
             '<head>',
             '<meta charset="utf-8">',
@@ -72,7 +68,6 @@ class HtmlHeadTest implements Test
             '<link href="/resources/css/custom.css" rel="stylesheet">',
             '</head>'
         ];
-
         print "<pre>\n";
 
         foreach (self::headToArray() as $i => $actual) {
@@ -83,15 +78,13 @@ class HtmlHeadTest implements Test
                 $r++;
             }
         }
-
+        
         $r != 0 ? : print "OK!\n";
-
         print "</pre>\n";
-
+        
         $r > 0 ? $r = False : $r = True;
         return $r;
     }
-
 
     private static function printHtmlHead()
     {
