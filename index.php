@@ -9,7 +9,7 @@ HtmlHead::addGlobalCss(CSS_DIR.'custom.css');
 
 // Docs
 $docs = [
-    ['/Manual' => VIEWS_DIR.'docs/manual.php']
+    ['Manual' => VIEWS_DIR.'docs/manual.php']
 ];
 
 foreach ($docs as $doc) {
@@ -18,9 +18,10 @@ foreach ($docs as $doc) {
 
 // Tests
 $tests = [
-    ['/CommonTest' => VIEWS_DIR.'tests/commonTest.php'],
-    ['/DaemonTest' => VIEWS_DIR.'tests/daemonTest.php'],
-    ['/HtmlHeadTest' => VIEWS_DIR.'tests/htmlHeadTest.php']
+    [ 'CommonTest'   => VIEWS_DIR.'tests/commonTest.php'  ],
+    [ 'DaemonTest'   => VIEWS_DIR.'tests/daemonTest.php'  ],
+    [ 'HtmlHeadTest' => VIEWS_DIR.'tests/htmlHeadTest.php'],
+    [ 'JSTest'       => VIEWS_DIR.'tests/JSTest.php'      ]
 ];
 
 foreach ($tests as $test) {
