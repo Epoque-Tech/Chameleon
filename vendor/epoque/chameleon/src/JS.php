@@ -86,14 +86,20 @@ class JS extends Common implements RouterInterface
 
     
     public static function addRoute($route=[]) {
-        if ( is_array($route) && !empty($route) && is_string(key($route)) &&
-               is_string(current($route)) && is_string(current($route)) )
+        if (is_array($route) && count($route) === 1)
         {
-                self::$routes[key($route)] = current($route);
-                return true;
+            $req = trim(key($route), '/');
+            $res = current($route);
+            
+            if (is_string($req) && is_file($res)) {
+               self::$routes[$req] = $res;
+            }
+            else {
+                self::logError(__METHOD__ . ": invalid route ([$req => $res])");
+            }
         }
         else {
-            return false;
+            self::logError(__METHOD__ . ': route argument not array, is empty, or is too large.');
         }
     }
 
