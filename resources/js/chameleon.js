@@ -4,7 +4,7 @@
 var APP = {};
 
 // The PHP Script that handles AJAX requests.
-APP.requestURL = 'RequestHandler.php';
+APP.requestURL = '/RequestHandler.php';
 
 
 /**
