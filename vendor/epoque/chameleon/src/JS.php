@@ -91,7 +91,7 @@ class JS extends Common implements RouterInterface
             $req = trim(key($route), '/');
             $res = current($route);
             
-            if (is_string($req) && is_file($res)) {
+            if (is_string($req) && is_string($res)) {
                self::$routes[$req] = $res;
             }
             else {
