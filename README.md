@@ -1,6 +1,8 @@
 # Chameleon Framework
 PHP General Web Application Prototyping Framework
-version: 0.0.1
+
+@version 0.0.2
+
 
 ## Documentation
 [Live Documentation](http://chameleon.lakonacomputers.com)
