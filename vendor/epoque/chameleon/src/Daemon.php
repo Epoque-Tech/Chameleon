@@ -10,7 +10,7 @@ namespace Epoque\Chameleon;
  * @author jason favrod <jason@lakonacomputers.com>
  */
 
-class Daemon extends Router
+class Daemon extends Common
 {
     /**
      * fetchView

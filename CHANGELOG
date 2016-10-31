@@ -1,0 +1,18 @@
+CHANGELOG
+=========
+
+----------------------
+version 0.0.1 to 0.0.2
+----------------------
+
+    configuration
+        * Removed autoload.php from vendor/.gitignore
+        * Made Path to APP.requestURL Absolute (resources/js)
+
+    Daemon
+        * Daemon Now Extending Common not Router
+
+    JS
+        * Accepting String (instead of file) as Route Resource
+        * Striping Leading and Trailing Slashes in JS::addRoute
+
