@@ -1,8 +1,7 @@
 <?php
-
 require_once 'config.php';
 use Epoque\Chameleon\HtmlHead;
-use Epoque\Chameleon\Daemon;
+use Epoque\Chameleon\Presenter;
 
 
 HtmlHead::addGlobalCss(CSS_DIR.'custom.css');
@@ -13,7 +12,7 @@ $docs = [
 ];
 
 foreach ($docs as $doc) {
-    Daemon::addRoute($doc);
+    Presenter::addRoute($doc);
 }
 
 // Tests
@@ -25,7 +24,7 @@ $tests = [
 ];
 
 foreach ($tests as $test) {
-    Daemon::addRoute($test);
+    Presenter::addRoute($test);
 }
 
 ?>

@@ -39,7 +39,7 @@
     <br>
 
     <div class="row">
-        <?php Epoque\Chameleon\Daemon::fetchView(); ?>
+        <?php Epoque\Chameleon\Presenter::fetchRoute(); ?>
     </div>
 </div>
 
