@@ -5,7 +5,7 @@ require 'config.php';
 /**
  * RequestHandler
  * 
- * The default request handler for Chameleon projects.
+ * The request handler template for Chameleon projects.
  */
 
 class RequestHandler
@@ -13,13 +13,12 @@ class RequestHandler
     /**
      * handle
      * 
-     * Handles given requests.
+     * Handles requests.
      * 
-     * @param associative array $request The $_REQUEST array.
-     * @return type
+     * @return tail call to an RequestHandler method.
      */
     
-    public function handle(&$request)
+    public static function handle()
     {
         return;
     }
@@ -27,5 +26,5 @@ class RequestHandler
 }
 
 if ($_REQUEST) {
-    RequestHandler::handle($_REQUEST);
+    RequestHandler::handle();
 }
