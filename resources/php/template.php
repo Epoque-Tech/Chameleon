@@ -1,6 +1,5 @@
 <div class="container">
     <div class="row">
-        <h1>Chameleon Web Application Framework</h1>
         <div class="col-md-12">
             <ul class="nav nav-pills">
               <li role="presentation"><a href="/">Home</a></li>
