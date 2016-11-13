@@ -17,9 +17,6 @@ print $parser->parse("
         <li><a href=\"#install\">Installation</a></li>
     </ol>
     <li><a href=\"#conventions\">Conventions</a></li>
-<<<<<<< HEAD
-    <li><a href=\"#objects\">Chameleon Objects</a></li>
-=======
     <ol type=\"i\">
         <li><a href=\"#dirStruct\">Directory Structure</a></li>
         <li><a href=\"#dirConst\">Directory Constants</a></li>
@@ -31,7 +28,6 @@ print $parser->parse("
         <li><a href=\"#js\">JS</a></li>
     </ol>
     <li><a href=\"#jsNajax\">JavaScript and AJAX</a></li>
->>>>>>> live2
 </ol>
 
 
@@ -43,13 +39,9 @@ currently only supports applications using Apache (2.6) webserver on Ubuntu
 It uses [git](//git-scm.com) and [composer](//getcomposer.org) and tries to follow
 [PHP FIG](//www.php-fig.org) standards.
 
-<<<<<<< HEAD
-### <span id=\"install\">Installation</span>
-=======
 
 <span id=\"install\"></span>
 ### Installation
->>>>>>> live2
 
 Download the Chameleon installation script:
 
@@ -61,14 +53,6 @@ Run the installation script:
     ./chameleon-install.bash
 
 The script will prompt for the user the information needed to setup the new
-<<<<<<< HEAD
-Chameleon project.
-
-## Conventions <span id=\"conventions\"></span>
-
-### Directory Structure
-
-=======
 Chameleon project:
 
     LAMP installed.
@@ -126,61 +110,25 @@ composer run, and necessary files and directories created.
 
 **bin** → contains executable scripts.
 
->>>>>>> live2
 **conf** → contains configuration templates.
 
 **log** → contains the log files.
 
-<<<<<<< HEAD
-**resources** → contains CSS, database, HTML, images, JavaScript, and PHP.
-=======
 **resources** → contains resources, including but not limited to CSS, database,
 HTML, images, JavaScript, and PHP.
->>>>>>> live2
 
 **vendor** → contains composer components.
 
 **views** → contains pages/scripts that are shown to the user.
 
-<<<<<<< HEAD
-### DIR Constants
-=======
 
 <span id=\"dirConst\"></span>
 ### DIR Constants
 
->>>>>>> live2
 All PHP constants defined in Chameleon that represent directories and
 are named 'such-and-such' `_DIR` (i.e. `CSS_DIR`, `JS_DIR`, etc) end
 with a trailing slash.
 
-<<<<<<< HEAD
-## config.js
-
-The JavaScrip for Chameleon is configured in the **config.js** file.
-The template for this file is found in the conf directory and the live
-configuration file is located in **resources/js/config.js** with the
-rest of the project's JavaScript files.
-
-The configuration file defines the project's **APP** object (`{}`). The
-APP object is global and can be extended. Simply add data and methods
-to APP (e.g. `APP.name='chameleon'`).
-
-### JavaScript APP Object
-
-#### Data Members
-
-    requestURL: Stores the url where requests are directed.
-    
-#### Functional Members
-
-
-## Request Handling
-
-By default requests are handled by `RequestHandler.php` located in the APP_ROOT.
-RequestHandler is created from a template file in the `conf` directory. Simply
-add methods to this class for each GET or POST request you want to handle.
-=======
 
 <span id=\"config\"></span>
 ## Configuration
@@ -206,7 +154,6 @@ config.php
 
 ### Request Handling
 
->>>>>>> live2
 
 ");
 ?>
