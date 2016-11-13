@@ -1,21 +1,40 @@
 # Chameleon Framework
 PHP General Web Application Prototyping Framework
 
-@version 0.0.2
+@version 0.0.3
 
+## What is Chameleon Framework?
 
-## Documentation
+Chameleon is an PHP framework for building Web applications. It runs on [Ubuntu
+16.04](//www.ubuntu.com) (GNU/Linux) and uses the [Apache](//httpd.apache.org)
+Web server. It is designed to support interactions with [MySQL](//www.mysql.com),
+[Oracle](//www.oracle.com/database/index.html), and [SQLite](//www.sqlite.org)
+database management systems (DBMS). The framework is currently in pre-release
+development and should not be used for a production application. To find out
+how to use the framework checkout the [manual](/Manual). To help with the
+development, report issues, or get in touch with the developer, see the github
+[repo](//github.com/not--p/Chameleon).
+
+## Getting Started ##
+
+Note prerequisites:
+
+    Ubuntu 16.04
+    git knowledge
+    sudo access
+
+Documentation:
 [Live Documentation](http://chameleon.lakonacomputers.com)
 
 
-## Installation
+### Installation
 
 
-### Download
+#### Download
 [https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K](https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K)
 
 
-### Run
+#### Run
 
     if [ ! -x chameleon-install.bash ]; then sudo chmod ug+x chameleon-install.bash; fi
     ./chameleon-install.bash
