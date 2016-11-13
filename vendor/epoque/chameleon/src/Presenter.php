@@ -29,6 +29,7 @@ class Presenter extends Common implements RouterInterface
 
     
     public static function fetchRoute() {
+        // If the key for a request matches a wildcard return the wildcard route.
         if (array_key_exists(self::URI(), self::$routes)) {
             if (is_file(self::$routes[self::URI()])) {
                 include_once self::$routes[self::URI()];
@@ -44,6 +45,10 @@ class Presenter extends Common implements RouterInterface
                         self::URI() + ') route.');
             }
         }
+        else if(self::wildcardMatch(self::URI())) {
+            // wildcardMatch will include the file of match found.
+            return;
+        }
         else if (is_file(DEFAULT_VIEW)) {
             include_once DEFAULT_VIEW;
             self::logWarning(__METHOD__ . ': URI ('.self::URI().') not a route, showing default view (' . DEFAULT_VIEW . ')');
@@ -57,4 +62,20 @@ class Presenter extends Common implements RouterInterface
         }
     }
 
+    
+    private static function wildcardMatch($request)
+    {
+        foreach (self::$routes as $req => $res) {
+            if (preg_match('`\*$`', $req)) {
+                $req = rtrim($req, '/*');
+
+                if (preg_match("`^$req"."($|(/\w*)+$)`", $request)) {
+                    include_once $res;
+                    return True;
+                }   
+            }   
+        }   
+        
+        return False;
+    }
 }
