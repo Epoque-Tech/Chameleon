@@ -1,46 +1,51 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Epoque\Chameleon;
+
 
 /**
  * Description of SQLite3DB
  *
  * @author Jason Favrod jason@lakonacomputers.com
  */
+
 class SQLite3DB
 {
-    private $conn;
+    protected $db;
+    protected $conn;
 
-    
-    public static function select($query) {
-        $conn = new \SQLite3(DATABASE);
+
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
+
+
+    public function select($query) {
+        $conn = new \SQLite3($this->db);
         $queryResult = $conn->query($query);
         $result = [];
-        
-        while ($row = $queryResult->fetchArray(SQLITE3_ASSOC)) {
-            foreach ($row as $attrib => $value) {
-                $result[$attrib] = $value;
+
+        if ($queryResult) {
+            while ($row = $queryResult->fetchArray(SQLITE3_ASSOC)) {
+                $tmp = [];
+                foreach ($row as $attrib => $value) {
+                    $tmp[$attrib] = $value;
+                }
+                array_push($result, $tmp);
             }
         }
-        
+
         $conn->close();
         return $result;
     }
-    
-    
-    public static function update($query) {
-        $conn = new \SQLite3(DATABASE);
+
+
+    public function insert($query) {
+        $conn        = new \SQLite3($this->db);
         $queryResult = $conn->query($query)->numColumns();
-        
-        
-        
+
         $conn->close();
-        return $queryResult;        
+
+        return $queryResult;
     }
 }
