@@ -17,13 +17,14 @@ development, report issues, or get in touch with the developer, see the github
 
 ## Getting Started ##
 
-Note prerequisites:
+### Prerequisites:
 
     Ubuntu 16.04
     git knowledge
     sudo access
 
-Documentation:
+### Documentation:
+
 [Live Documentation](http://chameleon.lakonacomputers.com)
 
 
@@ -31,7 +32,8 @@ Documentation:
 
 
 #### Download
-[https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K](https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K)
+    
+[chameleon-install.bash](https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K)
 
 
 #### Run
