@@ -33,7 +33,7 @@ development, report issues, or get in touch with the developer, see the github
 
 #### Download
     
-[chameleon-install.bash](https://owncloud.lakonacomputers.com/index.php/s/NPH3MreeahR396K)
+[chameleon-install.bash](https://owncloud.lakonacomputers.com/index.php/s/o0qEsigcjQIzXwU)
 
 
 #### Run
