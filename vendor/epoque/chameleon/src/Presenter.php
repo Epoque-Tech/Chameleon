@@ -21,8 +21,8 @@ class Presenter extends Common implements RouterInterface
             return true;
         }
         else {
-            self::logWarning(__METHOD___ . ': could not add route [' . key($route) .
-                    ' => ' . current($route) . 'failed.');
+            self::logWarning(__METHOD__ . ': could not add route [' . key($route) .
+                    ' => ' . current($route) . '] failed.');
             return false;
         }
     }
@@ -41,7 +41,7 @@ class Presenter extends Common implements RouterInterface
                 include VIEWS_DIR . self::URI() . '.php';
             }
             else {
-                self::logWarning(__METHOD___ . ': could not fetch requested (' +
+                self::logWarning(__METHOD__ . ': could not fetch requested (' +
                         self::URI() + ') route.');
             }
         }
