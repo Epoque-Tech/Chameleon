@@ -34,6 +34,9 @@ class SQLite3DB extends Common
                 array_push($result, $tmp);
             }
         }
+        else {
+            self::logWarning(__METHOD__ . ": query ($query) failed.");
+        }
 
         $conn->close();
         return $result;
