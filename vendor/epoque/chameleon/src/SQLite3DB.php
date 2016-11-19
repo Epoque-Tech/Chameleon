@@ -3,12 +3,12 @@ namespace Epoque\Chameleon;
 
 
 /**
- * Description of SQLite3DB
+ * SQLite3DB
  *
  * @author Jason Favrod jason@lakonacomputers.com
  */
 
-class SQLite3DB
+class SQLite3DB extends Common
 {
     protected $db;
     protected $conn;
@@ -34,6 +34,9 @@ class SQLite3DB
                 array_push($result, $tmp);
             }
         }
+        else {
+            self::logWarning(__METHOD__ . ": query ($query) failed.");
+        }
 
         $conn->close();
         return $result;
@@ -41,11 +44,16 @@ class SQLite3DB
 
 
     public function insert($query) {
-        $conn        = new \SQLite3($this->db);
-        $queryResult = $conn->query($query)->numColumns();
-
+        $conn = new \SQLite3($this->db);
+        $queryResult = $conn->query($query);
         $conn->close();
-
-        return $queryResult;
+        
+        if (!$queryResult) {
+            self::logWarning(__METHOD__ . " query ($query) failed.");
+            return $queryResult;
+        }
+        else {
+            return $queryResult->numColumns();
+        }
     }
 }
