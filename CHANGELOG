@@ -2,6 +2,23 @@ CHANGELOG
 =========
 
 ----------------------
+version 0.0.3 to 0.0.4
+----------------------
+configuration
+    * Apache Errors Now Printing to Chameleon Log
+
+JavaScript
+    * Removed sqlSelectQuery from js/chameleon.js
+    * Extended String Prototype with ucfirst and lcfirst Methods
+
+Epoque\Chameleon
+    * SQLite3DB Extending Common and Added insertNote Method
+    * Fixed Bug in Presenter Warning Log Message
+    * Fixed Logging in HtmlHead::addCss
+    * Added Logging Warning when SQLite3DB::select Query Fails
+
+
+----------------------
 version 0.0.2 to 0.0.3
 ----------------------
 configuration

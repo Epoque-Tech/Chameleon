@@ -189,8 +189,7 @@ class HtmlHead extends Common
 
     public static function addCss($css=[])
     {
-        if (is_array($css) && (is_file(VIEWS_DIR.key($css).'.php') || key($css) === '') &&
-                is_string(current($css))) {
+        if (is_array($css) && is_string(key($css)) && is_string(current($css))) {
             
             if (empty(self::$css[key($css)])) {
                 self::$css[key($css)] = [current($css)];
@@ -198,6 +197,9 @@ class HtmlHead extends Common
             else {
                 array_push(self::$css[key($css)], current($css));
             }
+        }
+        else {
+            self::logWarning(__METHOD__ . ': css route ([' . key($css) . ' => ' . current($css) . ']) malformed.');
         }
     }
 

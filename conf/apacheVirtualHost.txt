@@ -32,7 +32,7 @@
            Deny from all
        </Files>
 
-    ErrorLog doc_root/log/error.log
+    ErrorLog doc_root/log/chameleon.log
     CustomLog doc_root/log/access.log combined
 </VirtualHost>
 

@@ -6,6 +6,15 @@ var APP = {};
 // The PHP Script that handles AJAX requests.
 APP.requestURL = '/RequestHandler.php';
 
+// Extending the String type.
+String.prototype.ucfirst = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+String.prototype.lcfirst = function() {
+    return this.charAt(0).toLowerCase() + this.slice(1);
+};
+
 
 /**
  * validateEmail
@@ -110,26 +119,6 @@ APP.processHtmlSimpleContactForm = function(id, callback) {
         console.log("not sending form to " + APP.requestURL);
     }
     console.log(form);
-};
-
-
-/**
- * sqlSelectQuery
- * 
- * @returns {undefined}
- */
-
-APP.sqlSelectQuery = function (spec) {
-    (typeof spec === 'undefined') ? spec = {} : spec;
-
-    $.ajax({
-        url: APP.requestURL,
-        method: APP.method,
-        data: {'select': spec.query ? spec.query : ''},
-        success: spec.success ? spec.success : function (data, textStatus, jqXHR) {
-            console.log(data);
-        }
-    });
 };
 
 console.log('chameleon.js loaded');
