@@ -4,6 +4,15 @@ var APP = {};
 // The PHP Script that handles AJAX requests.
 APP.requestURL = '/RequestHandler.php';
 
+// Extending the String type.
+String.prototype.ucfirst = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+String.prototype.lcfirst = function() {
+    return this.charAt(0).toLowerCase() + this.slice(1);
+};
+
 
 /**
  * validateEmail
