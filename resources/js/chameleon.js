@@ -107,24 +107,5 @@ APP.processHtmlSimpleContactForm = function(id, callback) {
     console.log(form);
 };
 
-
-/**
- * sqlSelectQuery
- * 
- * @returns {undefined}
- */
-
-APP.sqlSelectQuery = function (spec) {
-    (typeof spec === 'undefined') ? spec = {} : spec;
-
-    $.ajax({
-        url: APP.requestURL,
-        method: APP.method,
-        data: {'select': spec.query ? spec.query : ''},
-        success: spec.success ? spec.success : function (data, textStatus, jqXHR) {
-            console.log(data);
-        }
-    });
-};
-
 console.log('chameleon.js loaded');
+
