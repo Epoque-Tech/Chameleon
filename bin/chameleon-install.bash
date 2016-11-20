@@ -202,6 +202,8 @@ function set_project_fqdn
     if [ "${confirm:0:1}" = "n" ] || [ "${confirm:0:1}" = "N" ]; then
         project_fqdn=""
         set_project_fqdn
+    else
+        project_ip=$project_fqdn
     fi
 }
 
