@@ -38,6 +38,7 @@ class SQLite3DB extends Common
             self::logWarning(__METHOD__ . ": query ($query) failed.");
         }
 
+        $queryResult->finalize();
         $conn->close();
         return $result;
     }
@@ -46,14 +47,12 @@ class SQLite3DB extends Common
     public function insert($query) {
         $conn = new \SQLite3($this->db);
         $queryResult = $conn->query($query);
-        $conn->close();
         
-        if (!$queryResult) {
+        if ($queryResult === FALSE) {
             self::logWarning(__METHOD__ . " query ($query) failed.");
-            return $queryResult;
         }
-        else {
-            return $queryResult->numColumns();
-        }
+        
+        $conn->close();
+        return $queryResult;
     }
 }
