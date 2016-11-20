@@ -58,7 +58,7 @@ class JS extends Common implements RouterInterface
                     $html .= '<script src="' . $src . '"></script>'."\n";
                 }
                 else {
-                    self::logWarning('The source (' . $src . ') for JS is not valid.');
+                    self::logError(__METHOD__ . ': the source (' . $src . ') for JS is not valid.');
                 }
             }
         }
@@ -75,7 +75,7 @@ class JS extends Common implements RouterInterface
                         $html .= '<script src="' . $source . '"></script>'."\n";
                     }
                     else {
-                        self::logWarning('The source (' . $source . ') for JS is not valid.');
+                        self::logError(__METHOD__ . ': the source (' . $source . ') for JS is not valid.');
                     }
                 }
             }
@@ -95,7 +95,7 @@ class JS extends Common implements RouterInterface
                self::$routes[$req] = $res;
             }
             else {
-                self::logError(__METHOD__ . ": invalid route ([$req => $res])");
+                self::logError(__METHOD__ . ": invalid route ([$req => $res]).");
             }
         }
         else {
@@ -112,7 +112,7 @@ class JS extends Common implements RouterInterface
 	else if (self::wildcardMatch()) {
 	   // wildcardMatch prints the script tags.
 	   return;
-       }
+        }
     }
 
 
@@ -125,7 +125,7 @@ class JS extends Common implements RouterInterface
 
                 if (preg_match("`^$req"."($|(/[\w|=|;|&]*)+$)`", self::URI())) {
                    self::tags(explode(',', $res));
-                }   
+                }
             }   
         }   
         
