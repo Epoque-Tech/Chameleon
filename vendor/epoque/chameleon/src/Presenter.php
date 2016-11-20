@@ -77,7 +77,7 @@ class Presenter extends Common implements RouterInterface
                 $req = rtrim($req, '*');
                 $req = rtrim($req, '/');
 
-                if (preg_match("`^$req"."($|(/[\w|=|;|&]*)+$)`", $request)) {
+                if (preg_match("`^$req"."($|(/*[\w|=|;|&]*)+)`", $request)) {
                     if (include_once $res) {
                         $r = TRUE;
                     }
