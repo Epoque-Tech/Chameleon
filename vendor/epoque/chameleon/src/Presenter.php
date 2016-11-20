@@ -65,17 +65,33 @@ class Presenter extends Common implements RouterInterface
     
     private static function wildcardMatch($request)
     {
+        $eReporingPrev = error_reporting();
+        error_reporting(0);
+        
+        $r = FALSE;
+        
         foreach (self::$routes as $req => $res) {
+            $o_res = $res;
+            
             if (preg_match('`\*$`', $req)) {
-                $req = rtrim($req, '/*');
+                $req = rtrim($req, '*');
+                $req = rtrim($req, '/');
 
-                if (preg_match("`^$req"."($|(/\w*)+$)`", $request)) {
-                    include_once $res;
-                    return True;
-                }   
-            }   
+                if (preg_match("`^$req"."($|(/[\w|=|;|&]*)+$)`", $request)) {
+                    if (include_once $res) {
+                        $r = TRUE;
+                    }
+                    else if (include_once VIEWS_DIR . $res) {
+                        $r = TRUE;
+                    }
+                    else {
+                        self::logWarning(__METHOD__ . ": failed to include resources ($o_res)");
+                    }
+                }
+            }
         }   
         
-        return False;
+        error_reporting($eReporingPrev);
+        return $r;
     }
 }
