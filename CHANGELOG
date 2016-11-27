@@ -2,6 +2,22 @@ CHANGELOG
 =========
 
 ----------------------
+version 0.0.4 to 0.0.5
+----------------------
+configuration
+    * Fixed Install Script IP Address
+    * No Longer Creating error.log (Errors Printed in chameleon.log)
+    * Made Chameleon Install Script Importable
+    * Starting Work on chameleon Script
+    * Added sqlite3 to List of Required Packages in Chameleon Install
+
+Epoque\Chameleon
+    * JS and Presenter Wildcard Function Working Mo Betta
+    * Updated Logging in JS
+    * Better Handling of SQLite3 Query Responses
+
+
+----------------------
 version 0.0.3 to 0.0.4
 ----------------------
 configuration
