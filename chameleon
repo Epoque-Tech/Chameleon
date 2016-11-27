@@ -1,0 +1,41 @@
+#!/bin/bash
+source bin/chameleon-install.bash import
+CMD=$1
+
+
+main()
+{
+    if [ "$CMD" == "setup" ]; then
+        setup
+    elif [ "$CMD" == "vhost" ]; then
+        create_vhost
+    else
+        usage
+    fi
+}
+
+
+usage()
+{
+    echo "usage: chameleon [command]"
+    echo ""
+    echo "commands"
+    echo "setup: setup a new project"
+    echo "vhost: create a vhost file for the project"
+}
+
+
+setup()
+{
+    echo "setup"
+}
+
+
+create_vhost()
+{
+    gather_info
+}
+
+
+main
+

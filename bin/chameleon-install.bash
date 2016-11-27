@@ -555,5 +555,8 @@ function setup_js
     fi
 }
 
-main
+
+if [ "$1" != "import" ]; then
+    main
+fi
 
