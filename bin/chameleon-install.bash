@@ -44,7 +44,7 @@ cat=/bin/cat
 cp=/bin/cp
 git=/usr/bin/git
 
-LAMP_PACKAGES="mysql-server php7.0 php7.0-cli php7.0-mysql \
+LAMP_PACKAGES="mysql-server php7.0 php7.0-cli php7.0-mysql sqlite3 \
 php7.0-json php7.0-odbc php7.0-sqlite3 apache2 libapache2-mod-php7.0";
 
 chameleon_repo="https://github.com/not--p/Chameleon.git"
