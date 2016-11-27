@@ -50,7 +50,7 @@ php7.0-json php7.0-odbc php7.0-sqlite3 apache2 libapache2-mod-php7.0";
 chameleon_repo="https://github.com/not--p/Chameleon.git"
 required_dirs="log views resources/css resources/js resources/img \
 resources/html resources/php resources/sql"
-required_files="log/access.log log/error.log log/chameleon.log"
+required_files="log/access.log log/chameleon.log"
 config_files="index.php config.php RequestHandler.php"
 
 
@@ -202,6 +202,8 @@ function set_project_fqdn
     if [ "${confirm:0:1}" = "n" ] || [ "${confirm:0:1}" = "N" ]; then
         project_fqdn=""
         set_project_fqdn
+    else
+        project_ip=$project_fqdn
     fi
 }
 

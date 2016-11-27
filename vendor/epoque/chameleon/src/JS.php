@@ -120,9 +120,10 @@ class JS extends Common implements RouterInterface
     {
         foreach (self::$routes as $req => $res) {
             if (preg_match('`\*$`', $req)) {
-                $req = rtrim($req, '/*');
+                $req = rtrim($req, '*');
+                $req = rtrim($req, '/');
 
-                if (preg_match("`^$req"."($|(/\w*)+$)`", self::URI())) {
+                if (preg_match("`^$req"."($|(/*[\w|=|;|&]*)+)`", self::URI())) {
                    self::tags(explode(',', $res));
                 }   
             }   
