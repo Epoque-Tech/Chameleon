@@ -28,6 +28,15 @@ usage()
 setup()
 {
     echo "setup"
+    index
+}
+
+
+index()
+{
+    if [ ! -f "index.php" ]; then
+        cp conf/index.php .
+    fi
 }
 
 
