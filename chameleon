@@ -27,9 +27,27 @@ usage()
 
 setup()
 {
-    echo "setup"
+    index
+    composer
 }
 
+
+index()
+{
+    if [ ! -f "index.php" ]; then
+        cp conf/index.php .
+    fi
+}
+
+
+composer()
+{
+    if [ ! -f "composer.json" ]; then
+        cp conf/composer.json .
+    fi
+
+    ./composer.phar update
+}
 
 create_vhost()
 {
