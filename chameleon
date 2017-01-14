@@ -7,6 +7,10 @@ main()
 {
     if [ "$CMD" == "setup" ]; then
         setup
+    elif
+        [ "$CMD" == "minify" ]; then
+        source bin/minify.bash
+        minify
     elif [ "$CMD" == "vhost" ]; then
         create_vhost
     else
