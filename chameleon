@@ -33,6 +33,7 @@ setup()
     index
     config
     logs
+    views
     composer
     perms
 }
@@ -68,6 +69,14 @@ logs()
 }
 
 
+views()
+{
+    if [ ! -d "views" ]; then
+        mkdir views
+    fi
+}
+
+
 composer()
 {
     if [ ! -f "composer.json" ]; then
@@ -75,6 +84,13 @@ composer()
     fi
 
     ./composer.phar update
+}
+
+
+create_logs()
+{
+    touch log/access.log
+    touch log/error.log
 }
 
 
