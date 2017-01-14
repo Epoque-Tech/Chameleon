@@ -21,14 +21,16 @@ usage()
     echo ""
     echo "commands"
     echo "setup: setup a new project"
-    echo "vhost: create a vhost file for the project"
 }
 
 
 setup()
 {
     index
+    config
+    logs
     composer
+    perms
 }
 
 
@@ -40,6 +42,28 @@ index()
 }
 
 
+config()
+{
+    if [ ! -f "config.php" ]; then
+        cp conf/config.php .
+    fi
+}
+
+
+logs()
+{
+    if [ ! -d "log" ]; then
+        mkdir log
+    fi
+
+    for f in chameleon.log access.log; do
+        if [ ! -f "log/$f" ]; then
+            touch "log/$f"
+        fi
+    done
+}
+
+
 composer()
 {
     if [ ! -f "composer.json" ]; then
@@ -47,6 +71,14 @@ composer()
     fi
 
     ./composer.phar update
+}
+
+
+perms()
+{
+    sudo chgrp -R $www_group .
+    sudo chmod g+rwx .
+    sudo chmod g+s .
 }
 
 create_vhost()
