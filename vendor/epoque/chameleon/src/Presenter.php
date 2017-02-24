@@ -37,13 +37,13 @@ class Presenter extends Common implements RouterInterface
             else if (is_file(VIEWS_DIR . self::$routes[self::URI()])) {
                 include VIEWS_DIR . self::$routes[self::URI()];
             }
-            else if (is_file(VIEWS_DIR . self::URI() . '.php')) {
-                include VIEWS_DIR . self::URI() . '.php';
-            }
             else {
                 self::logWarning(__METHOD__ . ': could not fetch requested (' +
                         self::URI() + ') route.');
             }
+        }
+        else if (is_file(VIEWS_DIR . self::URI() . '.php')) {
+            include VIEWS_DIR . self::URI() . '.php';
         }
         else if(self::wildcardMatch(self::URI())) {
             // wildcardMatch will include the file of match found.

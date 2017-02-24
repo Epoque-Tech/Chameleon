@@ -27,6 +27,7 @@ usage()
 setup()
 {
     index
+    views
     config
     logs
     composer
@@ -38,6 +39,14 @@ index()
 {
     if [ ! -f "index.php" ]; then
         cp conf/index.php .
+    fi
+}
+
+
+views()
+{
+    if [ ! -d "views" ]; then
+        mkdir views
     fi
 }
 
