@@ -109,6 +109,9 @@ class JS extends Common implements RouterInterface
             $js = str_replace(' ', '', self::$routes[self::URI()]);
             self::tags(explode(',', $js));
         }
+        else if (is_file(APP_ROOT . 'resources/js/' . self::URI() . '.js')) {
+            self::tags([self::URI() . '.js']);
+        }
 	else if (self::wildcardMatch()) {
 	   // wildcardMatch prints the script tags.
 	   return;
