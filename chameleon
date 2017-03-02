@@ -7,6 +7,10 @@ main()
 {
     if [ "$CMD" == "setup" ]; then
         setup
+    elif
+        [ "$CMD" == "minify" ]; then
+        source bin/minify.bash
+        minify
     elif [ "$CMD" == "vhost" ]; then
         create_vhost
     else
@@ -27,8 +31,10 @@ usage()
 setup()
 {
     index
+    views
     config
     logs
+    views
     composer
     perms
 }
@@ -38,6 +44,14 @@ index()
 {
     if [ ! -f "index.php" ]; then
         cp conf/index.php .
+    fi
+}
+
+
+views()
+{
+    if [ ! -d "views" ]; then
+        mkdir views
     fi
 }
 
@@ -64,6 +78,14 @@ logs()
 }
 
 
+views()
+{
+    if [ ! -d "views" ]; then
+        mkdir views
+    fi
+}
+
+
 composer()
 {
     if [ ! -f "composer.json" ]; then
@@ -71,6 +93,13 @@ composer()
     fi
 
     ./composer.phar update
+}
+
+
+create_logs()
+{
+    touch log/access.log
+    touch log/error.log
 }
 
 
