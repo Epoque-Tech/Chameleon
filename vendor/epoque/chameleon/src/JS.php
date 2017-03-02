@@ -71,11 +71,11 @@ class JS extends Common implements RouterInterface
                     if (is_file(APP_ROOT.JS_DIR . $source)) {
                         $html .= '<script src="' . JS_DIR . $source . '"></script>'."\n";
                     }
-                    else if (is_file($source)) {
+                    else if (is_file($source) || file_get_contents('http:'.$source, False, NULL, 20)) {
                         $html .= '<script src="' . $source . '"></script>'."\n";
                     }
                     else {
-                        self::logWarning('The source (' . $source . ') for JS is not valid.');
+                        self::logWarning('The source item (' . $source . ') for JS is not valid.');
                     }
                 }
             }
@@ -108,6 +108,9 @@ class JS extends Common implements RouterInterface
         if (array_key_exists(self::URI(), self::$routes)) {
             $js = str_replace(' ', '', self::$routes[self::URI()]);
             self::tags(explode(',', $js));
+        }
+        else if (is_file(APP_ROOT . 'resources/js/' . self::URI() . '.js')) {
+            self::tags([self::URI() . '.js']);
         }
 	else if (self::wildcardMatch()) {
 	   // wildcardMatch prints the script tags.
