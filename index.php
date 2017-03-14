@@ -20,7 +20,8 @@ $tests = [
     [ 'CommonTest'   => VIEWS_DIR.'tests/commonTest.php'  ],
     [ 'DaemonTest'   => VIEWS_DIR.'tests/daemonTest.php'  ],
     [ 'HtmlHeadTest' => VIEWS_DIR.'tests/htmlHeadTest.php'],
-    [ 'JSTest'       => VIEWS_DIR.'tests/JSTest.php'      ]
+    [ 'JSTest'       => VIEWS_DIR.'tests/JSTest.php'      ],
+    [ 'MySQLDBTest'  => VIEWS_DIR.'tests/MySQLDBTest.php' ]
 ];
 
 foreach ($tests as $test) {
