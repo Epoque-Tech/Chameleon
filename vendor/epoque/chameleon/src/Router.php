@@ -3,8 +3,8 @@ namespace Epoque\Chameleon;
 
 /**
  * Router
- * 
- * @author jason favrod <jason@lakonacomputers.com>
+ *
+ * @author jason favrod <jason@epoquecorporation.com>
  */
 
 abstract class Router extends Common
@@ -26,7 +26,7 @@ abstract class Router extends Common
         $r = FALSE;
         $request  = trim(key($route), '/');
         $resource = current($route);
-        
+
         foreach (self::$routes as $req => $res) {
             if ($request === $req && $resource === $res) {
                 $r = TRUE;
@@ -50,7 +50,7 @@ abstract class Router extends Common
     public static function addRoute($route=[])
     {
         $result = FALSE;
-        
+
         if (is_array($route) && !empty($route)) {
             if (is_string(key($route)) && is_string(current($route))) {
                 $request  = trim(key($route), '/');
@@ -71,7 +71,7 @@ abstract class Router extends Common
         else {
             self::logError(__METHOD__ . ': route argument is not an array, or is empty.');
         }
-        
+
         return $result;
     }
 
