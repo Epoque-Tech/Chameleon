@@ -4,7 +4,9 @@ use Epoque\Chameleon\Daemon;
 
 
 /**
- * Description of DaemonTest
+ * DameonTest
+ * 
+ * Sets up and executes the tests of Epoque\Chameleon\Daemon.
  *
  * @author jason favrod <jason@epoquecorportation.com>
  */
