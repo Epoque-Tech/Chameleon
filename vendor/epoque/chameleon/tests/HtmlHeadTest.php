@@ -90,6 +90,7 @@ class HtmlHeadTest implements Test
     {
         $z = 0;
         $z = print '<pre>' . htmlentities(self::$htmlHead) . '</pre>';
+
         if ($z === 1) {
             return True;
         }

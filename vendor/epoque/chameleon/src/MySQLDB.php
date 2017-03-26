@@ -5,7 +5,7 @@ use Epoque\Chameleon\Common;
 
 /**
  * MySQLDB
- * 
+ *
  * A wrapper for the php5 mysqli driver.
  *
  * @author Jason Favrod jason@lakonacomputers.com
@@ -21,41 +21,43 @@ class MySQLDB extends Common
 
     /**
      * setup
-     * 
+     *
      * The MySQLDB object will use defined constants for connection
      * details; this method allows for that behavior to be overridden
      * by providing a specification ($spec) with the connection
      * details.
-     * 
+     *
      * @param array $spec Contains the connection details for a MySQL
      * database as key value pairs.
      */
 
-    public static function setup($spec) {
+    public static function setup($spec)
+    {
         if ($spec['db_host'] || $spec['DB_HOST']) {
-            self::$db_host = ($spec['db_host'] ? $spec['db_host'] : $spec['DB_HOST']); 
+            self::$db_host = ($spec['db_host'] ? $spec['db_host'] : $spec['DB_HOST']);
         }
         if ($spec['db_name'] || $spec['DB_NAME']) {
             self::$db_name = ($spec['db_name'] ? $spec['db_name'] : $spec['DB_NAME']);
         }
         if ($spec['db_user'] || $spec['DB_USER']) {
-            self::$db_user = ($spec['db_user'] ? $spec['db_user'] : $spec['DB_USER']); 
+            self::$db_user = ($spec['db_user'] ? $spec['db_user'] : $spec['DB_USER']);
         }
         if ($spec['db_pass'] || $spec['DB_PASS']) {
-            self::$db_user = ($spec['db_pass'] ? $spec['db_pass'] : $spec['DB_PASS']); 
+            self::$db_user = ($spec['db_pass'] ? $spec['db_pass'] : $spec['DB_PASS']);
         }
     }
 
 
     /**
      * conn
-     * 
+     *
      * Return a connection to the configured MySQL database.
-     * 
+     *
      * @return \mysqli
      */
 
-    private static function conn() {
+    private static function conn()
+    {
         return
         new \mysqli(self::$db_host, self::$db_user, self::$db_pass, self::$db_name);
     }
@@ -63,31 +65,33 @@ class MySQLDB extends Common
 
     /**
      * close
-     * 
+     *
      * Close a given connection to a MySQL database.
-     * 
+     *
      * @param type $conn
      */
 
-    private static function close($conn) {
+    private static function close($conn)
+    {
         mysqli_close($conn);
     }
 
 
     /**
      * An array containing the headers (attributes) of the given table.
-     * 
+     *
      * @param string $table The given table's name.
      * @return array Contains the table's headers (attributs).
      */
 
-    public static function headers($table) {
+    public static function headers($table)
+    {
         $conn   = self::conn();
         $db     = self::$db_name;
         $result = [];
 
         $resultObj = self::select(
-            'SELECT `COLUMN_NAME` ' . 
+            'SELECT `COLUMN_NAME` ' .
             'FROM `INFORMATION_SCHEMA`.`COLUMNS` ' .
             "WHERE `TABLE_SCHEMA`='$db' " .
             "AND `TABLE_NAME`='$table'"
@@ -96,7 +100,7 @@ class MySQLDB extends Common
         foreach ($resultObj as $row) {
             array_push($result, $row['COLUMN_NAME']);
         }
-        
+
         $conn->close();
         return $result;
     }
@@ -105,18 +109,19 @@ class MySQLDB extends Common
     /**
      * Execute a select query against the database, resulting rows as
      * an array of associative arrays.
-     * 
+     *
      * @param string $query A valid MySQL query string.
-     * 
+     *
      * @return array Contains the rows (each an array of attribute
      * value pairs) of the result of the given query string.
      */
-    
-    public static function select($query) {
+
+    public static function select($query)
+    {
         $conn = self::conn();
         $resultObj = $conn->query($query);
         $result = [];
-        
+
         while ($row = $resultObj->fetch_assoc()) {
             array_push($result, $row);
         }
@@ -124,18 +129,26 @@ class MySQLDB extends Common
         $conn->close();
         return $result;
     }
-    
+
 
     /**
      * Send an insert query to the mysql database.
-     * 
+     *
+     * Inserts can be the following queries:
+     *  * INSERT INTO
+     *  * UPDATE
+     *  * DELETE FROM
+     *  * CREATE TABLE
+     *  * DROP TABLE
+     *
      * @param string $query A properly escaped mysql insert statement.
      * @return boolean True if successful, false otherwise.
      */
 
-    public static function insert($query) {
+    public static function insert($query)
+    {
         $conn = self::conn();
-        
+
         if (!$conn->connect_error) {
             $result = $conn->query($query);
             $conn->close();
@@ -143,7 +156,71 @@ class MySQLDB extends Common
         else {
             parent::logError('MySQLDB: mysqli Connection Error (' .$conn->connect_errno. ') '.$conn->connect_error);
         }
-        
+
         return $result;
+    }
+
+
+    /**
+     * update
+     *
+     * Sends an update query to the database.
+     * Alias for self::insert.
+     *
+     * @param string $query A properly escaped mysql update statement.
+     * @return boolean True if successful, false otherwise.
+     */
+
+    public static function update($query)
+    {
+        return self::insert($query);
+    }
+
+
+    /**
+     * delete
+     *
+     * Sends a delete query to the database.
+     * Alias for self::insert.
+     *
+     * @param string $query A properly escaped mysql delete statement.
+     * @return boolean True if successful, false otherwise.
+     */
+
+    public static function delete($query)
+    {
+        return self::insert($query);
+    }
+
+
+    /**
+     * createTable
+     *
+     * Creates a table in the mysql database.
+     * Alias for self::insert.
+     *
+     * @param string $query A properly escaped mysql create table statement.
+     * @return boolean True if successful, false otherwise.
+     */
+
+    public static function createTable($query)
+    {
+        return self::insert($query);
+    }
+
+
+    /**
+     * dropTable
+     *
+     * Drops a table from the database.
+     * Alias for self::insert.
+     *
+     * @param string $query A properly escaped mysql drop table query.
+     * @return boolean True if successful, false otherwise.
+     */
+
+    public static function dropTable($query)
+    {
+        return self::insert($query);
     }
 }

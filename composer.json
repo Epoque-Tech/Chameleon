@@ -1,0 +1,12 @@
+{
+    "require": {
+        "monolog/monolog": "1.0.*",
+        "cebe/markdown": "~1.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Epoque\\Chameleon\\" : "vendor/epoque/chameleon/src",
+            "Epoque\\ChameleonTesting\\" : "vendor/epoque/chameleon/tests"
+        }
+    }
+}

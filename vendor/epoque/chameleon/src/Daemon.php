@@ -7,10 +7,10 @@ namespace Epoque\Chameleon;
  *
  * Used to control Chameleon projects.
  *
- * @author jason favrod <jason@lakonacomputers.com>
+ * @author jason favrod <jason@epoquecorporation.com>
  */
 
-class Daemon extends Common
+class Daemon extends Router
 {
     /**
      * fetchView
