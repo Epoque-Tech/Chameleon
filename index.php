@@ -11,10 +11,6 @@ $docs = [
     ['Manual' => VIEWS_DIR.'docs/manual.php']
 ];
 
-foreach ($docs as $doc) {
-    Presenter::addRoute($doc);
-}
-
 // Tests
 $tests = [
     [ 'CommonTest'   => VIEWS_DIR.'tests/commonTest.php'  ],
@@ -23,6 +19,11 @@ $tests = [
     [ 'JSTest'       => VIEWS_DIR.'tests/JSTest.php'      ],
     [ 'MySQLDBTest'  => VIEWS_DIR.'tests/MySQLDBTest.php' ]
 ];
+
+
+foreach ($docs as $doc) {
+    Presenter::addRoute($doc);
+}
 
 foreach ($tests as $test) {
     Presenter::addRoute($test);
