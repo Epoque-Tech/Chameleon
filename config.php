@@ -2,8 +2,6 @@
 
 require_once('vendor/autoload.php');
 
-use Epoque\Chameleon\Log;
-
 
 error_reporting(E_ERROR | E_PARSE | E_WARNING);
 #(E_ERROR | E_PARSE | E_WARNING)
@@ -42,7 +40,3 @@ define('DB_HOST', 'localhost');
 define('DB_FILE', '|db_file|');
 define('DB_DSN',  '|db_dsn|');
 
-
-// Set up logs
-define('LOG_FILE', APP_ROOT.'log/chameleon.log');
-Log::setup(LOG_FILE);
