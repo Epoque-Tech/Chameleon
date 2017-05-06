@@ -2,6 +2,14 @@ CHANGELOG
 =========
 
 ----------------------
+version 0.0.6 to 0.1.0
+----------------------
+Trimmed Out Items from APP in chameleon.js.
+Added .htaccess file.
+Moved Core PHP Files to ChameleonCore package.
+
+
+----------------------
 version 0.0.4 to 0.0.5
 ----------------------
 configuration
