@@ -1,12 +1,5 @@
 {
     "require": {
-        "monolog/monolog": "1.0.*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Epoque\\Chameleon\\" : "vendor/epoque/chameleon/src",
-            "Epoque\\ChameleonTesting\\" : "vendor/epoque/chameleon/tests"
-        }
+        "epoque/chameleon": "@dev"
     }
 }
-
