@@ -28,7 +28,7 @@ that use Apache2 should be in the `www-data` group. If they are not,
 
 ### Documentation:
 
-[Live Documentation](http://chameleon.epoquecorporation.com)
+Live documentation coming soon.
 
 
 ### Installation
