@@ -11,8 +11,6 @@ main()
         [ "$CMD" == "minify" ]; then
         source bin/minify.bash
         minify
-    elif [ "$CMD" == "vhost" ]; then
-        create_vhost
     else
         usage
     fi
@@ -100,11 +98,6 @@ perms()
     sudo chgrp -R $www_group .
     sudo chmod g+rwx .
     sudo chmod g+s .
-}
-
-create_vhost()
-{
-    gather_info
 }
 
 
