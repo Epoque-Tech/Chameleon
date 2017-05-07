@@ -78,21 +78,13 @@ logs()
 }
 
 
-views()
-{
-    if [ ! -d "views" ]; then
-        mkdir views
-    fi
-}
-
-
 composer()
 {
     if [ ! -f "composer.json" ]; then
         cp conf/composer.json .
     fi
 
-    ./composer.phar update
+    ./bin/composer update
 }
 
 
