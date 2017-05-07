@@ -1,36 +1,36 @@
-<VirtualHost ip:80>
+<VirtualHost *:80>
     ServerName server_name
 
     ServerAdmin server_admin
     DocumentRoot doc_root
 
-       <Directory doc_root/>
-           Options FollowSymLinks
-           RewriteEngine On
-           RewriteCond %{SCRIPT_FILENAME} !-d
-           RewriteCond %{SCRIPT_FILENAME} !-f
-           RewriteRule ^.*$ ./index.php
-       </Directory>
+    <Directory doc_root/>
+        Options FollowSymLinks
+        RewriteEngine On
+        RewriteCond %{SCRIPT_FILENAME} !-d
+        RewriteCond %{SCRIPT_FILENAME} !-f
+        RewriteRule ^.*$ ./index.php
+    </Directory>
 
-       <Directory doc_root/log>
-           Order deny,allow
-           Deny from all
-       </Directory>
+    <Directory doc_root/log>
+        Order deny,allow
+        Deny from all
+    </Directory>
 
-       <Directory doc_root/conf>
-           Order deny,allow
-           Deny from all
-       </Directory>
+    <Directory doc_root/conf>
+        Order deny,allow
+        Deny from all
+    </Directory>
 
-       <Directory doc_root/vendor>
-           Order deny,allow
-           Deny from all
-       </Directory>
+    <Directory doc_root/vendor>
+        Order deny,allow
+        Deny from all
+    </Directory>
 
-       <Files ~ \"(composer.(json|phar|lock)|(config|controller).php)\">
-           Order deny,allow
-           Deny from all
-       </Files>
+    <Files ~ \"(composer.(json|phar|lock)|(config|controller).php)\">
+        Order deny,allow
+        Deny from all
+    </Files>
 
     ErrorLog doc_root/log/chameleon.log
     CustomLog doc_root/log/access.log combined
