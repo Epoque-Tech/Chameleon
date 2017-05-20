@@ -86,6 +86,12 @@ composer()
 }
 
 
+create_vhost()
+{
+    ./bin/createVhost.php conf/apacheVirtualHost.txt
+}
+
+
 create_logs()
 {
     touch log/access.log
