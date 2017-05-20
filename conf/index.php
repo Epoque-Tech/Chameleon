@@ -1,15 +1,8 @@
-<?php
-
-require_once 'config.php';
-use Epoque\Chameleon\HtmlHead;
-
-
-HtmlHead::addGlobalCss(CSS_DIR.'custom.css');
-?>
+<?php require_once 'config.php'; ?>
+<?php use Epoque\Chameleon\HtmlHead; ?>
 
 <!doctype html>
 <?php new HtmlHead()?>
-<body>
-
-</body>
+<body></body>
 </html>
+

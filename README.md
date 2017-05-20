@@ -1,7 +1,7 @@
 # Chameleon Framework
 PHP General Web Application Prototyping Framework
 
-@version 0.1.0
+@version 0.1.1
 
 ## What is Chameleon Framework?
 
@@ -19,7 +19,6 @@ or get in touch with the developer, see the github
 
     Ubuntu 16.04
     Apache2.4
-    git knowledge
 
 Chameleon assumes Ubuntu 16.04 and Apache2 defaults, therefore system users
 that use Apache2 should be in the `www-data` group. If they are not,
@@ -28,10 +27,14 @@ that use Apache2 should be in the `www-data` group. If they are not,
 
 ### Documentation:
 
-[Live Documentation](http://chameleon.epoquecorporation.com)
+Live documentation coming soon.
 
 
 ### Installation
+
+See the Apache Virtual Host template in the **conf** directory to know how the
+Virtual Host needs to be configured. The virtual host configuration will
+eventually become part of the setup script.
 
 Clone this repository as your project's DocumentRoot (Web root). 
 
