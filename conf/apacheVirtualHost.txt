@@ -1,10 +1,10 @@
 <VirtualHost *:80>
-    ServerName server_name
+    ServerName servername
 
-    ServerAdmin server_admin
-    DocumentRoot doc_root
+    ServerAdmin serveradmin
+    DocumentRoot documentroot
 
-    <Directory doc_root/>
+    <Directory documentroot/>
         Options FollowSymLinks
         RewriteEngine On
         RewriteCond %{SCRIPT_FILENAME} !-d
@@ -12,17 +12,17 @@
         RewriteRule ^.*$ ./index.php
     </Directory>
 
-    <Directory doc_root/log>
+    <Directory documentroot/log>
         Order deny,allow
         Deny from all
     </Directory>
 
-    <Directory doc_root/conf>
+    <Directory documentroot/conf>
         Order deny,allow
         Deny from all
     </Directory>
 
-    <Directory doc_root/vendor>
+    <Directory documentroot/vendor>
         Order deny,allow
         Deny from all
     </Directory>
@@ -32,7 +32,7 @@
         Deny from all
     </Files>
 
-    ErrorLog doc_root/log/chameleon.log
-    CustomLog doc_root/log/access.log combined
+    ErrorLog documentroot/log/chameleon.log
+    CustomLog documentroot/log/access.log combined
 </VirtualHost>
 
