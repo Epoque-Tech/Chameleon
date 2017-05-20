@@ -2,6 +2,19 @@ CHANGELOG
 =========
 
 ----------------------
+version 0.1.0 to 0.1.1
+----------------------
+Setup Script
+    * Now Creating VirtualHost (untested)
+
+Configuration
+    * Packaging with Composer
+    * Removed .htaccess
+    * Edited Index Template
+    * Removed composer.js from Repo
+
+
+----------------------
 version 0.0.6 to 0.1.0
 ----------------------
 Trimmed Out Items from APP in chameleon.js.
