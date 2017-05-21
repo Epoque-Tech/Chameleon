@@ -28,15 +28,15 @@ define('ERROR_404_FILE', VIEWS_DIR.'404.php');
 define('CUSTOM_CSS_FILE', CSS_DIR.'custom.css');
 define('DEFAULT_VIEW', VIEWS_DIR.'homepage.php');
 define('JS_CONFIG_FILE', JS_DIR.'config.js');
-define('SITE_TITLE', "Chameleon");
+define('SITE_TITLE', "|site_title|");
 
 
 // Database Information
 define('DB_DRIVER', '|db_driver|');
-define('DB_NAME', 'chameleon');
-define('DB_USER', 'chameleon');
-define('DB_PASS', 'i8peanut$');
-define('DB_HOST', 'localhost');
+define('DB_NAME', '|db_name|');
+define('DB_USER', '|db_user|');
+define('DB_PASS', '|db_pass|');
+define('DB_HOST', '|db_host|');
 define('DB_FILE', '|db_file|');
 define('DB_DSN',  '|db_dsn|');
 
