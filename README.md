@@ -18,7 +18,8 @@ or get in touch with the developer, see the github
 ### Prerequisites:
 
     Ubuntu 16.04
-    Apache2.4
+    Apache 2.4
+    PHP 7.0
 
 Chameleon assumes Ubuntu 16.04 and Apache2 defaults, therefore system users
 that use Apache2 should be in the `www-data` group. If they are not,
