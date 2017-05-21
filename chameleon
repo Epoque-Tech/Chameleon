@@ -84,6 +84,8 @@ function lamp_installed
     
     echo "Confirming LAMP installation..."
 
+    $sudo -v 
+
     for package in $LAMP_PACKAGES; do
         if [ $debug -gt 0 ]; then
             echo "Verifing package: $package."
