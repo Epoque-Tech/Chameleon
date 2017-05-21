@@ -1,24 +1,5 @@
 #!/bin/bash
-#
-# Chameleon
-# 
-# Copyright (C) 2016 Lakona Computers
-# 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-# 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-# @author Jason Favrod <jason@lakonacomputers.com>
-#
+
 
 debug=2
 error=0
@@ -44,57 +25,15 @@ cat=/bin/cat
 cp=/bin/cp
 git=/usr/bin/git
 
-LAMP_PACKAGES="mysql-server php7.0 php7.0-cli php7.0-mysql sqlite3 \
-php7.0-json php7.0-odbc php7.0-sqlite3 apache2 libapache2-mod-php7.0";
+LAMP_PACKAGES="apache2 mysql-server sqlite3 php7.0 php7.0-cli php7.0-mysql \
+php7.0-sqlite3 php7.0-odbc php7.0-json php7.0-mbstring php7.0-xml \
+libapache2-mod-php7.0"
 
 chameleon_repo="https://github.com/not--p/Chameleon.git"
 required_dirs="log views resources/css resources/js resources/img \
 resources/html resources/php resources/sql"
 required_files="log/access.log log/chameleon.log"
 config_files="index.php config.php RequestHandler.php"
-
-
-#
-# Chameleon Installer
-#
-# Use this script to download the latest version of Chameleon and
-# setup a new Chameleon project.
-#
-
-function main
-{
-    $sudo -v
-
-    lamp_installed
-
-    if [ $? -gt 0 ]; then
-        echo "LAMP installed."
-    else
-        install_lamp_packages 
-        
-        if [ $? -gt 0 ]; then
-            return $?
-        fi
-    fi
-
-    $sudo $service apache2 restart
-
-    gather_info
-    modify_users
-    modify_www_dir
-    create_project_dir
-    setup_git_repo
-    create_required_files
-
-    # If there's a project_upstream, then these files will need to be checkout. #
-    if [ ! -z "$project_upstream" ]; then
-	$sg $www_group -c "$git checkout RequestHandler.php index.php config.php"
-    fi
-
-    create_vhost
-    setup_composer
-    setup_js
-}
 
 
 #
@@ -106,10 +45,12 @@ function main
 function lamp_installed
 {
     local dpkg=/usr/bin/dpkg
+    
+    echo "Confirming LAMP installation..."
 
     for package in $LAMP_PACKAGES; do
         if [ $debug -gt 0 ]; then
-            echo "** Verifing package: $package."
+            echo "Verifing package: $package."
         fi
 
         $sudo $dpkg -s $package > /dev/null
@@ -554,9 +495,4 @@ function setup_js
         echo "Failed to setup_js."
     fi
 }
-
-
-if [ "$1" != "import" ]; then
-    main
-fi
 
