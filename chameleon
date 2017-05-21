@@ -28,6 +28,8 @@ main()
 {
     if [ "$CMD" == "setup" ]; then
         setup
+    elif [ "$CMD" == "update" ]; then
+        update
     elif
         [ "$CMD" == "minify" ]; then
         source bin/minify.bash
@@ -58,6 +60,12 @@ setup()
     composer
     perms
     create_vhost
+}
+
+
+update()
+{
+    composer
 }
 
 
