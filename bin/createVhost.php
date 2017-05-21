@@ -88,9 +88,9 @@ function getTemplateInput(&$templateInput)
         }
 
         print "\n";
-        $input = readline('Yes or No [default yes]? ');
+        $input = trim(readline('Yes or No [default yes]? '));
 
-        if (count($input) !== 0 || strtolower($input)[0] !== 'n') {
+        if (count($input) === 0 || strtolower($input)[0] !== 'n') {
             $run = False;
         }
     }
