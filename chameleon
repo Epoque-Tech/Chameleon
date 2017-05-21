@@ -57,6 +57,7 @@ setup()
     views
     composer
     perms
+    create_vhost
 }
 
 
