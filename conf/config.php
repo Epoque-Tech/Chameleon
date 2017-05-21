@@ -13,22 +13,23 @@ date_default_timezone_set('UTC');
 
 
 // Setup some constants.
+define('SITE_TITLE', "|site_title|");
+
 define('APP_ROOT', __DIR__.'/');
 define('WEB_ROOT', '/');
-define('BOOTSTRAP_VER', '3.3.6');
-define('JQUERY_VER', '2.2.0');
-define('JQUERYUI_VER', '1.11.4');
 define('RESOURCES_DIR', WEB_ROOT.'resources/');
 define('CSS_DIR', RESOURCES_DIR.'css/');
 define('IMG_DIR', RESOURCES_DIR.'img/');
 define('JS_DIR', RESOURCES_DIR.'js/');
-define('PHP_DIR', rtrim(APP_ROOT, '/').RESOURCES_DIR.'php/');
+define('LOG_DIR', 'log/');
+define('LOG_FILE', LOG_DIR.'chameleon.log');
 define('VIEWS_DIR', APP_ROOT.'views/');
-define('ERROR_404_FILE', VIEWS_DIR.'404.php');
-define('CUSTOM_CSS_FILE', CSS_DIR.'custom.css');
 define('DEFAULT_VIEW', VIEWS_DIR.'homepage.php');
-define('JS_CONFIG_FILE', JS_DIR.'config.js');
-define('SITE_TITLE', "|site_title|");
+define('ERROR_404_FILE', VIEWS_DIR.'404.php');
+
+define('BOOTSTRAP_VER', '3.3.6');
+define('JQUERY_VER', '2.2.0');
+define('JQUERYUI_VER', '1.11.4');
 
 
 // Database Information
