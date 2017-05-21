@@ -72,12 +72,13 @@ function getTemplateInput(&$templateInput)
 {
     $run = True;
 
-    print "Please provide the values for the following Apache direcives:\n";
 
     while ($run)
     {
+        print "Please provide the values for the Apache direcives:\n";
+
         foreach ($templateInput as $directive => $value) {
-            $templateInput[$directive] = readline("$directive: ");
+            $templateInput[$directive] = trim(readline("$directive: "));
         }
 
         print "\nAre the following values correct?\n";
