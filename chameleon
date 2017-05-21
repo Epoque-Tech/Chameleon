@@ -122,7 +122,7 @@ composer()
 
 create_vhost()
 {
-    ./bin/createVhost.php conf/apacheVirtualHost.txt
+    sudo bin/createVhost.php conf/apacheVirtualHost.txt
 }
 
 

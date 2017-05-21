@@ -32,8 +32,8 @@ function start($args)
 
         writeVirtualHost($vhostTemplate, $templateInput);
 
-        exec('sudo a2ensite ' . $templateInput['ServerName']);
-        exec('sudo service apache2 restart');
+        exec('a2ensite ' . $templateInput['ServerName']);
+        exec('service apache2 restart');
     }
     else {
         usage();
