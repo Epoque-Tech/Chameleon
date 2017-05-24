@@ -24,12 +24,6 @@ HtmlHead::addGlobalCss(CSS_DIR.'custom.css');
                     Docs <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                      <?php
-                      foreach ($docs as $doc) {
-                          foreach ($doc as $dkey => $dval)
-                            print '<li><a href="'.$dkey.'">'.ltrim($dkey, '/')."</a></li>";
-                      }
-                      ?>
                     </ul>
                   </li>
 
@@ -38,12 +32,6 @@ HtmlHead::addGlobalCss(CSS_DIR.'custom.css');
                     Tests <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                      <?php
-                      foreach ($tests as $test) {
-                          foreach ($test as $tkey => $tval)
-                            print '<li><a href="'.$tkey.'">'.ltrim($tkey, '/')."</a></li>";
-                      }
-                      ?>
                     </ul>
                   </li>
 
