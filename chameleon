@@ -56,7 +56,6 @@ setup()
     views
     config
     logs
-    views
     composer
     perms
     create_vhost
