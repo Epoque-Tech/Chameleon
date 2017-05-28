@@ -53,10 +53,10 @@ setup()
 {
     init
     index
+    favicon
     views
     config
     logs
-    views
     composer
     perms
     create_vhost
@@ -132,6 +132,14 @@ index()
 {
     if [ ! -f "index.php" ]; then
         cp conf/index.php .
+    fi
+}
+
+
+favicon()
+{
+    if [ ! -f "favicon.ico" ]; then
+        cp conf/favicon.ico .
     fi
 }
 
