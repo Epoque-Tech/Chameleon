@@ -2,9 +2,12 @@
 require_once 'config.php';
 use Epoque\Chameleon\HtmlHead;
 use Epoque\Chameleon\Presenter;
+use Epoque\Chameleon\JS;
 
 
 HtmlHead::addGlobalCss(CSS_DIR.'custom.css');
+Presenter::addRoute(['test/*' => 'test.php']);
+JS::addRoute(['test/*' => 'test.js']);
 ?>
 
 <!-- Dynamic HTML Template -->
@@ -31,7 +34,8 @@ HtmlHead::addGlobalCss(CSS_DIR.'custom.css');
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     Tests <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul id="test-dropdown" class="dropdown-menu">
+                        <li role="resentation"><a href="/test/HtmlHead">HtmlHead</a></li>
                     </ul>
                   </li>
 
@@ -47,6 +51,7 @@ HtmlHead::addGlobalCss(CSS_DIR.'custom.css');
     </div>
 
     <?php Epoque\Chameleon\JS::trio(); ?>
+    <?php Epoque\Chameleon\JS::fetchRoute(); ?>
 
 </body>
 </html>

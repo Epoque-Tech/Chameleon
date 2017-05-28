@@ -1,19 +1,4 @@
-<?php
-
-use Epoque\Chameleon\HtmlSimpleContactForm as Form; ?>
-
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-2">
-        <?php
-        print new Form([
-            'id' => 'testForm',
-            'legend' => 'Test Form'
-        ]);
-        ?>
+    <div class="col-md-8 col-md-offset-1">
+        <div id="output"></div>
     </div>
-  </div>
-</div>
 
-<script src="<?php echo JS_DIR.'test.js'; ?>"></script>
