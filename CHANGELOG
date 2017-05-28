@@ -2,6 +2,18 @@ CHANGELOG
 =========
 
 ----------------------
+version 0.1.3 to 0.1.4
+----------------------
+Chameleon Script
+    * Removed database as a prereq.
+    * Added a Favicon.
+    * Bug fix in creating views directory.
+
+Configuration
+    * Adjusted Resources Directories
+
+
+----------------------
 version 0.1.2 to 0.1.3
 ----------------------
 Setup Script
