@@ -22,6 +22,7 @@
 
 source bin/chameleon-install.bash import
 CMD=$1
+MOD=$2
 
 
 main()
@@ -30,6 +31,10 @@ main()
         setup
     elif [ "$CMD" == "update" ]; then
         update
+    elif [ "$CMD" == "enable" ]; then
+        enable
+    elif [ "$CMD" == "disable" ]; then
+        disable
     elif
         [ "$CMD" == "minify" ]; then
         source bin/minify.bash
@@ -66,6 +71,22 @@ setup()
 update()
 {
     composer
+}
+
+
+enable()
+{
+    if [ $MOD == "draft" ]; then
+        enable_draft
+    fi
+}
+
+
+disable()
+{
+    if [ $MOD == "draft" ]; then
+        disable_draft
+    fi
 }
 
 
@@ -202,6 +223,21 @@ perms()
     sudo chgrp -R $www_group .
     sudo chmod g+rwx .
     sudo chmod g+s .
+}
+
+
+enable_draft()
+{
+    ./bin/composer require "epoque/php @dev"
+
+    if [ ! -d "resources/requests" ];then
+        mkdir resources/requests
+    fi
+
+    cp conf/views/draft.php views/
+    cp conf/resources/requests/draft.php resources/requests/
+    cp conf/resources/js/draft.js resources/js
+    cp -r conf/resources/posts resources/
 }
 
 
