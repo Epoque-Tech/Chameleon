@@ -2,8 +2,16 @@
     var
     requestUrl = 'resources/requests/draft.php',
 
-    markdownHolder = '',
+    mode = 'unpub', // or pub.
 
+    draftId = undefined, // or the row id of an existing draft.
+
+    markdown = '',
+    
+    index = undefined,
+
+    titles = [],
+    
     saveBtn =
         `<div class="btn-group" role="group" aria-label="...">
           <button id="save-draft" type="button" class="btn btn-default">Save</button>
@@ -24,43 +32,54 @@
           <button id="edit-draft" type="button" class="btn btn-default">Edit</button>
         </div>`,
 
-    deleteBtn = 
+    deleteBtn =
         `<div class="btn-group" role="group" aria-label="...">
           <button id="delete-draft" type="button" class="btn btn-danger">Delete</button>
         </div>`,
-
     
-    getDraft = function () {
+    
+    getIndex = () => {
         $.ajax({
-            url:requestUrl,
-            data:{'draft/id': this.id},
+            url: requestUrl,
+            data: {'index':true},
             success: data => {
-                populateDraftMarkdown(data);
-                $('#draft-btns').html(deleteBtn + previewBtn + saveBtn + publishBtn);
-                setBtnActions();
+                index = JSON.parse(data);
+                recordTitles();
+                populateUnpubLinks();
+                // populatePubLinks();
             }
         });
     },
-
     
-    getPub = function () {
-        $.ajax({
-            url:requestUrl,
-            data:{'pub/id': this.id},
-            success: data => {
-                populateDraftMarkdown(data);
-                $('#draft-btns').html(deleteBtn + previewBtn + saveBtn + publish);
-                setBtnActions();
+    
+    recordTitles = () => {
+        index.forEach(entry => {
+            titles.push(entry.title);
+        });
+    },
+    
+    
+    populateUnpubLinks = () => {
+        var btns = '';
+        
+        index.forEach( entry => {    
+            if (!entry.published) {
+                //<button type="button" class="btn btn-default">1</button>
+                btns += `<button id="${entry.id}" class="btn btn-default">${entry.title}</button>`;
             }
         });
+        
+        $('#draft-links').html(btns);
     },
 
 
-   populateDraftMarkdown = function (markdown) {
-	$('#draft-display').empty();
-        $('#draft-display').html('<pre id="draft-markdown">'+markdown+'</pre>');
+   populateDraftMarkdown = (markdown) => {
+        markdown = markdown || '';
+
+        $('#draft-display').empty();
+        $('#draft-display').html('<pre id="draft-markdown" class="form-control">'+markdown+'</pre>');
         $('#draft-markdown').attr('contentEditable', true);
-        $('#draft-markdown').keydown(function(e) {
+        $('#draft-markdown').keydown( e => {
             if (e.keyCode === 13) {
               document.execCommand('insertHTML', false, '\n');
               return false;
@@ -69,60 +88,112 @@
    },
 
 
-   populateDraftLinks = function (links) {
-       var request = {};
-       request[links] = true;
+    populateDraftBtns = () => {
+        var draftBtns = saveBtn + previewBtn + publishBtn + deleteBtn;
+        $('#draft-btns').html(draftBtns);
+        setDraftBtnActions();
+    },
 
-        $.ajax({
-            url:requestUrl,
-            data: request,
-            success: data => {
-                $('#draft-links').html(data);
-                $('#draft-links button').click(getDraft);
-                $('#draft-links button').first().trigger('click');
+
+    setDraftBtnActions = () => {
+        $('#save-draft').click(save);
+    },
+
+
+    validInput = () => {
+        var valid = true;
+
+        valid = validTitle();
+        valid = validContent();
+
+        return valid;
+    },
+
+
+    validTitle = () => {
+        var response = true;
+        var title = $('#draft-title').val();
+        var lenTitle = title.length;
+
+        if (lenTitle === 0) {
+            response = false;
+            $('#draft-title-input').addClass('has-error');
+            $('#draft-title-error').html('title required');
+            $('#draft-title-error').show();
+        }
+
+        else if (lenTitle > 64 ) {
+            response = false;
+            $('#draft-title-input').addClass('has-error');
+            $('#draft-title-error').html('title too long');
+            $('#draft-title-error').show();
+        }
+        
+        else if (titles.includes(title)) {
+            response = false;
+            $('#draft-title-input').addClass('has-error');
+            $('#draft-title-error').html('title already used');
+            $('#draft-title-error').show();
+        }
+
+        else {
+            $('#draft-title-input').removeClass('has-error');
+            $('#draft-title-error').html('');
+            $('#draft-title-error').hide();
+        }
+
+        return response;
+    },
+
+
+    validContent = () => {
+        var response = true;
+        var lenContent = ($('#draft-markdown').val()).length;
+
+        if (lenContent === 0) {
+            $('#draft-display').addClass('has-error');
+            response = false;
+        }
+
+        return response;
+    },
+
+
+    save = Event => {
+        if (validInput()) {
+            if (mode === 'unpub' && draftId === undefined) {
+                saveNewUnpub();
             }
-        });
-   },
-    
-    
-    preview = function () {
-        markdownHolder = $('#draft-markdown').html();
+        }
+    },
 
+
+    saveNewUnpub = () => {
         $.ajax({
-            url:requestUrl,
-            data:{'draft/preview':markdownHolder},
+            url: requestUrl,
+            method: 'POST',
+            data : {'/unpub/new' : JSON.stringify({
+                    title : $('#draft-title').val(),
+                    content : $('#draft-markdown').html()
+                })
+            },
             success : data => {
-                $('#draft-display').html(data);
-                $('#draft-btns').html(deleteBtn + editBtn + saveBtn);
-                setBtnActions();
+                draftId = data;
+            },
+            fail : err => {
+                console.log(err);
             }
         });
-    },
-    
-    
-    edit = function () {
-        populateDraftMarkdown(markdownHolder);
-        $('#draft-btns').html(deleteBtn + previewBtn + saveBtn);
-        setBtnActions();
-    },
-    
-    
-    setBtnActions = function () {
-        $('#preview-draft').click(preview);
-        $('#edit-draft').click(edit);
     };
 
-    
-    window.onload = function () {
-        $('#draft-select-draft').click(function () {
-            populateDraftLinks('draft/links');
-        });
 
-        $('#draft-select-pub').click(function () {
-            populateDraftLinks('pub/links');
-        });
-
-        $('#draft-select-draft').trigger('click');
+    window.onload = () => {
+        getIndex();
+        
+        populateDraftMarkdown();
+        populateDraftBtns();
+        
+        $('#draft-title-error').hide();
     };
 
 }());
