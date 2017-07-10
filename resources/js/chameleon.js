@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* @var The global APP object **/
 var APP = {};
 
