@@ -30,6 +30,14 @@ main()
         setup
     elif [ "$CMD" == "update" ]; then
         update
+    elif [ "$CMD" == "init" ]; then
+        init
+    elif [ "$CMD" == "vhost" ]; then
+        vhost
+    elif [ "$CMD" == "enable" ]; then
+        enable
+    elif [ "$CMD" == "disable" ]; then
+        disable
     elif
         [ "$CMD" == "minify" ]; then
         source bin/minify.bash
@@ -46,6 +54,12 @@ usage()
     echo ""
     echo "commands"
     echo "setup: setup a new project"
+    echo "update: update chameleon and dependencies"
+    echo "init: LAMP packages are installed and perms configured"
+    echo "enable/disable [module]: turn on/off chameleon modules"
+    echo ""
+    echo "modules:"
+    echo "draft - A module for drafting and publishing text."
 }
 
 
@@ -66,6 +80,20 @@ setup()
 update()
 {
     composer
+    #git pull chameleon_upstream master
+}
+
+
+init()
+{
+    init
+    perms
+}
+
+
+vhost()
+{
+    create_vhost
 }
 
 
