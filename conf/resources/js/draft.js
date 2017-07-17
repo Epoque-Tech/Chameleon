@@ -4,7 +4,7 @@
 
     mode = 'unpub', // or pub.
 
-    draftId = undefined, // or the row id of an existing draft.
+    draftId = undefined, // or the row id of an exist draft.
 
     markdown = '',
     
@@ -38,7 +38,7 @@
         </div>`,
     
     
-    getIndex = () => {
+    reindex = () => {
         $.ajax({
             url: requestUrl,
             data: {'index':true},
@@ -64,7 +64,6 @@
         
         index.forEach( entry => {    
             if (!entry.published) {
-                //<button type="button" class="btn btn-default">1</button>
                 btns += `<button id="${entry.id}" class="btn btn-default">${entry.title}</button>`;
             }
         });
@@ -162,33 +161,53 @@
     save = Event => {
         if (validInput()) {
             if (mode === 'unpub' && draftId === undefined) {
-                saveNewUnpub();
+                saveUnpubNew();
             }
         }
     },
 
 
-    saveNewUnpub = () => {
+    saveUnpubNew = () => {
         $.ajax({
             url: requestUrl,
             method: 'POST',
-            data : {'/unpub/new' : JSON.stringify({
+            data : {'/save/unpub/new' : JSON.stringify({
                     title : $('#draft-title').val(),
                     content : $('#draft-markdown').html()
                 })
             },
             success : data => {
+                // data is the id of the new draft.
                 draftId = data;
             },
             fail : err => {
                 console.log(err);
             }
         });
+    },
+    
+    saveUnpubExist = () => {
+        var request = {};
+        
+        $.ajax({
+            url: requestUrl,
+            method: 'POST',
+            data: {
+                '/save/unpub/exist': {
+                    id : draftId,
+                    title: $('#draft-title').val(),
+                    content: $('#draft-markdown').html()
+                }
+            },
+            success: data => {
+                console.log(data);
+            }
+        });
     };
 
 
     window.onload = () => {
-        getIndex();
+        reindex();
         
         populateDraftMarkdown();
         populateDraftBtns();
