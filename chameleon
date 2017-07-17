@@ -237,7 +237,8 @@ enable_draft()
     cp conf/views/draft.php views/
     cp conf/resources/requests/draft.php resources/requests/
     cp conf/resources/js/draft.js resources/js
-    cp -r conf/resources/posts resources/
+    cp conf/resources/sql/draft.db resources/sql/draft.db
+    cp conf/resources/sql/draft.schema.sql resources/sql/draft.schema.sql
 }
 
 
