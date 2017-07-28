@@ -6,7 +6,6 @@ use cebe\markdown\GithubMarkdown as MD;
 
 define('DRAFTS', APP_ROOT.'resources/sql/drafts.db');
 
-// TODO: Change the way drafts are saved. Save to DB.
 
 $request = [];
 
@@ -34,22 +33,23 @@ else if ($unpub_new = json_decode($request['post']['/save/unpub/new']))
     
     $mod_timestamp = date(DateTime::ISO8601);
     $mod_epoque = date('U');
-    $id = (function() {global $id; return preg_replace('|[a-f]|', '', md5($id));})();
     $title = \SQLite3::escapeString($unpub_new->title);
     $content = \SQLite3::escapeString($unpub_new->content);
+    $id = str_replace(' ', '', strtolower($title));
     
-     $sql = 'INSERT INTO drafts (id, published, mod_timestamp, mod_epoque, title,'
+    $sql = 'INSERT INTO drafts (id, published, mod_timestamp, mod_epoque, title,'
              . ' content) VALUES (';
-     $sql .= "'$id', 0, '$mod_timestamp', $mod_epoque, '$title', '$content');";
+    $sql .= "'$id', 0, '$mod_timestamp', $mod_epoque, '$title', '$content');";
      
-     if ($db->insert($sql)) {
-         header("HTTP/1.1 200 OK");
-         print $id;
-     }
-     else {
-         header("HTTP/1.1 500 Internal Sqlite3 Error");
-     }
+    if ($db->insert($sql)) {
+        header("HTTP/1.1 200 OK");
+        print $id;
+    }
+    else {
+        header("HTTP/1.1 500 Internal Sqlite3 Error");
+    }
 }
+
 
 else if ($unpub_new = json_decode($request['post']['/save/unpub/exist']))
 {
@@ -73,3 +73,4 @@ else if ($unpub_new = json_decode($request['post']['/save/unpub/exist']))
          header("HTTP/1.1 500 Internal Sqlite3 Error");
      }
 }
+

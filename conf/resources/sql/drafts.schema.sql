@@ -6,7 +6,7 @@
  */
 
 create table drafts (
-    id int, -- primary key
+    id text, -- primary key
     title text,
     published int, -- 0 not published 1 published.
     mod_timestamp text, -- iso 8601 e.g. 2017-07-08T13:27:34+00:00
