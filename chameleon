@@ -263,6 +263,9 @@ enable_draft()
     cp conf/resources/js/draft.js resources/js
     cp conf/resources/sql/drafts.db resources/sql/drafts.db
     cp conf/resources/sql/drafts.schema.sql resources/sql/drafts.schema.sql
+
+    perms()
+    chmod g+w resources/sql/drafts.db
 }
 
 
