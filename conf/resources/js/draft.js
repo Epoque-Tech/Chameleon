@@ -8,8 +8,10 @@
 
     markdown = '',
     
+    /** @var A containter for draft data (id,title,published,mod_epoque). **/
     index = undefined,
 
+    /** @var Holds all the titles for published and unpublished drafts. **/
     titles = [],
     
     saveBtn =
@@ -38,6 +40,13 @@
         </div>`,
     
     
+    /**
+     * reindex
+     *
+     * Fetches the index data (id,title,published,mod_epoque) from the
+     * server, populates links and records all the titles in titles var.
+     */
+
     reindex = () => {
         $.ajax({
             url: requestUrl,
@@ -72,7 +81,7 @@
     },
 
 
-   populateDraftMarkdown = (markdown) => {
+   populateDraftMarkdown = () => {
         markdown = markdown || '';
 
         $('#draft-display').empty();
@@ -147,11 +156,14 @@
 
     validContent = () => {
         var response = true;
-        var lenContent = ($('#draft-markdown').val()).length;
+        var lenContent = ($('#draft-markdown').text()).length;
 
         if (lenContent === 0) {
             $('#draft-display').addClass('has-error');
             response = false;
+        }
+        else {
+            $('#draft-display').removeClass('has-error');
         }
 
         return response;
@@ -160,10 +172,14 @@
 
     save = Event => {
         if (validInput()) {
+            markdown = $('#draft-markdown').text();
+
             if (mode === 'unpub' && draftId === undefined) {
                 saveUnpubNew();
             }
         }
+
+        window.onload();
     },
 
 
@@ -186,6 +202,7 @@
         });
     },
     
+
     saveUnpubExist = () => {
         var request = {};
         
@@ -217,3 +234,4 @@
 
 }());
 console.log('draft.js loaded');
+
