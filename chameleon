@@ -246,7 +246,7 @@ perms()
 {
     sudo chgrp -R $www_group .
     sudo chmod g+rwx .
-    sudo chmod g+s .
+    sudo chmod g+s $(find . -type d)
 }
 
 
