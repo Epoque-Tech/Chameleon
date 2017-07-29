@@ -2,11 +2,17 @@
     var
     requestUrl = 'resources/requests/draft.php',
 
+    /** @var The id of the current draft. If undefined, the draft is new. **/
+    draftId = undefined,
+
+    /** @var The title of the current draft. **/
+    title = undefined,
+
+    /** @var The markdown of the current draft. **/
+    markdown = undefined,
+    
+    /** @var The mode of the current draft. **/
     mode = 'unpub', // or pub.
-
-    draftId = undefined, // or the row id of an exist draft.
-
-    markdown = '',
     
     /** @var A containter for draft data (id,title,published,mod_epoque). **/
     index = undefined,
@@ -14,6 +20,8 @@
     /** @var Holds all the titles for published and unpublished drafts. **/
     titles = [],
     
+    
+    /** HTML elements markup. **/
     saveBtn =
         `<div class="btn-group" role="group" aria-label="...">
           <button id="save-draft" type="button" class="btn btn-default">Save</button>
@@ -54,12 +62,18 @@
             success: data => {
                 index = JSON.parse(data);
                 recordTitles();
-                populateUnpubLinks();
-                // populatePubLinks();
+                populateDraftLinks('unpub');
             }
         });
     },
     
+    
+    /**
+     * recordTitles
+     * 
+     * Populates the titles container with the draft titles in the
+     * index.
+     */
     
     recordTitles = () => {
         index.forEach(entry => {
@@ -68,23 +82,38 @@
     },
     
     
-    populateUnpubLinks = () => {
+    /**
+     * populateDraftLinks
+     * 
+     * Populates the draft-links div in the sidebar with buttons for
+     * each unpublished draft. Assigns action to the buttons.
+     * 
+     * @param {string} type Either pub (published) or unpub.
+     */
+
+    populateDraftLinks = (type) => {
         var btns = '';
+        var request = {};
         
-        index.forEach( entry => {    
-            if (!entry.published) {
+        index.forEach( entry => {
+            if (type === 'unpub' && !entry.published) {
+                btns += `<button id="${entry.id}" class="btn btn-default draft-link">${entry.title}</button>`;
+            }
+            else if (type === 'pub' && entry.published) {
                 btns += `<button id="${entry.id}" class="btn btn-default draft-link">${entry.title}</button>`;
             }
         });
         
+        $('#draft-links').empty();
         $('#draft-links').html(btns);
 
         $('.draft-link').click( Event => {
             draftId = Event.target.id;
-
+            request['/draft/'+type] = draftId;
+            
             $.ajax({
                 url: requestUrl,
-                data: {'/draft/unpub': draftId},
+                data: request,
                 success: draft => {
                     draft = JSON.parse(draft);
                     
@@ -95,6 +124,38 @@
         });
     },
 
+
+    /**
+     * populateDraftBtns
+     * 
+     * Places UI buttons for the current draft in the #draft-btns div.
+     */
+
+    populateDraftBtns = () => {
+        var draftBtns = saveBtn + previewBtn + publishBtn + deleteBtn;
+        $('#draft-btns').html(draftBtns);
+        setDraftBtnActions();
+    },
+
+
+    /**
+     * setDraftBtnActions
+     * 
+     * Sets the actions of the buttons in the #draft-btns div.
+     */
+    
+    setDraftBtnActions = () => {
+        $('#save-draft').click(save);
+        $('#preview-draft').click(preview);
+    },
+
+
+    /**
+     * populateDraftMarkdown
+     * 
+     * Places a textarea element in the #draft-display div and fills it
+     * with the markdown var if data is stored in it.
+     */
 
    populateDraftMarkdown = () => {
         markdown = markdown || '';
@@ -112,18 +173,13 @@
    },
 
 
-    populateDraftBtns = () => {
-        var draftBtns = saveBtn + previewBtn + publishBtn + deleteBtn;
-        $('#draft-btns').html(draftBtns);
-        setDraftBtnActions();
-    },
-
-
-    setDraftBtnActions = () => {
-        $('#save-draft').click(save);
-        $('#preview-draft').click(preview);
-    },
-
+    /**
+     * validInput
+     * 
+     * Validates the current draft input (title and markdown).
+     * 
+     * @returns {boolean} True if valid, false otherwise.
+     */
 
     validInput = () => {
         var valid = true;
@@ -135,6 +191,17 @@
         return valid;
     },
 
+
+    /**
+     * validTitle
+     * 
+     * Validates the draft title.
+     * 
+     * Title cannot be empty, greater than 64 characters, nor
+     * an existing title if draft is new.
+     * 
+     * @returns {Boolean} True if the title is valid, false otherwise.
+     */
 
     validTitle = () => {
         var response = true;
@@ -155,7 +222,7 @@
             $('#draft-title-error').show();
         }
         
-        else if (titles.includes(title)) {
+        else if (draftId && titles.includes(title)) {
             response = false;
             $('#draft-title-input').addClass('has-error');
             $('#draft-title-error').html('title already used');
@@ -172,6 +239,15 @@
     },
 
 
+    /**
+     * validContent
+     * 
+     * Validates the #draft-markdown; must have content.
+     * 
+     * @returns {Boolean} True if there's content in the #draft-markdown,
+     * false otherwise.
+     */
+
     validContent = () => {
         var response = true;
         var lenContent = ($('#draft-markdown').val()).length;
@@ -187,6 +263,14 @@
         return response;
     },
 
+
+    /**
+     * save
+     * 
+     * The save button action.
+     * 
+     * @param {type} Event The click event that triggers save.
+     */
 
     save = Event => {
         if (validInput()) {
@@ -239,23 +323,44 @@
     },
     
     
+    /**
+     * preview
+     * 
+     * The preview button action.
+     */
+
     preview = () => {
         console.log($('#draft-markdown').val());
     };
 
 
+    /**
+     * window.onload
+     * 
+     * The onload or reload function.
+     */
+
     window.onload = () => {
         reindex();
+        
+        $('#draft-select-pub').click( () => {
+            populateDraftLinks('pub');
+        });
+        
+        $('#draft-select-unpub').click( () => {
+            populateDraftLinks('unpub');
+        });
         
         populateDraftMarkdown();
         populateDraftBtns();
         
+        if (!draftId) $('#draft-title').val('');
+        if (!markdown) $('#draft-markdown').val('');
+
         // This is hidden on purpose.
         $('#draft-title-error').hide();
-
-        if (!draftId) $('#draft-title').val('');
     };
 
 }());
-console.log('draft.js loaded');
 
+console.log('draft.js loaded');

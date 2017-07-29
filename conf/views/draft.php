@@ -5,7 +5,7 @@
         <div><button id="new-draft-btn" class="btn btn-primary">New Draft</button></div>
         <br>
         <div id="draft-select">
-            <button id="draft-select-draft" class="btn btn-default">Unpublished</button>
+            <button id="draft-select-unpub" class="btn btn-default">Unpublished</button>
             <button id="draft-select-pub" class="btn btn-default">Published</button>
         </div>
         <br>
