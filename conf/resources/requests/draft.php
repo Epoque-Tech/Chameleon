@@ -10,7 +10,8 @@ define('DRAFTS', APP_ROOT.'resources/sql/drafts.db');
 $request = [];
 
 $request['get'] = filter_input_array(INPUT_GET, [
-    'index' => FILTER_SANITIZE_URL
+    'index' => FILTER_SANITIZE_URL,
+    '/draft/unpub' => FILTER_SANITIZE_STRING
 ]);
 
 $request['post'] = filter_input_array(INPUT_POST, [
@@ -24,6 +25,16 @@ if (isset($request['get']['index']))
     $db = new db(DRAFTS);
     $sql = 'SELECT id,title,published,mod_epoque FROM drafts;';
     print json_encode($db->select($sql));
+}
+
+
+else if (isset($request['get']['/draft/unpub']))
+{
+    $db = new db(DRAFTS);
+    $draftId = $request['get']['/draft/unpub'];
+    $sql = "SELECT title,content FROM drafts WHERE id ='$draftId'";
+
+    print json_encode($db->select($sql)[0]);
 }
 
 
@@ -73,4 +84,3 @@ else if ($unpub_new = json_decode($request['post']['/save/unpub/exist']))
          header("HTTP/1.1 500 Internal Sqlite3 Error");
      }
 }
-

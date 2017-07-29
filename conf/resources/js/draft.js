@@ -73,11 +73,26 @@
         
         index.forEach( entry => {    
             if (!entry.published) {
-                btns += `<button id="${entry.id}" class="btn btn-default">${entry.title}</button>`;
+                btns += `<button id="${entry.id}" class="btn btn-default draft-link">${entry.title}</button>`;
             }
         });
         
         $('#draft-links').html(btns);
+
+        $('.draft-link').click( Event => {
+            draftId = Event.target.id;
+
+            $.ajax({
+                url: requestUrl,
+                data: {'/draft/unpub': draftId},
+                success: draft => {
+                    draft = JSON.parse(draft);
+                    
+                    $('#draft-title').val(draft.title);
+                    $('#draft-markdown').text(draft.content);
+                }
+            });
+        });
     },
 
 
@@ -177,9 +192,9 @@
             if (mode === 'unpub' && draftId === undefined) {
                 saveUnpubNew();
             }
+        
+            window.onload();
         }
-
-        window.onload();
     },
 
 
@@ -229,7 +244,10 @@
         populateDraftMarkdown();
         populateDraftBtns();
         
+        // This is hidden on purpose.
         $('#draft-title-error').hide();
+
+        if (!draftId) $('#draft-title').val('');
     };
 
 }());
