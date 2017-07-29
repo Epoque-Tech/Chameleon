@@ -89,7 +89,7 @@
                     draft = JSON.parse(draft);
                     
                     $('#draft-title').val(draft.title);
-                    $('#draft-markdown').text(draft.content);
+                    $('#draft-markdown').val(draft.content);
                 }
             });
         });
@@ -100,12 +100,13 @@
         markdown = markdown || '';
 
         $('#draft-display').empty();
-        $('#draft-display').html('<pre id="draft-markdown" class="form-control">'+markdown+'</pre>');
+        $('#draft-display').html('<textarea id="draft-markdown" class="form-control">'+markdown+'</textarea>');
         $('#draft-markdown').attr('contentEditable', true);
         $('#draft-markdown').keydown( e => {
             if (e.keyCode === 13) {
-              document.execCommand('insertHTML', false, '\n');
-              return false;
+              //disable enter
+              //document.execCommand('insertHTML', false, '\n');
+              //return false;
             }
         });
    },
@@ -120,14 +121,16 @@
 
     setDraftBtnActions = () => {
         $('#save-draft').click(save);
+        $('#preview-draft').click(preview);
     },
 
 
     validInput = () => {
         var valid = true;
 
-        valid = validTitle();
-        valid = validContent();
+        if (!validTitle() || !validContent()) {
+            valid = false;
+        }
 
         return valid;
     },
@@ -171,7 +174,7 @@
 
     validContent = () => {
         var response = true;
-        var lenContent = ($('#draft-markdown').text()).length;
+        var lenContent = ($('#draft-markdown').val()).length;
 
         if (lenContent === 0) {
             $('#draft-display').addClass('has-error');
@@ -187,13 +190,11 @@
 
     save = Event => {
         if (validInput()) {
-            markdown = $('#draft-markdown').text();
+            markdown = $('#draft-markdown').val();
 
             if (mode === 'unpub' && draftId === undefined) {
-                saveUnpubNew();
+                Promise.resolve(saveUnpubNew).then(window.onload);
             }
-        
-            window.onload();
         }
     },
 
@@ -235,6 +236,11 @@
                 console.log(data);
             }
         });
+    },
+    
+    
+    preview = () => {
+        console.log($('#draft-markdown').val());
     };
 
 
