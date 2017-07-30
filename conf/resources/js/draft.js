@@ -26,6 +26,11 @@
         `<div class="btn-group" role="group" aria-label="...">
           <button id="save-draft" type="button" class="btn btn-default">Save</button>
         </div>`,
+    
+    saveNewBtn = 
+        `<div class="btn-group" role="group" aria-label="...">
+          <button id="save-new-draft" type="button" class="btn btn-default">Save New</button>
+        </div>`,
 
     publishBtn =
         `<div class="btn-group" role="group" aria-label="...">
@@ -117,8 +122,11 @@
             }).done( draft => {
                 draft = JSON.parse(draft);
 
-                $('#draft-title').val(draft.title);
-                $('#draft-markdown').val(draft.content);
+                title = draft.title;
+                $('#draft-title').val(title);
+                
+                markdown = draft.content;
+                $('#draft-markdown').val(markdown);
             });
         });
     },
@@ -146,6 +154,8 @@
     setDraftBtnActions = () => {
         $('#save-draft').click(save);
         $('#preview-draft').click(preview);
+        $('#publish-draft').click(publish);
+        $('#delete-draft').click(deleteDraft);
     },
 
 
@@ -261,6 +271,26 @@
 
         return response;
     },
+    
+    
+    /**
+     * titleChange
+     */
+
+    titleChange = () => {
+        if (title && title !== ($('#draft-title').val()).trim()) {
+            console.log('title changed');
+            
+            $('#draft-modal-body').empty();
+            
+            $('#draft-modal-body').html('<p>Would you like to create a new draft?</p>');
+            $('#draft-modal-footer').html(saveNewBtn);
+            
+            $('#save-new-draft').click(save);
+            
+            $('#draft-modal').modal('show');
+        }
+    },
 
 
     confirmSave = () => {
@@ -302,6 +332,14 @@
             else if (mode === 'unpub' && draftId) {
                 saveUnpubExist();
             }
+            
+            else if (mode === 'pub' && draftId === undefined) {
+                //savePubNew();
+            }
+            
+            else if (mode === 'pub' && draftId) {
+                //savePubExist();
+            }
         }
     },
 
@@ -311,8 +349,8 @@
             url: requestUrl,
             method: 'POST',
             data : {'/save/unpub/new' : JSON.stringify({
-                    title : $('#draft-title').val(),
-                    content : $('#draft-markdown').html()
+                    title : ($('#draft-title').val()).trim(),
+                    content : ($('#draft-markdown').html()).trim()
                 })
             }
         }).done( (data) => {
@@ -331,8 +369,8 @@
             data: {
                 '/save/unpub/exist': {
                     id : draftId,
-                    title: $('#draft-title').val(),
-                    content: $('#draft-markdown').html()
+                    title: ($('#draft-title').val()).trim(),
+                    content: ($('#draft-markdown').html()).trim()
                 }
             }
         }).done( (data) => {
@@ -350,6 +388,24 @@
 
     preview = () => {
         console.log($('#draft-markdown').val());
+    },
+    
+    
+    publish = () => {
+        console.log('publish');
+    },
+    
+    
+    deleteDraft = () => {
+        $.ajax({
+            url: requestUrl + '?draft='+draftId,
+            method: 'DELETE'
+        }).done( () => {
+            draftId = undefined;
+            title = undefined;
+            markdown = undefined;
+            window.onload();
+        });
     };
 
 
@@ -362,6 +418,8 @@
     window.onload = () => {
         reindex();
 
+        $('#draft-title').on('blur', titleChange);
+        
         $('#new-draft-btn').click(newDraft);
 
         $('#draft-select-pub').click( () => {
@@ -375,7 +433,7 @@
         populateDraftMarkdown();
         populateDraftBtns();
 
-        if (!draftId) $('#draft-title').val('');
+        if (!title) $('#draft-title').val('');
         if (!markdown) $('#draft-markdown').val('');
 
         // This is hidden on purpose.

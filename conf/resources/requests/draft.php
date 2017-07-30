@@ -19,6 +19,15 @@ $request['post'] = filter_input_array(INPUT_POST, [
     '/save/unpub/exist' => FILTER_SANITIZE_STRING & FILTER_FLAG_NO_ENCODE_QUOTES
 ]);
 
+$request['delete'] = [];
+if (filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_STRING) === 'DELETE') {
+    $query = filter_input(INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_STRING);
+    $query = explode('=', $query);
+    
+    $request['delete'][$query[0]] = $query[1];
+
+}
+
 
 if (isset($request['get']['index']))
 {
@@ -83,4 +92,14 @@ else if ($unpub_new = json_decode($request['post']['/save/unpub/exist']))
      else {
          header("HTTP/1.1 500 Internal Sqlite3 Error");
      }
+}
+
+else if ($request['delete']['draft'])
+{
+    $db = new db(DRAFTS);
+    
+    $draftId = $request['delete']['draft'];
+    $sql = "DELETE FROM drafts WHERE id='$draftId';";
+    
+    $db->insert($sql);
 }
