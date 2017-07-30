@@ -263,6 +263,21 @@
         return response;
     },
 
+    
+    /**
+     * newDraft
+     * 
+     * The action for the #new-draft-btn.
+     */
+    
+    newDraft = () => {
+        draftId = title = markdown = undefined;
+        mode = 'unpub';
+        
+        $('#draft-title').val('');
+        $('#draft-markdown').val('');
+    },
+
 
     /**
      * save
@@ -342,6 +357,8 @@
 
     window.onload = () => {
         reindex();
+        
+        $('#new-draft-btn').click(newDraft);
         
         $('#draft-select-pub').click( () => {
             populateDraftLinks('pub');
