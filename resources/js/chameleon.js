@@ -60,6 +60,4 @@ APP.validatePhoneNumber = function (phone) {
     }
 };
 
-
 console.log('chameleon.js loaded');
-
