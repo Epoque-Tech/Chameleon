@@ -29,3 +29,17 @@
 
     </div>
 </div>
+
+
+<div id="draft-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 id="draft-modal-title" class="modal-title">Modal title</h4>
+      </div>
+      <div id="draft-modal-body" class="modal-body"></div>
+      <div id="draft-modal-footer" class="modal-footer"></div>
+    </div>
+  </div>
+</div>
