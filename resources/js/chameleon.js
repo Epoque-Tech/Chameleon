@@ -23,6 +23,35 @@ String.prototype.lcfirst = function() {
 
 
 /**
+ * request
+ *
+ * Parses the location object and sets the path
+ * (eg /path/to/method) as method, and the param argument
+ * pairs into an object set as args (ie .
+ *
+ * @return {object} {method:location.pathname, args:{}}
+ */
+
+APP.request = () => {
+    let req = {};
+
+    req.method = location.pathname;
+
+    if (location.search) {
+        req.args = {};
+        args = location.search.replace(/^\?/, '');
+
+        args.split('&').forEach( (arg) => {
+            tmp = arg.split('=');
+            req.args[tmp[0]] = decodeURI(tmp[1]).replace(/(^"|"$)?/g, '');
+        });
+    }
+
+    return req;
+};
+
+
+/**
  * validateEmail
  *
  * Takes a given email and return true if valid, and false otherwise.
