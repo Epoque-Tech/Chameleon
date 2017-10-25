@@ -35,7 +35,8 @@ String.prototype.lcfirst = function() {
 APP.request = () => {
     let req = {};
 
-    req.method = location.pathname;
+    // Remove trailing slash from pathname.
+    req.method = (location.pathname).replace(/\/$/, '');
 
     if (location.search) {
         req.args = {};
