@@ -1,7 +1,7 @@
 # Chameleon Framework
 PHP General Web Application Prototyping Framework
 
-@version 0.1.4
+@version 0.1.4 __Abandoned__
 
 ## What is Chameleon Framework?
 
